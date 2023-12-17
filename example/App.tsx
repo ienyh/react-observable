@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { ConnectedProps } from '../lib/core/type'
 import AppDuck from './AppDuck'
+import TestFetcher from './TestFetcher'
 
 export default function App(props: { appName: string } & ConnectedProps<AppDuck>) {
   const { duck, store, dispatch } = props
@@ -27,6 +28,6 @@ export default function App(props: { appName: string } & ConnectedProps<AppDuck>
       <button onClick={() => dispatch(creators.increment())}>+</button>
     </div>
     <br />
-    <button onClick={() => dispatch(creators.fetch('fetch start'))}>fetch</button>
+    <TestFetcher />    
   </div>
 }

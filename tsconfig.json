@@ -8,9 +8,11 @@
     "target": "ES2015",
     "moduleResolution": "node",
     "paths": {
+      "@/*": ["./*"],
       "@/core/*": ["./lib/core/*"],
       "@/middleware/*": ["./lib/middleware/*"],
-      "@/decorator/*": ["./lib/decorator/*"]
+      "@/decorator/*": ["./lib/decorator/*"],
+      "@/operator/*": ["./lib/operator/*"]
     }
   }
 }

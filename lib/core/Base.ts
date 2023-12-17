@@ -6,12 +6,14 @@ export default class Base {
   getState: () => Readonly<StateFromReducersMapObject<this['reducers']>>
   dispatch: Dispatch<Action>
   id = generateUUID()
-  actionTypePrefix = '@@base/'
+  actionTypePrefix = '@@Base/'
   get quickTypes() {
     return {}
   }
   get types() {
-    return Object.assign({}, makeTypes(this.actionTypePrefix, this.quickTypes)) as TYPES<this['quickTypes']>
+    return Object.assign({}, makeTypes(this.actionTypePrefix, this.quickTypes)) as TYPES<
+      this['quickTypes']
+    >
   }
   get reducers() {
     return {}
@@ -26,6 +28,7 @@ export default class Base {
     this.getState = getState
     this.dispatch = dispatch
   }
+  constructor() {}
 }
 
 function generateUUID() {
@@ -37,13 +40,13 @@ function generateUUID() {
 }
 
 function makeTypes(prefix, typeEnum) {
-  let typeList = [];
-  const types = {};
+  let typeList = []
+  const types = {}
   if (typeEnum) {
-    typeList = typeList.concat(Object.keys(typeEnum));
+    typeList = typeList.concat(Object.keys(typeEnum))
   }
-  typeList.forEach(type => {
-    types[type] = prefix + type;
-  });
-  return types;
+  typeList.forEach((type) => {
+    types[type] = prefix + type
+  })
+  return types
 }

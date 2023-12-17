@@ -10,11 +10,11 @@ import { collectStreamers } from "../decorator/method";
 import { StreamMiddleware } from "../middleware/type";
 
 export default class Runtime<TDuck extends Base = Base> implements Disposable {
-  static create(Duck: new () => Base) {
-    return new Runtime(Duck)
+  static create<T extends Base>(Duck: new () => T) {
+    return new Runtime<T>(Duck)
   }
 
-  protected duck: TDuck
+  duck: TDuck
   protected store: Store
   protected middleware: StreamMiddleware<PayloadAction, StateFromReducersMapObject<TDuck['reducers']>>
   protected constructor(Duck: new () => TDuck) {
@@ -28,7 +28,10 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
     const logger = process.env.NODE_ENV === 'development'
       ? createLogger({ collapsed: true })
       : () => (next) => (action) => next(action)
-    const store = legacy_createStore(combineReducers(duck.reducers), applyMiddleware(streamerMiddleware, logger))
+    const store = legacy_createStore(
+      combineReducers(duck.reducers),
+      applyMiddleware(streamerMiddleware, logger)
+    )
     const streamers = [...duck.streamers, ...collectStreamers(this.duck)].map(o => o.bind(duck))
     duck.init(store.getState, store.dispatch)
     duck.dispatch({ type: `${duck.actionTypePrefix}@INIT` })

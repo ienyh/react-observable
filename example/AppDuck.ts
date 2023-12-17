@@ -1,27 +1,27 @@
 import { Action } from 'redux'
 import Base from '../lib/core/Base'
 import { Observable, filter } from 'rxjs'
-import { createToPayload } from '../lib/core/util';
-import { Streamer } from '../lib/decorator/method';
-import { filterAction } from '../lib/middleware/operators';
+import { createToPayload } from '../lib/core/util'
+import { Streamer } from '../lib/decorator/method'
+import { filterAction } from '../lib/middleware/operators'
 
+enum Type {
+  INCREMENT,
+  DECREMENT,
+  FETCH_START,
+  FETCH_DONE,
+  FETCHING,
+}
 export default class AppDuck extends Base {
-  actionTypePrefix = 'App/';
+  actionTypePrefix = 'App/'
   get quickTypes() {
-    enum Type {
-      INCREMENT,
-      DECREMENT,
-      FETCH_START,
-      FETCH_DONE,
-      FETCHING,
-    }
     return {
       ...super.quickTypes,
       ...Type,
     }
   }
   get reducers() {
-    const types = this.types;
+    const types = this.types
     return {
       name: (state: string) => 'init name',
       timestamp: (state: number) => Date.now(),
@@ -38,7 +38,7 @@ export default class AppDuck extends Base {
     }
   }
   get creators() {
-    const types = this.types;
+    const types = this.types
     return {
       ...super.creators,
       increment: () => ({ type: types.INCREMENT }),
@@ -51,19 +51,15 @@ export default class AppDuck extends Base {
     return [
       ...super.streamers,
       function incrementStreamer(action$: Observable<Action>) {
-        return action$.pipe(filter(a => a.type === types.INCREMENT)).subscribe((action) => {
-          console.log('INCREMENTED')
-        })
-      }
+        return action$.pipe(filter((a) => a.type === types.INCREMENT)).subscribe((action) => {})
+      },
     ]
   }
 
   @Streamer()
   fetchStreamer(action$: Observable<Action>) {
-    const duck = this;
-    return action$.pipe(
-      filterAction(duck.types.FETCH_START)
-    ).subscribe((action) => {
+    const duck = this
+    return action$.pipe(filterAction(duck.types.FETCH_START)).subscribe((action) => {
       duck.dispatch({ type: duck.types.INCREMENT })
       console.log(action)
     })
