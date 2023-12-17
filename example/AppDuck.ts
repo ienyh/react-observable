@@ -3,7 +3,7 @@ import Base from '../lib/core/Base'
 import { Observable, filter } from 'rxjs'
 import { createToPayload } from '../lib/core/util'
 import { Streamer } from '../lib/decorator/method'
-import { filterAction } from '../lib/middleware/operators'
+import { filterAction } from '@/lib/operator'
 
 enum Type {
   INCREMENT,
