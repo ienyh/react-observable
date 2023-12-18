@@ -1,9 +1,14 @@
 import { Action, Dispatch, ReducersMapObject, StateFromReducersMapObject } from 'redux'
 import { Streamer } from '../middleware'
+import Base from './Base'
 
 export type TYPES<T> = {
-  readonly [K in keyof T]: string;
-};
+  readonly [K in keyof T]: string
+}
+export type DuckType<T extends Base> = { new (options?: Base): T }
+export type DUCKS<T extends Record<string, DuckType<Base>>> = {
+  [key in keyof T]: InstanceType<T[key]>
+}
 
 export interface PayloadAction<T extends any = any> extends Action {
   payload?: T

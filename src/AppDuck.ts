@@ -4,6 +4,7 @@ import { Observable, filter } from 'rxjs'
 import { createToPayload } from '../lib/core/util'
 import { StreamerMethod } from '../lib/decorator/method'
 import { filterAction } from '../lib/operator'
+import { TestFetcherDuck } from './TestFetcher'
 
 enum Type {
   INCREMENT,
@@ -14,6 +15,12 @@ enum Type {
 }
 export default class AppDuck extends Base {
   actionTypePrefix = 'App/'
+  get quickDucks() {
+    return {
+      ...super.quickDucks,
+      fetcher: TestFetcherDuck,
+    }
+  }
   get quickTypes() {
     return {
       ...super.quickTypes,

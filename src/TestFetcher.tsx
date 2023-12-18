@@ -22,7 +22,7 @@ interface Param {}
 interface Result {
   name: string
 }
-class TestFetcherDuck extends FetcherDuck<Param, Result> {
+export class TestFetcherDuck extends FetcherDuck<Param, Result> {
   Param: Param
   Result: Result
   async getData(param: Param): Promise<Result> {

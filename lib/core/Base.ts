@@ -1,5 +1,5 @@
 import { Dispatch, Action, StateFromReducersMapObject } from 'redux'
-import { TYPES } from './type'
+import { TYPES, DUCKS, DuckType } from './type'
 import { Streamer } from '../middleware'
 
 export default class Base {
@@ -23,6 +23,14 @@ export default class Base {
   }
   get creators() {
     return {}
+  }
+  get quickDucks() {
+    return {}
+  }
+  get ducks() {
+    return Object.assign({}, makeDucks<this['quickDucks']>(this.quickDucks)) as DUCKS<
+      this['quickDucks']
+    >
   }
   init(getState, dispatch: Dispatch<Action>) {
     this.getState = getState
@@ -49,4 +57,13 @@ function makeTypes(prefix, typeEnum) {
     types[type] = prefix + type
   })
   return types
+}
+
+function makeDucks<T extends Record<string, DuckType<Base>>>(ducks: T): DUCKS<T> {
+  const map = {} as DUCKS<T>
+  for (const route of Object.keys(ducks)) {
+    let Duck = ducks[route]
+    map[route as keyof T] = new Duck(this.getSubDuckOptions(route)) as any
+  }
+  return map
 }
