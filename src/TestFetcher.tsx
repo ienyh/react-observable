@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { ConnectedProps } from '../lib/core/type'
-import FetcherDuck from '../src/Fetcher.duck'
 import { delay } from 'rxjs'
 import Runtime from '@/core/Runtime'
+import FetcherDuck from '@/duck/Fetcher.duck'
 
 function TestFetcher(props: ConnectedProps<TestFetcherDuck>) {
   const { duck, store, dispatch } = props
