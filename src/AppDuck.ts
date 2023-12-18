@@ -2,7 +2,7 @@ import { Action } from 'redux'
 import Base from '../lib/core/Base'
 import { Observable, filter } from 'rxjs'
 import { createToPayload } from '../lib/core/util'
-import { Streamer } from '../lib/decorator/method'
+import { StreamerMethod } from '../lib/decorator/method'
 import { filterAction } from '../lib/operator'
 
 enum Type {
@@ -56,7 +56,7 @@ export default class AppDuck extends Base {
     ]
   }
 
-  @Streamer()
+  @StreamerMethod()
   fetchStreamer(action$: Observable<Action>) {
     const duck = this
     return action$.pipe(filterAction(duck.types.FETCH_START)).subscribe((action) => {

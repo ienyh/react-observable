@@ -1,5 +1,5 @@
 import path from 'path'
-import { defineConfig, splitVendorChunkPlugin } from 'vite'
+import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 
@@ -13,8 +13,12 @@ export default defineConfig({
       '@/duck': path.resolve(__dirname, 'lib/duck'),
     },
   },
-  plugins: [
-    splitVendorChunkPlugin(),
-    react(),
-  ]
+  plugins: [react()],
+  build: {
+    lib: {
+      entry: path.resolve(__dirname, 'lib/index.ts'),
+      name: 'observable-duck',
+      fileName: 'observable-duck',
+    }
+  }
 })

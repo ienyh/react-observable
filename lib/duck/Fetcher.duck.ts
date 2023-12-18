@@ -1,7 +1,7 @@
 import Base from '@/core/Base'
 import { PayloadAction } from '@/core/type'
 import { createToPayload } from '@/core/util'
-import { Streamer } from '@/decorator/method'
+import { StreamerMethod } from '@/decorator/method'
 import { filterAction } from '@/operator/index'
 import { Observable } from 'rxjs'
 
@@ -71,7 +71,7 @@ export default abstract class FetcherDuck<TParam = any, TData = any> extends Bas
     }
   }
 
-  @Streamer()
+  @StreamerMethod()
   fetch(action$: Observable<PayloadAction>) {
     const duck = this
     const { types, dispatch } = duck
