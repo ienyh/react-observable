@@ -5,6 +5,7 @@ import TestFetcher from './TestFetcher'
 
 export default function App(props: { appName: string } & ConnectedProps<AppDuck>) {
   const { duck, store, dispatch } = props
+  store.fetcher.data
   const { creators, ducks } = duck
   const [count, setCount] = React.useState(0)
   React.useEffect(() => {

@@ -24,5 +24,6 @@ test('TestFetcherDuck', () => {
   expect(getState().loading).toBe(false)
   dispatch(creators.fetch({}))
   expect(getState().loading).toBe(true)
+
   // expect(getState().data).toBe({ name: 'hello' })
 })

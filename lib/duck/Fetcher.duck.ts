@@ -22,7 +22,7 @@ export default abstract class FetcherDuck<TParam = any, TData = any> extends Bas
   get reducers() {
     const types = this.types
     return {
-      data: (data: TData = null, action: PayloadAction) => {
+      data: (data: TData = null, action: PayloadAction): TData => {
         switch (action.type) {
           case types.FETCH_DONE:
             return action.payload
