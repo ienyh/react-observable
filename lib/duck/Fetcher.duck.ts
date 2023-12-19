@@ -13,7 +13,6 @@ enum Type {
   RELOAD,
 }
 export default abstract class FetcherDuck<TParam = any, TData = any> extends Base {
-  actionTypePrefix = 'Fetcher/'
   get quickTypes() {
     return {
       ...super.quickTypes,

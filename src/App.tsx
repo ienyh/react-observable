@@ -5,7 +5,7 @@ import TestFetcher from './TestFetcher'
 
 export default function App(props: { appName: string } & ConnectedProps<AppDuck>) {
   const { duck, store, dispatch } = props
-  const { creators } = duck
+  const { creators, ducks } = duck
   const [count, setCount] = React.useState(0)
   React.useEffect(() => {
     duck.dispatch({ type: 'SUB/START' })
@@ -28,6 +28,6 @@ export default function App(props: { appName: string } & ConnectedProps<AppDuck>
       <button onClick={() => dispatch(creators.increment())}>+</button>
     </div>
     <br />
-    <TestFetcher />    
+    <TestFetcher duck={ducks.fetcher} store={store.fetcher} dispatch={dispatch}  />    
   </div>
 }

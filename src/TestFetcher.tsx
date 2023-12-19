@@ -4,7 +4,7 @@ import { delay } from 'rxjs'
 import Runtime from '@/core/Runtime'
 import FetcherDuck from '@/duck/Fetcher.duck'
 
-function TestFetcher(props: ConnectedProps<TestFetcherDuck>) {
+export default function TestFetcher(props: ConnectedProps<TestFetcherDuck>) {
   const { duck, store, dispatch } = props
   const { creators } = duck
   React.useEffect(() => {
@@ -12,7 +12,6 @@ function TestFetcher(props: ConnectedProps<TestFetcherDuck>) {
   }, [])
   return <div>
     App: <button onClick={() => {
-      console.log(duck);
       dispatch(creators.fetch({}))
     }}>fetch</button>
   </div>
@@ -26,10 +25,9 @@ export class TestFetcherDuck extends FetcherDuck<Param, Result> {
   Param: Param
   Result: Result
   async getData(param: Param): Promise<Result> {
-    console.log(param)
     await delay(2000)
     return { name: 'hello' }
   }
 }
 
-export default Runtime.create(TestFetcherDuck).connect(TestFetcher)
+Runtime.create(TestFetcherDuck).connect(TestFetcher)

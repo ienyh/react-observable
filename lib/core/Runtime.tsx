@@ -9,17 +9,21 @@ import { ConnectedProps, PayloadAction } from "./type";
 import { collectStreamers } from "../decorator/method";
 import { StreamMiddleware } from "../middleware/type";
 
+export interface DuckRuntimeOptions {
+  prefix?: string
+}
 export default class Runtime<TDuck extends Base = Base> implements Disposable {
-  static create<T extends Base>(Duck: new () => T) {
-    return new Runtime<T>(Duck)
+  static create<T extends Base>(Duck: new (prefix: string) => T, options?: DuckRuntimeOptions) {
+    return new Runtime<T>(Duck, options)
   }
 
   duck: TDuck
   protected store: Store
   protected middleware: StreamMiddleware<PayloadAction, StateFromReducersMapObject<TDuck['reducers']>>
-  protected constructor(Duck: new () => TDuck) {
-    this.duck = new Duck()
+  protected constructor(Duck: new (prefix: string) => TDuck, options?: DuckRuntimeOptions) {
+    this.duck = new Duck(options?.prefix ?? Duck.name)
     this.initReduxStore()
+    console.log(this.duck);
   }
 
   protected initReduxStore() {
@@ -29,7 +33,7 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
       ? createLogger({ collapsed: true })
       : () => (next) => (action) => next(action)
     const store = legacy_createStore(
-      combineReducers(duck.reducers),
+      duck.combinedReducer,
       applyMiddleware(streamerMiddleware, logger)
     )
     const streamers = [...duck.streamers, ...collectStreamers(this.duck)].map(o => o.bind(duck))

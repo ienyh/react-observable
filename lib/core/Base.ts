@@ -1,4 +1,4 @@
-import { Dispatch, Action, StateFromReducersMapObject } from 'redux'
+import { Dispatch, Action, StateFromReducersMapObject, combineReducers, Reducer } from 'redux'
 import { TYPES, DUCKS, DuckType } from './type'
 import { Streamer } from '../middleware'
 
@@ -6,7 +6,18 @@ export default class Base {
   getState: () => Readonly<StateFromReducersMapObject<this['reducers']>>
   dispatch: Dispatch<Action>
   id = generateUUID()
-  actionTypePrefix = '@@Base/'
+  actionTypePrefix: string
+  constructor(prefix) {
+    this.actionTypePrefix = prefix
+  }
+  init(getState, dispatch: Dispatch<Action>) {
+    this.getState = getState
+    this.dispatch = dispatch
+    const ducks = this.ducks
+    Object.keys(ducks).forEach((duck) => {
+      ducks[duck].init(getState, dispatch)
+    })
+  }
   get quickTypes() {
     return {}
   }
@@ -28,15 +39,25 @@ export default class Base {
     return {}
   }
   get ducks() {
-    return Object.assign({}, makeDucks<this['quickDucks']>(this.quickDucks)) as DUCKS<
-      this['quickDucks']
+    return makeDucks<this['quickDucks']>(this.quickDucks, this.actionTypePrefix)
+  }
+  get combinedReducer() {
+    const reducer = {
+      ...this.reducers,
+    }
+    const ducks = this.ducks
+    Object.keys(ducks).forEach((duck) => {
+      reducer[duck] = ducks[duck].combinedReducer
+    })
+    return combineReducers(reducer) as Reducer<
+      StateFromReducersMapObject<this['reducers'] & DucksState<this['ducks']>>
     >
   }
-  init(getState, dispatch: Dispatch<Action>) {
-    this.getState = getState
-    this.dispatch = dispatch
-  }
-  constructor() {}
+}
+
+export type DuckState<Duck extends Base> = StateFromReducersMapObject<Duck['reducers']>
+export type DucksState<T extends Record<string, Base>> = {
+  [K in keyof T]: DuckState<T[K]>
 }
 
 function generateUUID() {
@@ -54,16 +75,16 @@ function makeTypes(prefix, typeEnum) {
     typeList = typeList.concat(Object.keys(typeEnum))
   }
   typeList.forEach((type) => {
-    types[type] = prefix + type
+    types[type] = `${prefix}/${type}`
   })
   return types
 }
 
-function makeDucks<T extends Record<string, DuckType<Base>>>(ducks: T): DUCKS<T> {
+function makeDucks<T extends Record<string, DuckType<Base>>>(ducks: T, prefix: string): DUCKS<T> {
   const map = {} as DUCKS<T>
   for (const route of Object.keys(ducks)) {
     let Duck = ducks[route]
-    map[route as keyof T] = new Duck(this.getSubDuckOptions(route)) as any
+    map[route as keyof T] = new Duck(`${prefix}/${Duck.name}`) as any
   }
   return map
 }

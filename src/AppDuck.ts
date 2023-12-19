@@ -14,7 +14,6 @@ enum Type {
   FETCHING,
 }
 export default class AppDuck extends Base {
-  actionTypePrefix = 'App/'
   get quickDucks() {
     return {
       ...super.quickDucks,
