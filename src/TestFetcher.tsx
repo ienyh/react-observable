@@ -7,25 +7,21 @@ import FetcherDuck from '@/duck/Fetcher.duck'
 export default function TestFetcher(props: ConnectedProps<TestFetcherDuck>) {
   const { duck, store, dispatch } = props
   const { creators } = duck
-  React.useEffect(() => {
-    dispatch(creators.fetch({}))
-  }, [])
   return <div>
     App: <button onClick={() => {
-      dispatch(creators.fetch({}))
+      dispatch(creators.fetch())
     }}>fetch</button>
     <button onClick={() => {
-      dispatch(creators.fetch({}))
+      dispatch(creators.reload())
     }}>reload</button>
   </div>
 }
 
-interface Param {}
 interface Result {
   name: string
 }
 export class TestFetcherDuck extends FetcherDuck {
-  Param: Param
+  Param: void
   Result: Result
   async getData(param: this['Param']): Promise<this['Result']> {
     await delay(2000)

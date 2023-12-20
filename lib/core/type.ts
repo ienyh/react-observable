@@ -1,7 +1,12 @@
 import { Action, Dispatch, ReducersMapObject, StateFromReducersMapObject } from 'redux'
 import { Streamer } from '../middleware'
-import Base, { DucksState } from './Base'
+import Base from './Base'
 
+
+export type DuckState<Duck extends Base> = StateFromReducersMapObject<Duck['reducers']>
+export type DucksState<T extends Record<string, Base>> = {
+  [K in keyof T]: DuckState<T[K]>
+}
 export type TYPES<T> = {
   readonly [K in keyof T]: string
 }

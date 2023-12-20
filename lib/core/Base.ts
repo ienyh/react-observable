@@ -1,12 +1,12 @@
 import { Dispatch, Action, StateFromReducersMapObject, combineReducers, Reducer } from 'redux'
-import { TYPES, DUCKS, DuckType } from './type'
+import { TYPES, DUCKS, DuckType, DucksState } from './type'
 import { Streamer } from '../middleware'
 
 export default class Base {
   getState: () => Readonly<StateFromReducersMapObject<this['reducers']>>
   dispatch: Dispatch<Action>
   id = generateUUID()
-  actionTypePrefix: string
+  private actionTypePrefix: string
   constructor(prefix) {
     this.actionTypePrefix = prefix
   }
@@ -22,9 +22,7 @@ export default class Base {
     return {}
   }
   get types() {
-    return Object.assign({}, makeTypes(this.actionTypePrefix, this.quickTypes)) as TYPES<
-      this['quickTypes']
-    >
+    return makeTypes(this.actionTypePrefix, this.quickTypes) as TYPES<this['quickTypes']>
   }
   get reducers() {
     return {}
@@ -53,11 +51,6 @@ export default class Base {
       StateFromReducersMapObject<this['reducers'] & DucksState<this['ducks']>>
     >
   }
-}
-
-export type DuckState<Duck extends Base> = StateFromReducersMapObject<Duck['reducers']>
-export type DucksState<T extends Record<string, Base>> = {
-  [K in keyof T]: DuckState<T[K]>
 }
 
 function generateUUID() {

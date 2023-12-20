@@ -4,5 +4,5 @@ import Runtime from '../lib/core/Runtime'
 import App from './App'
 import AppDuck from './AppDuck'
 
-const ConnectedApp = Runtime.create(AppDuck, { prefix: 'App@@' }).connect(App)
+const ConnectedApp = Runtime.create(AppDuck).connect(App)
 ReactDom.createRoot(document.getElementById('app')).render(<ConnectedApp appName='Observable' />)

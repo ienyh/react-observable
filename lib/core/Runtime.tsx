@@ -23,7 +23,6 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
   protected constructor(Duck: new (prefix: string) => TDuck, options?: DuckRuntimeOptions) {
     this.duck = new Duck(options?.prefix ?? Duck.name)
     this.initReduxStore()
-    console.log(this.duck);
   }
 
   protected initReduxStore() {

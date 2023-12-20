@@ -1,6 +1,6 @@
 import { Action } from 'redux'
 import Base from '../lib/core/Base'
-import { Observable, filter } from 'rxjs'
+import { Observable } from 'rxjs'
 import { createToPayload } from '../lib/core/util'
 import { StreamerMethod } from '../lib/decorator/method'
 import { filterAction } from '../lib/operator'
@@ -9,9 +9,6 @@ import { TestFetcherDuck } from './TestFetcher'
 enum Type {
   INCREMENT,
   DECREMENT,
-  FETCH_START,
-  FETCH_DONE,
-  FETCHING,
 }
 export default class AppDuck extends Base {
   get quickDucks() {
@@ -49,24 +46,13 @@ export default class AppDuck extends Base {
       ...super.creators,
       increment: () => ({ type: types.INCREMENT }),
       decrement: () => ({ type: types.DECREMENT }),
-      fetch: createToPayload<string>(types.FETCH_START),
     }
-  }
-  get streamers() {
-    const { types } = this
-    return [
-      ...super.streamers,
-      function incrementStreamer(action$: Observable<Action>) {
-        return action$.pipe(filter((a) => a.type === types.INCREMENT)).subscribe((action) => {})
-      },
-    ]
   }
 
   @StreamerMethod()
-  fetchStreamer(action$: Observable<Action>) {
+  incrementStreamer(action$: Observable<Action>) {
     const duck = this
-    return action$.pipe(filterAction(duck.types.FETCH_START)).subscribe((action) => {
-      duck.dispatch({ type: duck.types.INCREMENT })
+    return action$.pipe(filterAction(duck.types.INCREMENT)).subscribe((action) => {
       console.log(action)
     })
   }

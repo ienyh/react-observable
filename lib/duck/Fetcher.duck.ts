@@ -19,7 +19,6 @@ export default abstract class FetcherDuck extends Base {
   param: this['Param'] = null
   abstract getData(param: this['Param']): Promise<this['Result']>
 
-  actionTypePrefix = 'Fetcher/'
   get quickTypes() {
     return {
       ...super.quickTypes,
