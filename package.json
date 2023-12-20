@@ -12,7 +12,6 @@
     "logic"
   ],
   "files": [
-    "src",
     "build",
     "lib",
     "index.html",
