@@ -83,10 +83,7 @@ export default abstract class FetcherDuck extends Base {
     const { types, dispatch } = duck
     return action$.pipe(filterAction([types.FETCH_START, types.RELOAD])).subscribe((action) => {
       if (types.FETCH_START) {
-        duck.param = action.payload
-      }
-      if (!duck.param) {
-        throw new Error('no fetch param, please dispatch FETCH_START action first')
+        duck.param = action?.payload
       }
       duck
         .getData(duck.param)

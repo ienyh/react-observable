@@ -8,7 +8,7 @@ describe('FetcherDuck.test', () => {
     name: string
   }
   class TestFetcherDuck extends FetcherDuck {
-    Param: Param
+    Param: void
     Result: Result
     async getData(param: this['Param']): Promise<this['Result']> {
       await delay(1000)
@@ -16,13 +16,13 @@ describe('FetcherDuck.test', () => {
     }
   }
 
-  test('TestFetcherDuck', async () => {
+  test.concurrent('TestFetcherDuck', async () => {
     const runtime = Runtime.create(TestFetcherDuck)
     const { duck } = runtime
     const { dispatch, getState, creators } = duck
     expect(getState().data).toBe(null)
     expect(getState().loading).toBe(false)
-    dispatch(creators.fetch({}))
+    dispatch(creators.fetch())
     expect(getState().loading).toBe(true)
     await delay(1100)
     expect(getState().loading).toBe(false)
@@ -39,7 +39,7 @@ describe('FetcherDuck.test', () => {
     }
   }
 
-  test('TestErrorFetcherDuck', async () => {
+  test.concurrent('TestErrorFetcherDuck', async () => {
     const runtime = Runtime.create(TestErrorFetcherDuck)
     const { duck } = runtime
     const { dispatch, getState, creators } = duck
