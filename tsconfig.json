@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "rootDir": "lib",
+    "outDir": "ts-build",
+    "module": "ES6",
+    "declaration": true,
+    "declarationDir": "types",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "jsx": "react",
@@ -14,5 +19,8 @@
       "@/operator/*": ["./lib/operator/*"],
       "@/duck/*": ["./lib/duck/*"]
     }
-  }
+  },
+  "include": [
+    "lib/**/*"
+  ]
 }
