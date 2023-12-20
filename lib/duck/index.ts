@@ -1,1 +1,3 @@
-export * from './Fetcher.duck'
+import FetcherDuck from './Fetcher.duck'
+
+export { FetcherDuck }

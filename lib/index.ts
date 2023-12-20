@@ -1,5 +1,7 @@
-export * from './core/Base'
-export * from './core/Runtime'
+import Base from './core/Base'
+import Runtime from './core/Runtime'
+
+export { Base, Runtime }
 export * from './core/util'
 export * from './core/type'
 export * from './middleware'
