@@ -1,17 +1,27 @@
 {
+  "name": "observable-duck",
+  "version": "1.0",
+  "description": "pure logic DuckComponent by redux & rxjs",
+  "keywords": [
+    "redux",
+    "rxjs",
+    "duck",
+    "component",
+    "logic"
+  ],
+  "files": [
+    "src",
+    "build",
+    "lib",
+    "index.html",
+    "tsconfig.json"
+  ],
+  "main": "build/observable-duck.mjs",
+  "module": "build/observable-duck.umd.js",
   "scripts": {
     "dev": "vite",
     "test": "vitest",
     "build": "vite build"
-  },
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-redux": "^9.0.1",
-    "redux": "^5.0.0",
-    "redux-logger": "^3.0.6",
-    "reflect-metadata": "^0.2.1",
-    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@types/node": "^20.10.3",
@@ -23,6 +33,13 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.0.1",
     "prettier": "^3.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^9.0.1",
+    "redux": "^5.0.0",
+    "redux-logger": "^3.0.6",
+    "reflect-metadata": "^0.2.1",
+    "rxjs": "^7.8.1",
     "vite": "^5.0.8",
     "vitest": "^1.0.4"
   }

@@ -1,7 +1,5 @@
-import { Action, Dispatch, ReducersMapObject, StateFromReducersMapObject } from 'redux'
-import { Streamer } from '../middleware'
+import { Action, Dispatch, StateFromReducersMapObject } from 'redux'
 import Base from './Base'
-
 
 export type DuckState<Duck extends Base> = StateFromReducersMapObject<Duck['reducers']>
 export type DucksState<T extends Record<string, Base>> = {
@@ -26,14 +24,3 @@ export interface ConnectedProps<Duck extends Base> {
 }
 
 export type PayloadActionCreator<P> = (payload: P) => PayloadAction<P>
-
-export interface StreamerLogicComponent<S = any, A extends Action = Action, P = any> {
-  getState?: () => S
-  dispatch?: Dispatch<A>
-  id: Readonly<string>
-  types: TYPES<Record<string, string>>
-  reducers: ReducersMapObject<S, A>
-  streamers: ReadonlyArray<Streamer>
-  creators: Readonly<{ [K in keyof P]: PayloadActionCreator<P[K]> }>
-  ducks: Record<string, StreamerLogicComponent>
-}
