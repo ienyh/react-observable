@@ -1,12 +1,14 @@
 import { Dispatch, Action, StateFromReducersMapObject, combineReducers, Reducer } from 'redux'
 import { TYPES, DUCKS, DuckType, DucksState } from './type'
 import { Streamer } from '../middleware'
+import { collectStreamers } from '..'
+import { Cache } from '@/decorator/method'
 
 export default class Base {
   getState: () => Readonly<StateFromReducersMapObject<this['reducers']>>
   dispatch: Dispatch<Action>
   id = generateUUID()
-  private actionTypePrefix: string
+  actionTypePrefix: string
   constructor(prefix) {
     this.actionTypePrefix = prefix
   }
@@ -14,13 +16,17 @@ export default class Base {
     this.getState = getState
     this.dispatch = dispatch
     const ducks = this.ducks
+    const selector = (getState, duck) => {
+      return () => getState()[duck]
+    }
     Object.keys(ducks).forEach((duck) => {
-      ducks[duck].init(getState, dispatch)
+      ducks[duck].init(selector(getState, duck), dispatch)
     })
   }
   get quickTypes() {
     return {}
   }
+  @Cache()
   get types() {
     return makeTypes(this.actionTypePrefix, this.quickTypes) as TYPES<this['quickTypes']>
   }
@@ -28,7 +34,13 @@ export default class Base {
     return {}
   }
   get streamers(): Streamer[] {
-    return []
+    const duck = this
+    const streamers = [...collectStreamers(duck).map(s => s.bind(duck))]
+    Object.keys(duck.ducks).forEach((key) => {
+      const subDuck = duck.ducks[key]
+      streamers.push(...collectStreamers(subDuck).map(s => s.bind(subDuck)))
+    })
+    return streamers
   }
   get creators() {
     return {}
@@ -36,6 +48,7 @@ export default class Base {
   get quickDucks() {
     return {}
   }
+  @Cache()
   get ducks() {
     return makeDucks<this['quickDucks']>(this.quickDucks, this.actionTypePrefix)
   }

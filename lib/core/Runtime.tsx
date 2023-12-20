@@ -1,12 +1,11 @@
 import * as React from "react";
 import { createLogger } from "redux-logger";
-import { Dispatch, StateFromReducersMapObject, Store, applyMiddleware, combineReducers, legacy_createStore } from "redux";
+import { Dispatch, StateFromReducersMapObject, Store, applyMiddleware, legacy_createStore } from "redux";
 import { createStreamMiddleware } from "../middleware/createStreamMiddleware";
 import { combineStreamers } from "../middleware/combineStreamers";
 import { InferableComponentEnhancerWithProps, Provider, connect } from "react-redux";
 import Base from "./Base";
 import { ConnectedProps, PayloadAction } from "./type";
-import { collectStreamers } from "../decorator/method";
 import { StreamMiddleware } from "../middleware/type";
 
 export interface DuckRuntimeOptions {
@@ -35,10 +34,9 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
       duck.combinedReducer,
       applyMiddleware(streamerMiddleware, logger)
     )
-    const streamers = [...duck.streamers, ...collectStreamers(this.duck)].map(o => o.bind(duck))
     duck.init(store.getState, store.dispatch)
-    duck.dispatch({ type: `${duck.actionTypePrefix}@INIT` })
-    streamerMiddleware.run(combineStreamers(...streamers))
+    duck.dispatch({ type: `${duck.actionTypePrefix}/INIT@@${duck.id}` })
+    streamerMiddleware.run(combineStreamers(...duck.streamers))
     this.store = store
     this.middleware = streamerMiddleware
   }
@@ -68,7 +66,7 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
 
   [Symbol.dispose](): void {
     const { duck } = this;
-    duck.dispatch({ type: `${duck.actionTypePrefix}@END` })
+    duck.dispatch({ type: `${duck.actionTypePrefix}/END@@${duck.id}` })
     this.middleware.close()
   }
 }

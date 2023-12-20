@@ -32,8 +32,6 @@ export default abstract class FetcherDuck extends Base {
         switch (action.type) {
           case types.FETCH_DONE:
             return action.payload
-          case types.FETCHING:
-          case types.FETCH_START:
           case types.FETCH_ERROR:
             return null
           default:
@@ -44,8 +42,6 @@ export default abstract class FetcherDuck extends Base {
         switch (action.type) {
           case types.FETCH_ERROR:
             return action.payload
-          case types.FETCHING:
-          case types.FETCH_START:
           case types.FETCH_DONE:
             return null
           default:
@@ -57,6 +53,7 @@ export default abstract class FetcherDuck extends Base {
           case types.FETCHING:
             return action.payload
           case types.FETCH_START:
+          case types.RELOAD:
             return true
           case types.FETCH_DONE:
           case types.FETCH_ERROR:

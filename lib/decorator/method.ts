@@ -1,4 +1,5 @@
 import 'reflect-metadata'
+import { Streamer } from '../middleware'
 
 function SetMethodMetadata(key: string | Symbol | number, value: any) {
   return function (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
@@ -21,5 +22,44 @@ export const StreamerMethod =
 
 export function collectStreamers(target: Object) {
   const methodNames = Reflect.getMetadata(STREAMER_METADATA_KEY, target) || []
-  return methodNames.map((method) => target[method])
+  return methodNames.map((method) => target[method]) as Array<Streamer>
 }
+
+export function Cache(duration: number = Infinity) {
+  return function (target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
+    const isGetter = descriptor.get !== undefined;
+    const originalMethod = isGetter ? descriptor.get : descriptor.value;
+    const cacheKey = Symbol(`__cache__${String(propertyKey)}`);
+    const cacheExpireKey = Symbol(`__cacheExpire__${String(propertyKey)}`);
+
+    function applyCache(target: any, value: any) {
+      target[cacheKey] = value;
+      target[cacheExpireKey] = Date.now() + duration;
+    }
+
+    function isCacheValid(target: any): boolean {
+      return target[cacheExpireKey] && (target[cacheExpireKey] > Date.now() || duration === Infinity);
+    }
+
+    if (isGetter) {
+      descriptor.get = function () {
+        if (isCacheValid(this)) {
+          return this[cacheKey];
+        }
+        const result = originalMethod.apply(this);
+        applyCache(this, result);
+        return result;
+      };
+    } else {
+      descriptor.value = function (...args: any[]) {
+        if (isCacheValid(this)) {
+          return this[cacheKey];
+        }
+        const result = originalMethod.apply(this, args);
+        applyCache(this, result);
+        return result;
+      };
+    }
+  };
+}
+
