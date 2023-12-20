@@ -14,6 +14,9 @@ export default function TestFetcher(props: ConnectedProps<TestFetcherDuck>) {
     App: <button onClick={() => {
       dispatch(creators.fetch({}))
     }}>fetch</button>
+    <button onClick={() => {
+      dispatch(creators.fetch({}))
+    }}>reload</button>
   </div>
 }
 
@@ -21,10 +24,10 @@ interface Param {}
 interface Result {
   name: string
 }
-export class TestFetcherDuck extends FetcherDuck<Param, Result> {
+export class TestFetcherDuck extends FetcherDuck {
   Param: Param
   Result: Result
-  async getData(param: Param): Promise<Result> {
+  async getData(param: this['Param']): Promise<this['Result']> {
     await delay(2000)
     return { name: 'hello' }
   }

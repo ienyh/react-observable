@@ -12,7 +12,14 @@ enum Type {
   FETCHING,
   RELOAD,
 }
-export default abstract class FetcherDuck<TParam = any, TData = any> extends Base {
+export default abstract class FetcherDuck extends Base {
+
+  abstract Param
+  abstract Result
+  param: this['Param'] = null
+  abstract getData(param: this['Param']): Promise<this['Result']>
+
+  actionTypePrefix = 'Fetcher/'
   get quickTypes() {
     return {
       ...super.quickTypes,
@@ -22,7 +29,7 @@ export default abstract class FetcherDuck<TParam = any, TData = any> extends Bas
   get reducers() {
     const types = this.types
     return {
-      data: (data: TData = null, action: PayloadAction): TData => {
+      data: (data = null, action: PayloadAction): this['Result'] => {
         switch (action.type) {
           case types.FETCH_DONE:
             return action.payload
@@ -34,7 +41,7 @@ export default abstract class FetcherDuck<TParam = any, TData = any> extends Bas
             return data
         }
       },
-      error: (state: Error = null, action: PayloadAction) => {
+      error: (state: Error = null, action: PayloadAction): Error => {
         switch (action.type) {
           case types.FETCH_ERROR:
             return action.payload
@@ -46,7 +53,7 @@ export default abstract class FetcherDuck<TParam = any, TData = any> extends Bas
             return state
         }
       },
-      loading: (state = false, action: PayloadAction) => {
+      loading: (state = false, action: PayloadAction): boolean => {
         switch (action.type) {
           case types.FETCHING:
             return action.payload
@@ -74,17 +81,17 @@ export default abstract class FetcherDuck<TParam = any, TData = any> extends Bas
   fetch(action$: Observable<PayloadAction>) {
     const duck = this
     const { types, dispatch } = duck
-    return action$.pipe(filterAction(types.FETCH_START)).subscribe((action) => {
-      duck.param = action.payload
+    return action$.pipe(filterAction([types.FETCH_START, types.RELOAD])).subscribe((action) => {
+      if (types.FETCH_START) {
+        duck.param = action.payload
+      }
+      if (!duck.param) {
+        throw new Error('no fetch param, please dispatch FETCH_START action first')
+      }
       duck
         .getData(duck.param)
         .then((result) => dispatch({ type: types.FETCH_DONE, payload: result }))
         .catch((error) => dispatch({ type: types.FETCH_ERROR, payload: error }))
     })
   }
-
-  abstract Param
-  abstract Result
-  param: TParam = null
-  abstract getData(param: TParam): Promise<TData>
 }
