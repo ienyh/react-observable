@@ -1,11 +1,13 @@
 {
   "name": "observable-duck",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "pure logic DuckComponent by redux & rxjs",
   "keywords": [
     "redux",
     "rxjs",
+    "observable",
     "duck",
+    "observable-duck",
     "component",
     "logic"
   ],
@@ -18,6 +20,10 @@
   ],
   "main": "build/observable-duck.mjs",
   "module": "build/observable-duck.umd.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ienyh/observable"
+  },
   "scripts": {
     "dev": "vite",
     "test": "vitest",
