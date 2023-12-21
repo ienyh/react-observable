@@ -40,13 +40,16 @@ export default class Base {
     return {}
   }
   get streamers(): Streamer[] {
-    const duck = this
-    const streamers = [...collectStreamers(duck).map((s) => s.bind(duck))]
-    Object.keys(duck.ducks).forEach((key) => {
-      const subDuck = duck.ducks[key]
-      streamers.push(...collectStreamers(subDuck).map((s) => s.bind(subDuck)))
-    })
-    return streamers
+    const streamers = []
+    function collect(duck) {
+      streamers.push(...collectStreamers(duck).map((s) => s.bind(duck)))
+      Object.keys(duck.ducks).forEach((key) => {
+        const subDuck = duck.ducks[key]
+        collect(subDuck)
+      })
+    }
+    collect(this)
+    return streamers.reverse()
   }
   get creators() {
     return {}
