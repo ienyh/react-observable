@@ -1,5 +1,12 @@
-import { Dispatch, Action, StateFromReducersMapObject, combineReducers, Reducer, ReducersMapObject } from 'redux'
-import { TYPES, DUCKS, DuckType, DucksState, DuckReducers } from './type'
+import {
+  Dispatch,
+  Action,
+  StateFromReducersMapObject,
+  combineReducers,
+  ReducersMapObject,
+  Reducer,
+} from 'redux'
+import { TYPES, Ducks, DuckType, DucksState } from './type'
 import { Streamer } from '@middleware/index'
 import { Cache, collectStreamers } from '@decorator/method'
 
@@ -34,10 +41,10 @@ export default class Base {
   }
   get streamers(): Streamer[] {
     const duck = this
-    const streamers = [...collectStreamers(duck).map(s => s.bind(duck))]
+    const streamers = [...collectStreamers(duck).map((s) => s.bind(duck))]
     Object.keys(duck.ducks).forEach((key) => {
       const subDuck = duck.ducks[key]
-      streamers.push(...collectStreamers(subDuck).map(s => s.bind(subDuck)))
+      streamers.push(...collectStreamers(subDuck).map((s) => s.bind(subDuck)))
     })
     return streamers
   }
@@ -59,9 +66,9 @@ export default class Base {
     Object.keys(ducks).forEach((duck) => {
       reducer[duck] = ducks[duck].combinedReducer
     })
-    return combineReducers<
-      StateFromReducersMapObject<this['reducers'] & DuckReducers<this['quickDucks']>>
-    >(reducer)
+    return combineReducers(reducer) as Reducer<
+      StateFromReducersMapObject<this['reducers']> & DucksState<this['ducks']>
+    >
   }
 }
 
@@ -85,8 +92,8 @@ function makeTypes(prefix, typeEnum) {
   return types
 }
 
-function makeDucks<T extends Record<string, DuckType<Base>>>(ducks: T, prefix: string): DUCKS<T> {
-  const map = {} as DUCKS<T>
+function makeDucks<T extends Record<string, DuckType<Base>>>(ducks: T, prefix: string): Ducks<T> {
+  const map = {} as Ducks<T>
   for (const route of Object.keys(ducks)) {
     let Duck = ducks[route]
     map[route as keyof T] = new Duck(`${prefix}/${Duck.name}`) as any

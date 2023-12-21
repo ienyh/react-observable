@@ -1,4 +1,4 @@
-import { Action, Dispatch, Middleware, StateFromReducersMapObject } from 'redux'
+import { Action, Dispatch, Middleware, Reducer } from 'redux'
 import Base from './core/Base'
 import { Observable, Subscription } from 'rxjs'
 
@@ -11,17 +11,19 @@ export interface StreamMiddleware<A extends Action, S extends any>
   close(): void
 }
 
-export type DuckState<Duck extends Base> = StateFromReducersMapObject<Duck['reducers']>
-export type DucksState<T extends Record<string, Base>> = {
-  [K in keyof T]: DuckState<T[K]>
-}
 export type TYPES<T> = {
   readonly [K in keyof T]: string
 }
 export type DuckType<T extends Base> = { new (prefix: string): T }
-export type DUCKS<T extends Record<string, DuckType<Base>>> = {
+export type Ducks<T extends Record<string, DuckType<Base>>> = {
   [key in keyof T]: InstanceType<T[key]>
 }
+
+export type StateFromReducer<R> = R extends Reducer<infer S> ? S : never
+export type DucksState<T extends Record<string, DuckType<Base>>> = {
+  [K in keyof T]: T[K] extends Base ? StateFromReducer<T[K]['combinedReducer']> : never
+}
+export type DuckState<Duck extends Base> = StateFromReducer<Duck['combinedReducer']>
 
 export interface PayloadAction<T extends any = any> extends Action {
   payload?: T
@@ -29,7 +31,7 @@ export interface PayloadAction<T extends any = any> extends Action {
 
 export interface ConnectedProps<Duck extends Base> {
   duck: Duck
-  store: StateFromReducersMapObject<Duck['reducers']> & DucksState<Duck['ducks']>
+  store: DuckState<Duck>
   dispatch: Dispatch
 }
 
