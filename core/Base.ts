@@ -1,6 +1,6 @@
-import { Dispatch, Action, StateFromReducersMapObject, combineReducers, Reducer } from 'redux'
-import { TYPES, DUCKS, DuckType, DucksState } from './type'
-import { Streamer } from '../middleware'
+import { Dispatch, Action, StateFromReducersMapObject, combineReducers, Reducer, ReducersMapObject } from 'redux'
+import { TYPES, DUCKS, DuckType, DucksState, DuckReducers } from './type'
+import { Streamer } from '@middleware/index'
 import { Cache, collectStreamers } from '@decorator/method'
 
 export default class Base {
@@ -29,7 +29,7 @@ export default class Base {
   get types() {
     return makeTypes(this.actionTypePrefix, this.quickTypes) as TYPES<this['quickTypes']>
   }
-  get reducers() {
+  get reducers(): ReducersMapObject {
     return {}
   }
   get streamers(): Streamer[] {
@@ -54,14 +54,14 @@ export default class Base {
   get combinedReducer() {
     const reducer = {
       ...this.reducers,
-    }
+    } as any
     const ducks = this.ducks
     Object.keys(ducks).forEach((duck) => {
       reducer[duck] = ducks[duck].combinedReducer
     })
-    return combineReducers(reducer) as Reducer<
-      StateFromReducersMapObject<this['reducers'] & DucksState<this['ducks']>>
-    >
+    return combineReducers<
+      StateFromReducersMapObject<this['reducers'] & DuckReducers<this['quickDucks']>>
+    >(reducer)
   }
 }
 

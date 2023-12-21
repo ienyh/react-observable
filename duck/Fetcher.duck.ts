@@ -5,13 +5,7 @@ import { StreamerMethod } from '@decorator/method'
 import { filterAction } from '@operator/index'
 import { Observable } from 'rxjs'
 
-enum Type {
-  FETCH_START,
-  FETCH_DONE,
-  FETCH_ERROR,
-  FETCHING,
-  RELOAD,
-}
+
 export default abstract class FetcherDuck extends Base {
 
   abstract Param
@@ -20,6 +14,13 @@ export default abstract class FetcherDuck extends Base {
   abstract getData(param: this['Param']): Promise<this['Result']>
 
   get quickTypes() {
+    enum Type {
+      FETCH_START,
+      FETCH_DONE,
+      FETCH_ERROR,
+      FETCHING,
+      RELOAD,
+    }
     return {
       ...super.quickTypes,
       ...Type,

@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { ConnectedProps } from '@core/type'
-import Runtime from '@core/Runtime'
 import FetcherDuck from '@duck/Fetcher.duck'
+import Base from '@core/Base'
+import { reduceFromPayload, createToPayload } from '@core/util'
 
 export default function TestFetcher(props: ConnectedProps<TestFetcherDuck>) {
   const { duck, store, dispatch } = props
@@ -28,6 +29,12 @@ interface Result {
   name: string
 }
 export class TestFetcherDuck extends FetcherDuck {
+  get quickDucks() {
+    return {
+      ...super.quickDucks,
+      sub: SubDuck,
+    }
+  }
   Param: void
   Result: Result
   async getData(param: this['Param']): Promise<this['Result']> {
@@ -36,10 +43,33 @@ export class TestFetcherDuck extends FetcherDuck {
   }
 }
 
+export class SubDuck extends Base {
+  get quickTypes() {
+    enum Type {
+      RELOAD,
+    }
+    return {
+      ...super.quickTypes,
+      ...Type,
+    }
+  }
+  get reducers() {
+    const types = this.types
+    return {
+      data: reduceFromPayload<string>(types.RELOAD, 'data'),
+    }
+  }
+  get creators() {
+    const types = this.types
+    return {
+      ...super.creators,
+      reload: createToPayload<void>(types.RELOAD),
+    }
+  }
+}
+
 function delay(time: number) {
   return new Promise<void>(resolve => {
     setTimeout(() => resolve(), time)
   })
 }
-
-Runtime.create(TestFetcherDuck).connect(TestFetcher)
