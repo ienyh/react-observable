@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as ReactDom from 'react-dom/client'
-import Runtime from '../lib/core/Runtime'
+import Runtime from '@core/Runtime'
 import App from './App'
 import AppDuck from './AppDuck'
 

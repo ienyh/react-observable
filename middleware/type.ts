@@ -1,8 +1,8 @@
 import { Action, Middleware, Dispatch } from 'redux'
-import * as Rx from 'rxjs'
+import { Observable, Subscription } from 'rxjs'
 
 export interface Streamer<A extends Action = Action> {
-  (observable$: Rx.Observable<A>): Rx.Subscription
+  (observable$: Observable<A>): Subscription
 }
 
 export interface StreamMiddleware<A extends Action, S extends any>

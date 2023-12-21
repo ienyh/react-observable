@@ -1,6 +1,6 @@
 {
   "name": "observable-duck",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "pure logic DuckComponent by redux & rxjs",
   "keywords": [
     "redux",
@@ -13,11 +13,13 @@
   ],
   "files": [
     "build",
-    "lib",
-    "types",
-    "tsconfig.json"
+    "core",
+    "decorator",
+    "duck",
+    "middleware",
+    "operator"
   ],
-  "types": "types/index.d.ts",
+  "types": "index.d.ts",
   "main": "build/observable-duck.mjs",
   "module": "build/observable-duck.umd.js",
   "repository": {
@@ -27,7 +29,10 @@
   "scripts": {
     "dev": "vite",
     "test": "vitest",
-    "build": "vite build && npx tsc && rm -r ts-build"
+    "build": "vite build"
+  },
+  "dependencies": {
+    "redux": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.3",
@@ -42,7 +47,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.0.1",
-    "redux": "^5.0.0",
     "redux-logger": "^3.0.6",
     "reflect-metadata": "^0.2.1",
     "rxjs": "^7.8.1",

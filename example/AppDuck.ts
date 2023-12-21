@@ -1,9 +1,8 @@
 import { Action } from 'redux'
-import Base from '../lib/core/Base'
+import Base from '@core/Base'
 import { Observable } from 'rxjs'
-import { createToPayload } from '../lib/core/util'
-import { StreamerMethod } from '../lib/decorator/method'
-import { filterAction } from '../lib/operator'
+import { StreamerMethod } from '@decorator/method'
+import { filterAction } from '@operator/index'
 import { TestFetcherDuck } from './TestFetcher'
 
 enum Type {

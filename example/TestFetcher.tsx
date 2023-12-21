@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { ConnectedProps } from '../lib/core/type'
-import Runtime from '@/core/Runtime'
-import FetcherDuck from '@/duck/Fetcher.duck'
+import { ConnectedProps } from '@core/type'
+import Runtime from '@core/Runtime'
+import FetcherDuck from '../duck/Fetcher.duck'
 
 export default function TestFetcher(props: ConnectedProps<TestFetcherDuck>) {
   const { duck, store, dispatch } = props

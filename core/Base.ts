@@ -1,8 +1,7 @@
 import { Dispatch, Action, StateFromReducersMapObject, combineReducers, Reducer } from 'redux'
 import { TYPES, DUCKS, DuckType, DucksState } from './type'
 import { Streamer } from '../middleware'
-import { collectStreamers } from '..'
-import { Cache } from '@/decorator/method'
+import { Cache, collectStreamers } from '@decorator/method'
 
 export default class Base {
   getState: () => Readonly<StateFromReducersMapObject<this['reducers']>>

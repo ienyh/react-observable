@@ -1,6 +1,6 @@
 import { expect, test, describe } from 'vitest'
 import FetcherDuck from './Fetcher.duck'
-import Runtime from '@/core/Runtime'
+import Runtime from '@core/Runtime'
 
 describe('FetcherDuck.test', () => {
   interface Param {}

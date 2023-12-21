@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "rootDir": "lib",
-    "outDir": "ts-build",
     "module": "ES6",
-    "declaration": true,
-    "declarationDir": "types",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "jsx": "react",
@@ -13,14 +9,11 @@
     "target": "ES2015",
     "moduleResolution": "node",
     "paths": {
-      "@/core/*": ["./lib/core/*"],
-      "@/middleware/*": ["./lib/middleware/*"],
-      "@/decorator/*": ["./lib/decorator/*"],
-      "@/operator/*": ["./lib/operator/*"],
-      "@/duck/*": ["./lib/duck/*"]
+      "@core/*": ["./core/*"],
+      "@middleware/*": ["./middleware/*"],
+      "@decorator/*": ["./decorator/*"],
+      "@operator/*": ["./operator/*"],
+      "@duck/*": ["./duck/*"]
     }
   },
-  "include": [
-    "lib/**/*"
-  ]
 }
