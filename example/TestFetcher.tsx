@@ -9,8 +9,8 @@ export default function TestFetcher(props: ConnectedProps<TestFetcherDuck>) {
   const { data, loading, error } = store
   let resultRender: React.ReactNode = null
   if (loading) resultRender = <div>loading ...</div>
-  if (error) resultRender = <div>oops, error!</div>
-  if (data) resultRender = <div>{data.name}</div>
+  if (!loading && error) resultRender = <div>oops, error!</div>
+  if (!loading && !error && data) resultRender = <div>{data.name}</div>
   return <div>
     TestFetcher: <button onClick={() => console.log(duck)}>duck</button>
     <br />
@@ -21,8 +21,8 @@ export default function TestFetcher(props: ConnectedProps<TestFetcherDuck>) {
       dispatch(creators.reload())
     }}>reload</button>
     <button onClick={() => {
-      dispatch(ducks.sub.creators.setData('hello world'))
-    }}>ducks.reload</button>
+      dispatch(ducks.sub.creators.setData(Math.random().toString().substring(3, 9)))
+    }}>ducks.reload</button>{store.sub.data}
     {resultRender}
   </div>
 }
