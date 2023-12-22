@@ -6,13 +6,12 @@ import {
   ReducersMapObject,
   Reducer,
 } from 'redux'
-import { createSelector, Selector } from 'reselect'
 import { Types, Ducks, DuckType, DucksState } from './type'
 import { Streamer } from '@middleware/index'
 import { Cache, collectStreamers } from '@decorator/method'
 
 export default class Base {
-  getState: () => Readonly<StateFromReducersMapObject<this['reducers']>>
+  getState: () => Readonly<this['State']>
   dispatch: Dispatch<Action>
   id = generateUUID()
   actionTypePrefix: string
@@ -40,12 +39,12 @@ export default class Base {
   get reducers(): ReducersMapObject {
     return {}
   }
-  get quickSelectors(): Record<string, Selector<ReturnType<this['combinedReducer']>>> {
+  get quickSelectors() {
     return {}
   }
   @Cache()
-  get selectors() {
-    return {}
+  get selectors(): this['quickSelectors'] {
+    return this.quickSelectors
   }
   get creators() {
     return {}
@@ -57,6 +56,7 @@ export default class Base {
   get ducks() {
     return makeDucks<this['quickDucks']>(this.quickDucks, this.actionTypePrefix)
   }
+  State: ReturnType<this['combinedReducer']>
   get combinedReducer() {
     const reducer = {
       ...this.reducers,

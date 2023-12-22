@@ -4,8 +4,7 @@ import { Observable } from 'rxjs'
 import { StreamerMethod } from '@decorator/method'
 import { filterAction } from '@operator/index'
 import { TestFetcherDuck } from './TestFetcher'
-import { createSelector, Selector } from 'reselect'
-import { DuckState } from '..'
+import { createSelector } from 'reselect'
 
 enum Type {
   INCREMENT,
@@ -49,10 +48,19 @@ export default class AppDuck extends Base {
       decrement: () => ({ type: types.DECREMENT }),
     }
   }
-  get quickSelectors(): Record<string, Selector<ReturnType<this['combinedReducer']>>> {
+  get quickSelectors() {
+    type State = this['State']
     return {
       ...super.quickSelectors,
-      subject: (state) => state.fetcher.sub.data,
+      subject: (state: this['State']): string => {
+        console.log('calculated subject')
+        return state?.fetcher?.sub?.data
+      },
+      sub: createSelector([(state: State) => state.fetcher.sub], (sub) => {
+        console.log('calculated ok')
+        return sub
+      }),
+      fetched: createSelector([(state: State) => state.fetcher], (fetched) => fetched),
     }
   }
 
@@ -60,7 +68,11 @@ export default class AppDuck extends Base {
   incrementStreamer(action$: Observable<Action>) {
     const duck = this
     return action$.pipe(filterAction(duck.types.INCREMENT)).subscribe((action) => {
-      console.log(action)
+      const state = duck.getState()
+      const subject = duck.selectors.subject(state)
+      console.log(subject)
+      const sub = duck.selectors.sub(state)
+      console.log(sub)
     })
   }
 }
