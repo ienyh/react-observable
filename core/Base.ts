@@ -6,7 +6,8 @@ import {
   ReducersMapObject,
   Reducer,
 } from 'redux'
-import { TYPES, Ducks, DuckType, DucksState } from './type'
+import { createSelector, Selector } from 'reselect'
+import { Types, Ducks, DuckType, DucksState } from './type'
 import { Streamer } from '@middleware/index'
 import { Cache, collectStreamers } from '@decorator/method'
 
@@ -34,22 +35,17 @@ export default class Base {
   }
   @Cache()
   get types() {
-    return makeTypes(this.actionTypePrefix, this.quickTypes) as TYPES<this['quickTypes']>
+    return makeTypes(this.actionTypePrefix, this.quickTypes) as Types<this['quickTypes']>
   }
   get reducers(): ReducersMapObject {
     return {}
   }
-  get streamers(): Streamer[] {
-    const streamers = []
-    function collect(duck) {
-      streamers.push(...collectStreamers(duck).map((s) => s.bind(duck)))
-      Object.keys(duck.ducks).forEach((key) => {
-        const subDuck = duck.ducks[key]
-        collect(subDuck)
-      })
-    }
-    collect(this)
-    return streamers.reverse()
+  get quickSelectors(): Record<string, Selector<ReturnType<this['combinedReducer']>>> {
+    return {}
+  }
+  @Cache()
+  get selectors() {
+    return {}
   }
   get creators() {
     return {}
@@ -70,8 +66,20 @@ export default class Base {
       reducer[duck] = ducks[duck].combinedReducer
     })
     return combineReducers(reducer) as Reducer<
-      StateFromReducersMapObject<this['reducers']> & DucksState<this['ducks']>
+      Readonly<StateFromReducersMapObject<this['reducers']>> & DucksState<this['ducks']>
     >
+  }
+  get streamers(): Streamer[] {
+    const streamers = []
+    function collect(duck) {
+      streamers.push(...collectStreamers(duck).map((s) => s.bind(duck)))
+      Object.keys(duck.ducks).forEach((key) => {
+        const subDuck = duck.ducks[key]
+        collect(subDuck)
+      })
+    }
+    collect(this)
+    return streamers.reverse()
   }
 }
 

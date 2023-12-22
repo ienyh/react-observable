@@ -4,6 +4,7 @@ import FetcherDuck from '@duck/Fetcher.duck'
 import { SubDuck } from './Sub.duck'
 
 export default function TestFetcher(props: ConnectedProps<TestFetcherDuck>) {
+  console.log('TestFetcherRendering');
   const { duck, store, dispatch } = props
   const { creators, ducks } = duck
   const { data, loading, error } = store

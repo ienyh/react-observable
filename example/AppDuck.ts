@@ -4,6 +4,8 @@ import { Observable } from 'rxjs'
 import { StreamerMethod } from '@decorator/method'
 import { filterAction } from '@operator/index'
 import { TestFetcherDuck } from './TestFetcher'
+import { createSelector, Selector } from 'reselect'
+import { DuckState } from '..'
 
 enum Type {
   INCREMENT,
@@ -45,6 +47,12 @@ export default class AppDuck extends Base {
       ...super.creators,
       increment: () => ({ type: types.INCREMENT }),
       decrement: () => ({ type: types.DECREMENT }),
+    }
+  }
+  get quickSelectors(): Record<string, Selector<ReturnType<this['combinedReducer']>>> {
+    return {
+      ...super.quickSelectors,
+      subject: (state) => state.fetcher.sub.data,
     }
   }
 
