@@ -1,11 +1,7 @@
 import * as React from 'react'
-import { ConnectedProps, PayloadAction } from '@core/type'
+import { ConnectedProps } from '@core/type'
 import FetcherDuck from '@duck/Fetcher.duck'
-import Base from '@core/Base'
-import { reduceFromPayload, createToPayload } from '@core/util'
-import { StreamerMethod } from '@decorator/method'
-import { Observable } from 'rxjs'
-import { filterAction } from '@operator/index'
+import { SubDuck } from './Sub.duck'
 
 export default function TestFetcher(props: ConnectedProps<TestFetcherDuck>) {
   const { duck, store, dispatch } = props
@@ -46,39 +42,6 @@ export class TestFetcherDuck extends FetcherDuck {
   async getData(param: this['Param']): Promise<this['Result']> {
     await delay(2000)
     return { name: 'hello' }
-  }
-}
-
-export class SubDuck extends Base {
-  get quickTypes() {
-    enum Type {
-      RELOAD,
-    }
-    return {
-      ...super.quickTypes,
-      ...Type,
-    }
-  }
-  get reducers() {
-    const types = this.types
-    return {
-      data: reduceFromPayload<string>(types.RELOAD, 'data'),
-    }
-  }
-  get creators() {
-    const types = this.types
-    return {
-      ...super.creators,
-      setData: createToPayload<string>(types.RELOAD),
-    }
-  }
-  @StreamerMethod()
-  data(action$: Observable<PayloadAction<string>>) {
-    const duck = this
-    const { types, dispatch } = duck
-    return action$.pipe(filterAction([types.RELOAD])).subscribe((action) => {
-      console.log(action.payload);
-    })
   }
 }
 
