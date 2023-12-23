@@ -10,13 +10,19 @@ import { Types, Ducks, DuckType, DucksState } from './type'
 import { Streamer } from '@middleware/index'
 import { Cache, collectStreamers } from '@decorator/method'
 
-export default class Base {
+export default class Base implements Disposable {
   getState: () => Readonly<this['State']>
   dispatch: Dispatch<Action>
   id = generateID()
   actionTypePrefix: string
   constructor(prefix) {
     this.actionTypePrefix = prefix
+  }
+  [Symbol.dispose](): void {
+    const { ducks } = this
+    Object.values(ducks).forEach((duck) => {
+      duck[Symbol.dispose]()
+    })
   }
   init(getState, dispatch: Dispatch<Action>) {
     this.getState = getState

@@ -26,7 +26,11 @@ export class BrowserAdaptor implements Adaptor, Disposable {
       this.stateSubscription.unsubscribe()
     }
     this.stateSubscription = $state.subscribe((state) => {
-      console.log(state)
+      const search = new URLSearchParams()
+      Object.keys(state).forEach((key) => {
+        search.append(key, state[key])
+      })
+      window.history.replaceState(state, '', `${location.pathname}?${search.toString()}`)
     })
   }
 

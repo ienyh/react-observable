@@ -86,7 +86,7 @@ export default class AppDuck extends Base {
       .pipe(filterAction([ducks.fetcher.ducks.sub.types.RELOAD]))
       .subscribe((action) => {
         dispatch({
-          type: ducks.route.types.SET_STATE,
+          type: ducks.route.types.PUSH,
           payload: {
             sub: action.payload,
           },

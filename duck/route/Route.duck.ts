@@ -1,5 +1,5 @@
 import Base from '@core/Base'
-import { Observable, Subscriber } from 'rxjs'
+import { Observable, Subscriber, Subscription } from 'rxjs'
 import { BrowserAdaptor } from './BrowserAdaptor'
 import { PayloadAction } from '@core/type'
 import { StreamerMethod } from '@decorator/method'
@@ -21,15 +21,35 @@ export class Route extends Base {
   get adaptor(): Adaptor {
     return new BrowserAdaptor()
   }
-  constructor(prefix) {
-    super(prefix)
-    this.adaptor.watch().subscribe((state) => {
-      console.log(state)
+  [Symbol.dispose]() {
+    super[Symbol.dispose]()
+    const { subscription } = this
+    if (subscription && !subscription.closed) {
+      subscription.unsubscribe()
+    }
+  }
+  preform: Subscriber<any>
+  subscription: Subscription
+  init(getState, dispatch) {
+    super.init(getState, dispatch)
+    const duck = this
+    const { types, adaptor } = duck
+    this.subscription = adaptor.watch().subscribe((state) => {
+      dispatch({
+        type: types.SET,
+        payload: state,
+      })
     })
+    adaptor.preform(
+      new Observable((subscriber) => {
+        duck.preform = subscriber
+      })
+    )
   }
   get quickTypes() {
     enum Type {
-      SET_STATE,
+      SET,
+      PUSH,
     }
     return {
       ...super.quickTypes,
@@ -42,8 +62,17 @@ export class Route extends Base {
       ...super.reducers,
       state: (state = null, action: PayloadAction) => {
         switch (action.type) {
-          case types.SET_STATE:
+          case types.SET:
             return action.payload
+          case types.PUSH: {
+            if (!state) {
+              return action.payload
+            }
+            return {
+              ...state,
+              ...action.payload,
+            }
+          }
           default:
             return state
         }
@@ -53,15 +82,10 @@ export class Route extends Base {
 
   @StreamerMethod()
   set(action$: Observable<PayloadAction>) {
-    const { types } = this
-    let subscriber: Subscriber<any>
-    const $ = new Observable((s) => {
-      subscriber = s
-    })
-    this.adaptor.preform($)
-    return action$.pipe(filterAction(types.SET_STATE)).subscribe((action) => {
-      if (subscriber && action?.payload) {
-        subscriber.next(action.payload)
+    const { types, preform, getState } = this
+    return action$.pipe(filterAction([types.SET, types.PUSH])).subscribe(() => {
+      if (preform) {
+        preform.next(getState().state)
       }
     })
   }

@@ -33,7 +33,7 @@ export class SubDuck extends Base {
     const duck = this
     const { types, dispatch } = duck
     return action$.pipe(filterAction([types.RELOAD])).subscribe((action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
     })
   }
 }
