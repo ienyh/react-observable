@@ -5,6 +5,8 @@ import { StreamerMethod } from '@decorator/method'
 import { filterAction } from '@operator/index'
 import { TestFetcherDuck } from './TestFetcher'
 import { createSelector } from 'reselect'
+import { Route } from '@duck/route/Route.duck'
+import { PayloadAction } from '@core/type'
 
 enum Type {
   INCREMENT,
@@ -15,6 +17,7 @@ export default class AppDuck extends Base {
     return {
       ...super.quickDucks,
       fetcher: TestFetcherDuck,
+      route: Route,
     }
   }
   get quickTypes() {
@@ -60,7 +63,6 @@ export default class AppDuck extends Base {
         console.log('calculated ok')
         return sub
       }),
-      fetched: createSelector([(state: State) => state.fetcher], (fetched) => fetched),
     }
   }
 
@@ -74,5 +76,21 @@ export default class AppDuck extends Base {
       const sub = duck.selectors.sub(state)
       console.log(sub)
     })
+  }
+
+  @StreamerMethod()
+  preform(action$: Observable<PayloadAction<string>>) {
+    const duck = this
+    const { types, ducks, dispatch } = duck
+    return action$
+      .pipe(filterAction([ducks.fetcher.ducks.sub.types.RELOAD]))
+      .subscribe((action) => {
+        dispatch({
+          type: ducks.route.types.SET_STATE,
+          payload: {
+            sub: action.payload,
+          },
+        })
+      })
   }
 }

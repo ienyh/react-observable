@@ -13,7 +13,7 @@ import { Cache, collectStreamers } from '@decorator/method'
 export default class Base {
   getState: () => Readonly<this['State']>
   dispatch: Dispatch<Action>
-  id = generateUUID()
+  id = generateID()
   actionTypePrefix: string
   constructor(prefix) {
     this.actionTypePrefix = prefix
@@ -83,8 +83,8 @@ export default class Base {
   }
 }
 
-function generateUUID() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+function generateID() {
+  return 'xxxxxxxx'.replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0,
       v = c === 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)
