@@ -15,18 +15,19 @@ export default class Base implements Disposable {
   dispatch: Dispatch<Action>
   id = generateID()
   actionTypePrefix: string
-  constructor(prefix) {
+  constructor(prefix: string) {
     this.actionTypePrefix = prefix
   }
   [Symbol.dispose](): void {
-    const { ducks } = this
-    Object.values(ducks).forEach((duck) => {
+    Object.values(this.ducks).forEach((duck) => {
       duck[Symbol.dispose]()
     })
+    this.dispatch({ type: `${this.actionTypePrefix}/END@@${this.id}` })
   }
   init(getState, dispatch: Dispatch<Action>) {
     this.getState = getState
     this.dispatch = dispatch
+    this.dispatch({ type: `${this.actionTypePrefix}/INIT@@${this.id}` })
     const ducks = this.ducks
     const selector = (getState, duck) => {
       return () => getState()[duck]

@@ -35,7 +35,6 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
       applyMiddleware(streamerMiddleware, logger)
     )
     duck.init(store.getState, store.dispatch)
-    duck.dispatch({ type: `${duck.actionTypePrefix}/INIT@@${duck.id}` })
     streamerMiddleware.run(combineStreamers(...duck.streamers))
     this.store = store
     this.middleware = streamerMiddleware
@@ -66,7 +65,7 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
 
   [Symbol.dispose](): void {
     const { duck } = this;
-    duck.dispatch({ type: `${duck.actionTypePrefix}/END@@${duck.id}` })
+    duck[Symbol.dispose]()
     this.middleware.close()
   }
 }

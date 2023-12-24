@@ -2,8 +2,10 @@ import * as React from 'react'
 import { ConnectedProps } from '@core/type'
 import FetcherDuck from '@duck/Fetcher.duck'
 import { SubDuck } from './Sub.duck'
+import Runtime from '@core/Runtime'
+import { createSelector } from 'reselect'
 
-export default function TestFetcher(props: ConnectedProps<TestFetcherDuck>) {
+export function TestFetcher(props: ConnectedProps<TestFetcherDuck>) {
   // console.log('TestFetcherRendering');
   const { duck, store, dispatch } = props
   const { creators, ducks } = duck
@@ -38,6 +40,20 @@ export class TestFetcherDuck extends FetcherDuck {
       sub: SubDuck,
     }
   }
+    get quickSelectors() {
+    type State = this['State']
+    return {
+      ...super.quickSelectors,
+      subject: (state: this['State']): string => {
+        console.log('calculated subject')
+        return state.sub.data
+      },
+      sub: createSelector([(state: State) => state.sub], (sub) => {
+        console.log('calculated ok')
+        return sub
+      }),
+    }
+  }
   Param: void
   Result: Result
   async getData(param: this['Param']): Promise<this['Result']> {
@@ -51,3 +67,5 @@ function delay(time: number) {
     setTimeout(() => resolve(), time)
   })
 }
+
+export default Runtime.create(TestFetcherDuck).connect(TestFetcher)

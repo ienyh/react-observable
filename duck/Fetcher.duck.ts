@@ -1,13 +1,11 @@
 import Base from '@core/Base'
 import { PayloadAction } from '@core/type'
-import { createToPayload } from '@core/util'
+import { createToPayload } from '@core/helper'
 import { StreamerMethod } from '@decorator/method'
 import { filterAction } from '@operator/index'
 import { Observable } from 'rxjs'
 
-
 export default abstract class FetcherDuck extends Base {
-
   abstract Param
   abstract Result
   param: this['Param'] = null
