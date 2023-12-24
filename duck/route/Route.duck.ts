@@ -2,7 +2,7 @@ import Base from '@core/Base'
 import { Observable, Subscriber, Subscription } from 'rxjs'
 import { BrowserAdaptor } from './BrowserAdaptor'
 import { PayloadAction } from '@core/type'
-import { StreamerMethod } from '@decorator/method'
+import { StreamerMethod, Cache } from '@decorator/method'
 import { filterAction } from '@operator/index'
 
 export interface Adaptor<T = any> {
@@ -18,6 +18,7 @@ export class Route extends Base {
   get param(): Array<RouteParam> {
     return []
   }
+  @Cache()
   get adaptor(): Adaptor {
     return new BrowserAdaptor()
   }
