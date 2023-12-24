@@ -27,7 +27,6 @@ export default class Base implements Disposable {
   init(getState, dispatch: Dispatch<Action>) {
     this.getState = getState
     this.dispatch = dispatch
-    this.dispatch({ type: `${this.actionTypePrefix}/INIT@@${this.id}` })
     const ducks = this.ducks
     const selector = (getState, duck) => {
       return () => getState()[duck]
@@ -35,6 +34,7 @@ export default class Base implements Disposable {
     Object.keys(ducks).forEach((duck) => {
       ducks[duck].init(selector(getState, duck), dispatch)
     })
+    this.dispatch({ type: `${this.actionTypePrefix}/INIT@@${this.id}` })
   }
   get quickTypes() {
     return {}
