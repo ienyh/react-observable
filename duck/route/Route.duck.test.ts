@@ -52,7 +52,6 @@ describe('Route.test', () => {
     })
     expect(getState().state).toStrictEqual({ name: 'test' })
     expect(externalStore.state).toStrictEqual({ name: 'test' })
-    expect(getState().state).toStrictEqual(externalStore.state)
   })
 
   test.concurrent('external.state => redux.store', async () => {
