@@ -58,6 +58,7 @@ export class BrowserAdaptor implements Adaptor, Disposable {
       if (search.toString() === location.search.slice(1)) {
         return
       }
+      // 使用原始 history.replaceState 不再触发事件流出
       originReplaceState.apply(history, [state, '', `${location.pathname}?${search.toString()}`])
     })
   }

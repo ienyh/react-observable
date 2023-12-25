@@ -7,7 +7,7 @@ import { filterAction } from '@operator/index'
 
 export interface Adaptor<T = any> {
   watch(): Observable<T>
-  preform(state: Observable<T>): void
+  preform($state: Observable<T>): void
 }
 export interface RouteParam<T = any> {
   key: string
