@@ -1,9 +1,10 @@
 import Base from '@core/Base'
-import { Observable, Subscriber, Subscription } from 'rxjs'
+import { Observable, Subject, Subscription } from 'rxjs'
 import { BrowserAdaptor } from './BrowserAdaptor'
 import { PayloadAction } from '@core/type'
 import { StreamerMethod, Cache } from '@decorator/method'
 import { filterAction } from '@operator/index'
+import { createToPayload } from '@core/helper'
 
 export interface Adaptor<T = any> {
   watch(): Observable<T>
@@ -15,6 +16,7 @@ export interface RouteParam<T = any> {
   parse: (param: string) => T
 }
 export class Route extends Base {
+  RouteParams: Record<string, any>
   get param(): Array<RouteParam> {
     return []
   }
@@ -29,7 +31,7 @@ export class Route extends Base {
       subscription.unsubscribe()
     }
   }
-  preform: Subscriber<any>
+  preform: Subject<this['RouteParams']>
   subscription: Subscription
   init(getState, dispatch) {
     super.init(getState, dispatch)
@@ -41,11 +43,9 @@ export class Route extends Base {
         payload: state,
       })
     })
-    adaptor.preform(
-      new Observable((subscriber) => {
-        duck.preform = subscriber
-      })
-    )
+    const subject = new Subject<this['RouteParams']>()
+    adaptor.preform(subject)
+    this.preform = subject
   }
   get quickTypes() {
     enum Type {
@@ -61,7 +61,7 @@ export class Route extends Base {
     const { types } = this
     return {
       ...super.reducers,
-      state: (state = null, action: PayloadAction) => {
+      state: (state = null, action: PayloadAction): this['RouteParams'] => {
         switch (action.type) {
           case types.SET:
             return action.payload
@@ -78,6 +78,14 @@ export class Route extends Base {
             return state
         }
       },
+    }
+  }
+  get creators() {
+    const { types } = this
+    return {
+      ...super.creators,
+      set: createToPayload<this['RouteParams']>(types.SET),
+      push: createToPayload<Partial<this['RouteParams']>>(types.PUSH),
     }
   }
 

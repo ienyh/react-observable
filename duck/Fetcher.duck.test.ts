@@ -11,7 +11,7 @@ describe('FetcherDuck.test', () => {
     Param: void
     Result: Result
     async getData(param: this['Param']): Promise<this['Result']> {
-      await delay(1000)
+      await delay(100)
       return { name: 'hello' }
     }
   }
@@ -24,17 +24,17 @@ describe('FetcherDuck.test', () => {
     expect(getState().loading).toBe(false)
     dispatch(creators.fetch())
     expect(getState().loading).toBe(true)
-    await delay(1100)
+    await delay(110)
     expect(getState().loading).toBe(false)
     expect(getState().error).toBe(null)
     expect(getState().data).toStrictEqual({ name: 'hello' })
   })
-    
-    class TestErrorFetcherDuck extends FetcherDuck {
+
+  class TestErrorFetcherDuck extends FetcherDuck {
     Param: Param
     Result: Result
     async getData(param: Param): Promise<Result> {
-      await delay(1000)
+      await delay(100)
       throw new Error('on purpose')
     }
   }
@@ -47,7 +47,7 @@ describe('FetcherDuck.test', () => {
     expect(getState().loading).toBe(false)
     dispatch(creators.fetch({}))
     expect(getState().loading).toBe(true)
-    await delay(1100)
+    await delay(110)
     expect(getState().loading).toBe(false)
     expect(getState().error).toBeInstanceOf(Error)
     expect(getState().data).toStrictEqual(null)
@@ -55,7 +55,7 @@ describe('FetcherDuck.test', () => {
 })
 
 function delay(time: number) {
-  return new Promise<void>(resolve => {
+  return new Promise<void>((resolve) => {
     setTimeout(() => resolve(), time)
   })
 }

@@ -14,7 +14,12 @@ export default class AppDuck extends Base {
   get quickDucks() {
     return {
       ...super.quickDucks,
-      route: Route,
+      route: class extends Route {
+        RouteParams: {
+          name?: string
+          sub?: string
+        }
+      },
     }
   }
   get quickTypes() {
@@ -62,12 +67,11 @@ export default class AppDuck extends Base {
     const duck = this
     const { types, ducks, dispatch } = duck
     return action$.pipe(filterAction([types.INCREMENT])).subscribe((action) => {
-      dispatch({
-        type: ducks.route.types.PUSH,
-        payload: {
+      dispatch(
+        ducks.route.creators.push({
           sub: Math.random().toString().substring(3, 8),
-        },
-      })
+        })
+      )
     })
   }
 }
