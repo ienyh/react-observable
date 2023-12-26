@@ -16,7 +16,7 @@ describe('FetcherDuck.test', () => {
     }
   }
 
-  test.concurrent('TestFetcherDuck', async () => {
+  test.concurrent('normal return', async () => {
     const runtime = Runtime.create(TestFetcherDuck)
     const { duck } = runtime
     const { dispatch, getState, creators } = duck
@@ -39,7 +39,7 @@ describe('FetcherDuck.test', () => {
     }
   }
 
-  test.concurrent('TestErrorFetcherDuck', async () => {
+  test.concurrent('throw a error', async () => {
     const runtime = Runtime.create(TestErrorFetcherDuck)
     const { duck } = runtime
     const { dispatch, getState, creators } = duck
@@ -50,7 +50,7 @@ describe('FetcherDuck.test', () => {
     await delay(110)
     expect(getState().loading).toBe(false)
     expect(getState().error).toBeInstanceOf(Error)
-    expect(getState().data).toStrictEqual(null)
+    expect(getState().data).toBe(null)
   })
 })
 

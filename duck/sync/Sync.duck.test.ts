@@ -1,5 +1,5 @@
 import { expect, test, describe } from 'vitest'
-import { Adaptor, Route } from './Route.duck'
+import { Adaptor, Sync } from './Sync.duck'
 import Runtime from '@core/Runtime'
 import { Observable, Subject } from 'rxjs'
 
@@ -36,11 +36,11 @@ function createTestContext() {
   }
 }
 
-describe('Route.test', () => {
+describe('Sync.test', () => {
 
   test.concurrent('redux.store => external.state', async () => {
     const { externalStore, adaptor } = createTestContext()
-    const { duck } = Runtime.create(class TestRoute extends Route {
+    const { duck } = Runtime.create(class TestSync extends Sync {
       get adaptor() {
         return adaptor
       }
@@ -56,7 +56,7 @@ describe('Route.test', () => {
 
   test.concurrent('external.state => redux.store', async () => {
     const { externalStore, adaptor } = createTestContext()
-    const { duck } = Runtime.create(class TestRoute extends Route {
+    const { duck } = Runtime.create(class TestSync extends Sync {
       get adaptor() {
         return adaptor
       }

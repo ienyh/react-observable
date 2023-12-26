@@ -136,17 +136,26 @@ export default Runtime.create(AppDuck).connect(App)
 
 ```js
 import { Action } from 'redux'
-import Base from 'observable-duck/core/Base'
+import Base from '@core/Base'
 import { Observable } from 'rxjs'
-import { StreamerMethod } from 'observable-duck/decorator/method'
-import { filterAction } from 'observable-duck/operator/index'
-import RouteDuck from 'observable-duck/duck/route/Route.duck'
+import { StreamerMethod } from '@decorator/method'
+import { filterAction } from '@operator/index'
+import { Adaptor, Sync } from '@duck/sync/Sync.duck'
+import { PayloadAction } from '@core/type'
+import { BrowserAdaptor } from '@duck/sync/BrowserAdaptor'
 
 export default class AppDuck extends Base {
   get quickDucks() {
     return {
       ...super.quickDucks,
-      route: RouteDuck,
+      route: class extends Sync {
+        SyncParams: {
+          name?: string
+        }
+        get adaptor(): Adaptor {
+          return new BrowserAdaptor()
+        }
+      },
     }
   }
   @StreamerMethod()
@@ -158,7 +167,7 @@ export default class AppDuck extends Base {
       dispatch({
         type: ducks.route.types.PUSH,
         payload: {
-          sub: Math.random().toString().substring(3, 8),
+          name: Math.random().toString().substring(3, 8),
         },
       })
     })
@@ -171,4 +180,4 @@ export default class AppDuck extends Base {
 已经提供了一些常用的 duck 例子，可能写的并不好，仅供参考
 
 - FetcherDuck: 请求异步流程控制
-- RouterDuck: 用于双向同步 redux 和 url 参数，可以选用不同的适配模式
+- SyncDuck: 用于双向同步 redux 和外部 store，可以选用不同的适配模式

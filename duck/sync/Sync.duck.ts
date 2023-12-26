@@ -1,8 +1,7 @@
 import Base from '@core/Base'
 import { Observable, Subject, Subscription } from 'rxjs'
-import { BrowserAdaptor } from './BrowserAdaptor'
 import { PayloadAction } from '@core/type'
-import { StreamerMethod, Cache } from '@decorator/method'
+import { StreamerMethod } from '@decorator/method'
 import { filterAction } from '@operator/index'
 import { createToPayload } from '@core/helper'
 
@@ -10,20 +9,9 @@ export interface Adaptor<T = any> {
   watch(): Observable<T>
   preform($state: Observable<T>): void
 }
-export interface RouteParam<T = any> {
-  key: string
-  stringify: (param: T) => string
-  parse: (param: string) => T
-}
-export class Route extends Base {
-  RouteParams: Record<string, any>
-  get param(): Array<RouteParam> {
-    return []
-  }
-  @Cache()
-  get adaptor(): Adaptor {
-    return new BrowserAdaptor()
-  }
+export abstract class Sync extends Base {
+  SyncParams: Record<string, any>
+  abstract get adaptor(): Adaptor
   [Symbol.dispose]() {
     super[Symbol.dispose]()
     const { subscription } = this
@@ -31,7 +19,7 @@ export class Route extends Base {
       subscription.unsubscribe()
     }
   }
-  preform: Subject<this['RouteParams']>
+  preform: Subject<this['SyncParams']>
   subscription: Subscription
   init(getState, dispatch) {
     super.init(getState, dispatch)
@@ -43,7 +31,7 @@ export class Route extends Base {
         payload: state,
       })
     })
-    const subject = new Subject<this['RouteParams']>()
+    const subject = new Subject<this['SyncParams']>()
     adaptor.preform(subject)
     this.preform = subject
   }
@@ -61,7 +49,7 @@ export class Route extends Base {
     const { types } = this
     return {
       ...super.reducers,
-      state: (state = null, action: PayloadAction): this['RouteParams'] => {
+      state: (state = null, action: PayloadAction): this['SyncParams'] => {
         switch (action.type) {
           case types.SET:
             return action.payload
@@ -82,10 +70,11 @@ export class Route extends Base {
   }
   get creators() {
     const { types } = this
+    type SyncParams = this['SyncParams']
     return {
       ...super.creators,
-      set: createToPayload<this['RouteParams']>(types.SET),
-      push: createToPayload<Partial<this['RouteParams']>>(types.PUSH),
+      set: createToPayload<SyncParams>(types.SET),
+      push: createToPayload<Partial<SyncParams>>(types.PUSH),
     }
   }
 

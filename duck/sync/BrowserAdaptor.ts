@@ -1,4 +1,4 @@
-import { Adaptor } from './Route.duck'
+import { Adaptor } from './Sync.duck'
 import { Observable, Subscription } from 'rxjs'
 
 const custom = new Event('custom.popstate')
@@ -51,6 +51,9 @@ export class BrowserAdaptor implements Adaptor, Disposable {
     history.pushState = mixinCustomEvent(history.pushState)
     history.replaceState = mixinCustomEvent(history.replaceState)
     this.stateSubscription = $state.subscribe((state) => {
+      if (!state) {
+        originReplaceState.apply(history, [null, '', location.pathname])
+      }
       const search = new URLSearchParams()
       Object.keys(state).forEach((key) => {
         search.append(key, state[key])

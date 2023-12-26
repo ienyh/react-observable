@@ -3,8 +3,9 @@ import Base from '@core/Base'
 import { Observable } from 'rxjs'
 import { StreamerMethod } from '@decorator/method'
 import { filterAction } from '@operator/index'
-import { Route } from '@duck/route/Route.duck'
+import { Adaptor, Sync } from '@duck/sync/Sync.duck'
 import { PayloadAction } from '@core/type'
+import { BrowserAdaptor } from '@duck/sync/BrowserAdaptor'
 
 enum Type {
   INCREMENT,
@@ -14,10 +15,13 @@ export default class AppDuck extends Base {
   get quickDucks() {
     return {
       ...super.quickDucks,
-      route: class extends Route {
-        RouteParams: {
+      route: class extends Sync {
+        SyncParams: {
           name?: string
-          sub?: string
+          sub: string
+        }
+        get adaptor(): Adaptor {
+          return new BrowserAdaptor()
         }
       },
     }
