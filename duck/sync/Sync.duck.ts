@@ -68,6 +68,13 @@ export abstract class Sync extends Base {
       },
     }
   }
+  get quickSelectors() {
+    type State = this['State']
+    return {
+      ...super.quickSelectors,
+      state: (s: State) => s.state,
+    }
+  }
   get creators() {
     const { types } = this
     type SyncParams = this['SyncParams']

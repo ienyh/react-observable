@@ -24,10 +24,9 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  plugins: ["prettier", "@stylexjs"],
+  plugins: ["prettier"],
   rules: {
     'prettier/prettier': 'error',
     'no-var': 'error',
-    "@stylexjs/valid-styles": "error",
   },
 }
