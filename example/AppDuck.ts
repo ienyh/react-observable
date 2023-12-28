@@ -4,7 +4,7 @@ import { Observable } from 'rxjs'
 import { StreamerMethod } from '@decorator/method'
 import { filterAction } from '@operator/index'
 import { Adaptor, Sync } from '@duck/sync/Sync.duck'
-import { PayloadAction } from '@core/type'
+import { PayloadAction } from '..'
 import { BrowserAdaptor } from '@duck/sync/BrowserAdaptor'
 
 enum Type {

@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { Streamer } from '../middleware'
+import { Streamer } from 'redux-observable-action'
 
 function SetMethodMetadata(key: string | Symbol | number, value: any) {
   return function (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) {

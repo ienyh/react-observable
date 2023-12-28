@@ -6,7 +6,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@core': path.resolve(__dirname, 'core'),
-      '@middleware': path.resolve(__dirname, 'middleware'),
       '@decorator': path.resolve(__dirname, 'decorator'),
       '@operator': path.resolve(__dirname, 'operator'),
       '@duck': path.resolve(__dirname, 'duck'),

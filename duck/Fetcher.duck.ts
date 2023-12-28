@@ -1,5 +1,5 @@
 import Base from '@core/Base'
-import { PayloadAction } from '@core/type'
+import { PayloadAction } from '..'
 import { createToPayload } from '@core/helper'
 import { StreamerMethod } from '@decorator/method'
 import { filterAction } from '@operator/index'

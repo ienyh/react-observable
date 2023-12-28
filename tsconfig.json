@@ -10,7 +10,6 @@
     "moduleResolution": "node",
     "paths": {
       "@core/*": ["./core/*"],
-      "@middleware/*": ["./middleware/*"],
       "@decorator/*": ["./decorator/*"],
       "@operator/*": ["./operator/*"],
       "@duck/*": ["./duck/*"]

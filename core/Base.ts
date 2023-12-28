@@ -6,9 +6,9 @@ import {
   ReducersMapObject,
   Reducer,
 } from 'redux'
-import { Types, Ducks, DuckType, DucksState } from './type'
-import { Streamer } from '@middleware/index'
+import { Streamer } from 'redux-observable-action'
 import { Cache, collectStreamers } from '@decorator/method'
+import { DuckType, Ducks, DucksState, Types } from '..'
 
 export default class Base implements Disposable {
   getState: () => Readonly<this['State']>

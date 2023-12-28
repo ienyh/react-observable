@@ -1,12 +1,10 @@
 import * as React from "react";
 import { createLogger } from "redux-logger";
 import { Dispatch, StateFromReducersMapObject, Store, applyMiddleware, legacy_createStore } from "redux";
-import { createStreamMiddleware } from "../middleware/createStreamMiddleware";
-import { combineStreamers } from "../middleware/combineStreamers";
 import { InferableComponentEnhancerWithProps, Provider, connect } from "react-redux";
+import { createMiddleware, combineStreamers, StreamMiddleware } from 'redux-observable-action'
 import Base from "./Base";
-import { ConnectedProps, PayloadAction } from "./type";
-import { StreamMiddleware } from "../middleware/type";
+import { ConnectedProps, PayloadAction } from "..";
 
 export interface DuckRuntimeOptions {
   prefix?: string
@@ -26,7 +24,7 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
 
   protected initReduxStore() {
     const duck = this.duck
-    const streamerMiddleware = createStreamMiddleware()
+    const streamerMiddleware = createMiddleware()
     const logger = process.env.NODE_ENV === 'development'
       ? createLogger({ collapsed: true })
       : () => (next) => (action) => next(action)

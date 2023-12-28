@@ -1,4 +1,4 @@
-import { PayloadActionCreator } from "./type";
+import { PayloadActionCreator } from "..";
 
 export function createPayloadAction<P = any>(type: string): PayloadActionCreator<P> {
   return (payload: P) => ({

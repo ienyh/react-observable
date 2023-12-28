@@ -1,4 +1,4 @@
-import { PayloadAction } from '@core/type'
+import { PayloadAction } from '..'
 import Base from '@core/Base'
 import { reduceFromPayload, createToPayload } from '@core/helper'
 import { StreamerMethod } from '@decorator/method'

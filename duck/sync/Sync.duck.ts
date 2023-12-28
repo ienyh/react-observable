@@ -1,6 +1,6 @@
 import Base from '@core/Base'
 import { Observable, Subject, Subscription } from 'rxjs'
-import { PayloadAction } from '@core/type'
+import { PayloadAction } from '../..'
 import { StreamerMethod } from '@decorator/method'
 import { filterAction } from '@operator/index'
 import { createToPayload } from '@core/helper'

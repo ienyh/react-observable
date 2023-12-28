@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ConnectedProps } from '@core/type'
+import { ConnectedProps } from '..'
 import FetcherDuck from '@duck/Fetcher.duck'
 import { SubDuck } from './Sub.duck'
 import Runtime from '@core/Runtime'
