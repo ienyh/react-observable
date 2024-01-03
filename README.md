@@ -14,10 +14,8 @@ npm i observable-duck --save
 
 ```js
 import { Action } from "redux";
-import Base from "observable-duck/core/Base";
+import { Base, StreamerMethod, filterAction } from "observable-duck";
 import { Observable } from "rxjs";
-import { StreamerMethod } from "observable-duck/decorator/method";
-import { filterAction } from "observable-duck/operator/index";
 
 export default class AppDuck extends Base {
   get quickTypes() {
@@ -79,7 +77,7 @@ const runtime = Runtime.create(AppDuck)
 
 ```js
 import { expect, test, describe } from 'vitest'
-import Runtime from 'observable-duck/core/Runtime'
+import { Runtime } from 'observable-duck'
 import AppDuck from './AppDuck'
 
 describe('AppDuck.test', () => {
@@ -101,7 +99,7 @@ describe('AppDuck.test', () => {
 
 ```js
 import * as React from 'react'
-import { ConnectedProps } from 'observable-duck/core/type'
+import { ConnectedProps } from 'observable-duck'
 import AppDuck from './AppDuck'
 
 function App(props: ConnectedProps<AppDuck>) {
@@ -136,13 +134,10 @@ export default Runtime.create(AppDuck).connect(App)
 
 ```js
 import { Action } from 'redux'
-import Base from '@core/Base'
+import { Base, StreamerMethod, PayloadAction, BrowserAdaptor, filterAction } from 'observable-duck'
 import { Observable } from 'rxjs'
-import { StreamerMethod } from '@decorator/method'
-import { filterAction } from '@operator/index'
-import { Adaptor, Sync } from '@duck/sync/Sync.duck'
-import { PayloadAction } from '@core/type'
-import { BrowserAdaptor } from '@duck/sync/BrowserAdaptor'
+import { Adaptor, Sync } from 'observable-duck/duck/sync/Sync.duck'
+import { BrowserAdaptor } from 'observable-duck/duck/sync/BrowserAdaptor'
 
 export default class AppDuck extends Base {
   get quickDucks() {
