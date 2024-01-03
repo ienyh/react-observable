@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "tsc-compiled",
+    "emitDeclarationOnly": true,
     "module": "ES6",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -13,6 +16,12 @@
       "@decorator/*": ["./decorator/*"],
       "@operator/*": ["./operator/*"],
       "@duck/*": ["./duck/*"]
-    }
+    },
   },
+  "include": [
+    "./core/**/*",
+    "./duck/**/*",
+    "./operator/**/*",
+    "./decorator/**/*"
+  ]
 }
