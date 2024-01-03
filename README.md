@@ -172,7 +172,7 @@ export default class AppDuck extends Base {
 
 ## 常用 duck
 
-已经提供了一些常用的 duck 例子，可能写的并不好，仅供参考
+已经提供了一些常用的 duck 例子，仅供参考
 
 - FetcherDuck: 请求异步流程控制
 - SyncDuck: 用于双向同步 redux 和外部 store，可以选用不同的适配模式
