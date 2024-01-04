@@ -14,6 +14,7 @@
     "src",
     "tsconfig.json"
   ],
+  "types": "./typings/index.d.ts",
   "main": "build/observable-duck.umd.js",
   "module": "build/observable-duck.mjs",
   "exports": {
