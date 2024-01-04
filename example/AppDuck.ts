@@ -3,27 +3,16 @@ import Base from '../src/core/Base'
 import { Observable } from 'rxjs'
 import { StreamerMethod } from '../src/core/decorator'
 import { filterAction } from '../src/operator'
-import { Adaptor, Sync } from './ducks/sync'
-import { PayloadAction } from '..'
-import { BrowserAdaptor } from '@duck/sync/BrowserAdaptor'
 
 enum Type {
   INCREMENT,
   DECREMENT,
 }
 export default class AppDuck extends Base {
-  get quickDucks() {
+  get quickDucks() { 
     return {
       ...super.quickDucks,
-      route: class extends Sync {
-        SyncParams: {
-          name?: string
-          sub: string
-        }
-        get adaptor(): Adaptor {
-          return new BrowserAdaptor()
-        }
-      },
+      sub: SubAppDuck,
     }
   }
   get quickTypes() {
@@ -63,19 +52,50 @@ export default class AppDuck extends Base {
     const duck = this
     return action$.pipe(filterAction(duck.types.INCREMENT)).subscribe((action) => {
       const state = duck.getState()
+      console.log(state);
     })
+  }
+}
+
+class SubAppDuck extends Base {
+  get quickTypes() {
+    return {
+      ...super.quickTypes,
+      ...Type,
+    }
+  }
+  get reducers() {
+    const types = this.types
+    return {
+      name: (state: string) => 'init name',
+      timestamp: (state: number) => Date.now(),
+      count: (state = 0, action) => {
+        switch (action.type) {
+          case types.INCREMENT:
+            return state + 1
+          case types.DECREMENT:
+            return state - 1
+          default:
+            return state
+        }
+      },
+    }
+  }
+  get creators() {
+    const types = this.types
+    return {
+      ...super.creators,
+      increment: () => ({ type: types.INCREMENT }),
+      decrement: () => ({ type: types.DECREMENT }),
+    }
   }
 
   @StreamerMethod()
-  preform(action$: Observable<PayloadAction<string>>) {
+  incrementStreamer(action$: Observable<Action>) {
     const duck = this
-    const { types, ducks, dispatch } = duck
-    return action$.pipe(filterAction([types.INCREMENT])).subscribe((action) => {
-      dispatch(
-        ducks.route.creators.push({
-          sub: Math.random().toString().substring(3, 8),
-        })
-      )
+    return action$.pipe(filterAction(duck.types.INCREMENT)).subscribe((action) => {
+      const state = duck.getState()
+      console.log(state);
     })
   }
 }

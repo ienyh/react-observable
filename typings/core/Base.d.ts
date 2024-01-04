@@ -2,6 +2,7 @@ import { Dispatch, Action, StateFromReducersMapObject, ReducersMapObject, Reduce
 import { Streamer } from 'redux-observable-action';
 import type { Ducks, DucksState, Types } from './type';
 export default class Base implements Disposable {
+    State: Readonly<StateFromReducersMapObject<this["reducers"]>> & DucksState<this["ducks"]>;
     getState: () => Readonly<this['State']>;
     dispatch: Dispatch<Action>;
     id: string;
@@ -17,7 +18,6 @@ export default class Base implements Disposable {
     get creators(): {};
     get quickDucks(): {};
     get ducks(): Ducks<this["quickDucks"]>;
-    State: ReturnType<this['combinedReducer']>;
-    get combinedReducer(): Reducer<Readonly<StateFromReducersMapObject<this["reducers"]>> & DucksState<this["ducks"]>>;
+    get combinedReducer(): Reducer<this["State"]>;
     get streamers(): Streamer[];
 }

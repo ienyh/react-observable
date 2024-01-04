@@ -1,6 +1,6 @@
 {
   "name": "observable-duck",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "pure logic DuckComponent by redux & rxjs",
   "keywords": [
     "redux",
@@ -16,6 +16,7 @@
     "tsconfig.json"
   ],
   "types": "./typings/index.d.ts",
+  "typings": "./typings/index.d.ts",
   "main": "build/observable-duck.umd.js",
   "module": "build/observable-duck.mjs",
   "exports": {

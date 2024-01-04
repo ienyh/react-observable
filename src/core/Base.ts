@@ -11,6 +11,7 @@ import { Cache, collectStreamers } from './decorator'
 import type { DuckType, Ducks, DucksState, Types } from './type'
 
 export default class Base implements Disposable {
+  State: Readonly<StateFromReducersMapObject<this["reducers"]>> & DucksState<this["ducks"]>
   getState: () => Readonly<this['State']>
   dispatch: Dispatch<Action>
   id = generateID()
@@ -63,7 +64,6 @@ export default class Base implements Disposable {
   get ducks() {
     return makeDucks<this['quickDucks']>(this.quickDucks, this.actionTypePrefix)
   }
-  State: ReturnType<this['combinedReducer']>
   get combinedReducer() {
     const reducer = {
       ...this.reducers,
@@ -72,9 +72,7 @@ export default class Base implements Disposable {
     Object.keys(ducks).forEach((duck) => {
       reducer[duck] = ducks[duck].combinedReducer
     })
-    return combineReducers(reducer) as Reducer<
-      Readonly<StateFromReducersMapObject<this['reducers']>> & DucksState<this['ducks']>
-    >
+    return combineReducers(reducer) as Reducer<this['State']>
   }
   get streamers(): Streamer[] {
     const streamers = []

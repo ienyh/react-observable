@@ -1,4 +1,4 @@
-import type { Action, Dispatch } from 'redux'
+import type { Action, Dispatch, StateFromReducersMapObject } from 'redux'
 import Base from './Base'
 
 export type Types<T> = {
@@ -10,9 +10,9 @@ export declare type Ducks<T extends Record<string, DuckType<Base>>> = {
 }
 
 export declare type DucksState<T extends Record<string, DuckType<Base>>> = {
-  [K in keyof T]: T[K] extends Base ? ReturnType<T[K]['combinedReducer']> : never
+  [K in keyof T]: T[K] extends Base ? T[K]['State'] : never
 }
-export declare type DuckState<Duck extends Base> = ReturnType<Duck['combinedReducer']>
+export declare type DuckState<T extends Base> = Readonly<StateFromReducersMapObject<T["reducers"]>> & DucksState<T["ducks"]>
 
 export declare interface PayloadAction<T extends any = any> extends Action {
   payload?: T
