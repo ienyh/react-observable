@@ -1,9 +1,9 @@
 import { Action } from 'redux'
-import Base from '@core/Base'
+import Base from '../src/core/Base'
 import { Observable } from 'rxjs'
-import { StreamerMethod } from '@decorator/method'
-import { filterAction } from '@operator/index'
-import { Adaptor, Sync } from '@duck/sync/Sync.duck'
+import { StreamerMethod } from '../src/core/decorator'
+import { filterAction } from '../src/operator'
+import { Adaptor, Sync } from './ducks/sync'
 import { PayloadAction } from '..'
 import { BrowserAdaptor } from '@duck/sync/BrowserAdaptor'
 

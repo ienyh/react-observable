@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ConnectedProps } from '..'
+import { ConnectedProps } from '../src/core/type'
 import AppDuck from './AppDuck'
 import TestFetcher from './TestFetcher'
 

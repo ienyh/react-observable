@@ -1,27 +1,21 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "declarationDir": "tsc-compiled",
+    "declarationDir": "typings",
     "emitDeclarationOnly": true,
     "module": "ES6",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "jsx": "react",
     "lib": ["DOM", "ESNext"],
-    "types": ["vite/client", "node"],
+    "types": ["node"],
     "target": "ES2015",
     "moduleResolution": "node",
     "paths": {
-      "@core/*": ["./core/*"],
-      "@decorator/*": ["./decorator/*"],
-      "@operator/*": ["./operator/*"],
-      "@duck/*": ["./duck/*"]
+      "@src/*": ["./src/*"],
     },
   },
   "include": [
-    "./core/**/*",
-    "./duck/**/*",
-    "./operator/**/*",
-    "./decorator/**/*"
+    "./src/**/*",
   ]
 }

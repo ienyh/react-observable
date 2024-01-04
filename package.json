@@ -1,27 +1,21 @@
 {
   "name": "observable-duck",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "pure logic DuckComponent by redux & rxjs",
   "keywords": [
     "redux",
-    "reselect",
     "rxjs",
     "observable",
     "duck",
-    "observable-duck",
-    "component"
+    "observable-duck"
   ],
   "files": [
     "build",
-    "core",
-    "decorator",
-    "duck",
-    "operator",
-    "index.ts",
+    "src",
     "tsconfig.json"
   ],
-  "main": "build/observable-duck.mjs",
-  "module": "build/observable-duck.umd.js",
+  "main": "build/observable-duck.umd.js",
+  "module": "build/observable-duck.mjs",
   "exports": {
     ".": {
       "import": "./build/observable-duck.mjs",
@@ -36,7 +30,7 @@
   "scripts": {
     "dev": "vite",
     "test": "vitest",
-    "compile": "rm -r typings && tsc",
+    "tsc": "rm -rf typings && tsc",
     "build": "vite build"
   },
   "dependencies": {

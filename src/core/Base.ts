@@ -7,7 +7,7 @@ import {
   Reducer,
 } from 'redux'
 import { Streamer } from 'redux-observable-action'
-import { Cache, collectStreamers } from '@decorator/method'
+import { Cache, collectStreamers } from './decorator'
 import type { DuckType, Ducks, DucksState, Types } from './type'
 
 export default class Base implements Disposable {

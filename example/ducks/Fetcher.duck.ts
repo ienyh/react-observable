@@ -1,7 +1,7 @@
-import Base from '@core/Base'
-import { PayloadAction } from '..'
+import Base from '@src/core/Base'
+import { PayloadAction } from '../../build/observable-duck.umd'
 import { createToPayload } from '@core/helper'
-import { StreamerMethod } from '@decorator/method'
+import { StreamerMethod } from '@core/decorator'
 import { filterAction } from '@operator/index'
 import { Observable } from 'rxjs'
 

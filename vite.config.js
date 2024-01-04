@@ -5,17 +5,14 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   resolve: {
     alias: {
-      '@core': path.resolve(__dirname, 'core'),
-      '@decorator': path.resolve(__dirname, 'decorator'),
-      '@operator': path.resolve(__dirname, 'operator'),
-      '@duck': path.resolve(__dirname, 'duck'),
+      '@src': path.resolve(__dirname, 'src'),
     },
   },
   plugins: [react()],
   build: {
     outDir: "build",
     lib: {
-      entry: path.resolve(__dirname, 'index.ts'),
+      entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'observable-duck',
       fileName: 'observable-duck',
     }
