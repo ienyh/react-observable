@@ -1,6 +1,6 @@
 {
   "name": "observable-duck",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "pure logic DuckComponent by redux & rxjs",
   "keywords": [
     "redux",
@@ -12,6 +12,7 @@
   "files": [
     "build",
     "src",
+    "typings",
     "tsconfig.json"
   ],
   "types": "./typings/index.d.ts",
