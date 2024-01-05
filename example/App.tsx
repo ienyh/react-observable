@@ -5,6 +5,7 @@ import AppDuck from './AppDuck'
 export default function App(props: { appName: string } & ConnectedProps<AppDuck>) {
   const { duck, store, dispatch } = props
   const { creators } = duck
+  store.sub
   const [count, setCount] = React.useState(0)
   return <div>
     App: {props.appName}

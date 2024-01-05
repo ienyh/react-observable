@@ -52,12 +52,19 @@ export default class AppDuck extends Base {
     const duck = this
     return action$.pipe(filterAction(duck.types.INCREMENT)).subscribe((action) => {
       const state = duck.getState()
+      state.sub
       console.log(state);
     })
   }
 }
 
 class SubAppDuck extends Base {
+  get quickDucks() { 
+    return {
+      ...super.quickDucks,
+      subSub: SubSubAppDuck,
+    }
+  }
   get quickTypes() {
     return {
       ...super.quickTypes,
@@ -98,4 +105,31 @@ class SubAppDuck extends Base {
       console.log(state);
     })
   }
+}
+
+class SubSubAppDuck extends Base {
+  get quickTypes() {
+    return {
+      ...super.quickTypes,
+      ...Type,
+    }
+  }
+  get reducers() {
+    const types = this.types
+    return {
+      name: (state: string) => 'init name',
+      timestamp: (state: number) => Date.now(),
+      count: (state = 0, action) => {
+        switch (action.type) {
+          case types.INCREMENT:
+            return state + 1
+          case types.DECREMENT:
+            return state - 1
+          default:
+            return state
+        }
+      },
+    }
+  }
+
 }
