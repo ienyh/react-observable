@@ -11,6 +11,7 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: "build",
+    sourcemap: true,
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'observable-duck',
