@@ -1,6 +1,6 @@
 {
   "name": "observable-duck",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "pure logic DuckComponent by redux & rxjs",
   "keywords": [
     "redux",
@@ -26,6 +26,7 @@
       "default": "./build/observable-duck.mjs"
     }
   },
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/ienyh/observable"
