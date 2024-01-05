@@ -3,15 +3,15 @@ import {
   Action,
   StateFromReducersMapObject,
   combineReducers,
-  Reducer,
   ReducersMapObject,
+  Reducer,
 } from 'redux'
 import { Streamer } from 'redux-observable-action'
 import { Cache, collectStreamers } from './decorator'
 import type { DuckType, Ducks, DucksState, Types } from './type'
 
 export default class Base implements Disposable {
-  getState: () => Readonly<this['State']>
+  getState: () => Readonly<StateFromReducersMapObject<this['reducers']>> & DucksState<this['ducks']>
   dispatch: Dispatch<Action>
   id = generateID()
   actionTypePrefix: string
@@ -63,8 +63,8 @@ export default class Base implements Disposable {
   get ducks() {
     return makeDucks<this['quickDucks']>(this.quickDucks, this.actionTypePrefix)
   }
-  State: ReturnType<this['combinedReducer']>
-  get combinedReducer() {
+  @Cache()
+  get combinedReducer(): Reducer {
     const reducer = {
       ...this.reducers,
     } as any
@@ -72,10 +72,9 @@ export default class Base implements Disposable {
     Object.keys(ducks).forEach((duck) => {
       reducer[duck] = ducks[duck].combinedReducer
     })
-    return combineReducers(reducer) as Reducer<
-      Readonly<StateFromReducersMapObject<this['reducers']>> & DucksState<this['ducks']>
-    >
+    return combineReducers(reducer)
   }
+  @Cache()
   get streamers(): Streamer[] {
     const streamers = []
     function collect(duck) {

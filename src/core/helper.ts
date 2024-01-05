@@ -1,4 +1,9 @@
-import { PayloadActionCreator } from "..";
+import type { Action } from 'redux'
+
+export declare interface PayloadAction<T extends any = any> extends Action {
+  payload?: T
+}
+export declare type PayloadActionCreator<P> = (payload: P) => PayloadAction<P>
 
 export function createPayloadAction<P = any>(type: string): PayloadActionCreator<P> {
   return (payload: P) => ({

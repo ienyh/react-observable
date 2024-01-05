@@ -11,7 +11,6 @@ enum Type {
 export default class AppDuck extends Base {
   get quickDucks() { 
     return {
-      ...super.quickDucks,
       sub: SubAppDuck,
     }
   }
@@ -52,7 +51,7 @@ export default class AppDuck extends Base {
     const duck = this
     return action$.pipe(filterAction(duck.types.INCREMENT)).subscribe((action) => {
       const state = duck.getState()
-      state.sub
+      state.sub.subSub.fff
       console.log(state);
     })
   }
@@ -61,7 +60,6 @@ export default class AppDuck extends Base {
 class SubAppDuck extends Base {
   get quickDucks() { 
     return {
-      ...super.quickDucks,
       subSub: SubSubAppDuck,
     }
   }
@@ -74,9 +72,9 @@ class SubAppDuck extends Base {
   get reducers() {
     const types = this.types
     return {
-      name: (state: string) => 'init name',
-      timestamp: (state: number) => Date.now(),
-      count: (state = 0, action) => {
+      aaa: (state: string) => 'init name',
+      bbb: (state: number) => Date.now(),
+      ccc: (state = 0, action) => {
         switch (action.type) {
           case types.INCREMENT:
             return state + 1
@@ -100,6 +98,7 @@ class SubAppDuck extends Base {
   @StreamerMethod()
   incrementStreamer(action$: Observable<Action>) {
     const duck = this
+    this.ducks.subSub.subId = 'asdasdasd'
     return action$.pipe(filterAction(duck.types.INCREMENT)).subscribe((action) => {
       const state = duck.getState()
       console.log(state);
@@ -108,23 +107,13 @@ class SubAppDuck extends Base {
 }
 
 class SubSubAppDuck extends Base {
-  get quickTypes() {
-    return {
-      ...super.quickTypes,
-      ...Type,
-    }
-  }
+  subId = 'SubSubAppDuck'
   get reducers() {
-    const types = this.types
     return {
-      name: (state: string) => 'init name',
-      timestamp: (state: number) => Date.now(),
-      count: (state = 0, action) => {
+      ddd: (state: string) => 'init name',
+      eee: (state: number) => Date.now(),
+      fff: (state = 0, action) => {
         switch (action.type) {
-          case types.INCREMENT:
-            return state + 1
-          case types.DECREMENT:
-            return state - 1
           default:
             return state
         }
