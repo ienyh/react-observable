@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Dispatch, Store as ReduxStore, Middleware, createStore, applyMiddleware } from "redux";
-import { InferableComponentEnhancerWithProps, Provider, connect } from "react-redux";
+import * as React from "react"
+import { Dispatch, Store as ReduxStore, Middleware, createStore, applyMiddleware } from "redux"
+import { InferableComponentEnhancerWithProps, Provider, connect } from "react-redux"
 import { createMiddleware, combineStreamers, StreamMiddleware } from 'redux-observable-action'
-import { ConnectedProps, DuckState, DuckType, PayloadAction } from "..";
-import Base from "./Base";
+import { ConnectedProps, DuckState, DuckType, PayloadAction } from ".."
+import Base from "./Base"
 
 export interface DuckRuntimeOptions {
   prefix?: string
@@ -49,7 +49,7 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
       React.useEffect(() => {
         return runtime[Symbol.dispose]
       }, [])
-       return (
+      return (
         <Provider store={redux}>
           <ConnectedComponent {...props} duck={duck} />
         </Provider>
@@ -58,7 +58,7 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
   }
 
   [Symbol.dispose](): void {
-    const { duck } = this;
+    const { duck } = this
     duck[Symbol.dispose]()
     this.middleware.close()
   }

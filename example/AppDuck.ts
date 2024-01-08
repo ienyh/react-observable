@@ -1,8 +1,6 @@
 import { Action } from 'redux'
-import Base from '../src/core/Base'
+import { Base, StreamerMethod, filterAction } from 'observable-duck'
 import { Observable } from 'rxjs'
-import { StreamerMethod } from '../src/core/decorator'
-import { filterAction } from '../src/operator'
 
 enum Type {
   INCREMENT,

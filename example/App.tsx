@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ConnectedProps } from '../src/core/type'
+import { ConnectedProps } from 'observable-duck'
 import AppDuck from './AppDuck'
 
 export default function App(props: { appName: string } & ConnectedProps<AppDuck>) {
