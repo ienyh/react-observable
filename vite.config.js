@@ -16,6 +16,14 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'observable-duck',
       fileName: 'observable-duck',
+    },
+    rollupOptions: {
+      externals: ['react'],
+      output: {
+        globals: {
+          react: 'React',
+        },
+      },
     }
   }
 })

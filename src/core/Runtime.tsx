@@ -1,6 +1,5 @@
 import * as React from "react";
-import { createLogger } from "redux-logger";
-import { Dispatch, StateFromReducersMapObject, Store, applyMiddleware, legacy_createStore } from "redux";
+import { Dispatch, Store as ReduxStore, Middleware, createStore, applyMiddleware } from "redux";
 import { InferableComponentEnhancerWithProps, Provider, connect } from "react-redux";
 import { createMiddleware, combineStreamers, StreamMiddleware } from 'redux-observable-action'
 import { ConnectedProps, DuckState, DuckType, PayloadAction } from "..";
@@ -8,6 +7,7 @@ import Base from "./Base";
 
 export interface DuckRuntimeOptions {
   prefix?: string
+  middlewares?: Middleware[]
 }
 export default class Runtime<TDuck extends Base = Base> implements Disposable {
   static create<T extends Base>(Duck: DuckType<T>, options?: DuckRuntimeOptions) {
@@ -15,26 +15,23 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
   }
 
   duck: TDuck
-  protected store: Store
+  protected redux: ReduxStore
   protected middleware: StreamMiddleware<PayloadAction, DuckState<TDuck>>
   protected constructor(Duck:  DuckType<TDuck>, options?: DuckRuntimeOptions) {
     this.duck = new Duck(options?.prefix ?? Duck.name)
-    this.initReduxStore()
+    this.initReduxStore(options?.middlewares)
   }
 
-  protected initReduxStore() {
+  protected initReduxStore(extraMiddlewares: Middleware[] = []) {
     const duck = this.duck
     const streamerMiddleware = createMiddleware()
-    const logger = process.env.NODE_ENV === 'development'
-      ? createLogger({ collapsed: true })
-      : () => (next) => (action) => next(action)
-    const store = legacy_createStore(
+    const store = createStore(
       duck.combinedReducer,
-      applyMiddleware(streamerMiddleware, logger)
+      applyMiddleware(streamerMiddleware, ...extraMiddlewares)
     )
     duck.init(store.getState, store.dispatch)
     streamerMiddleware.run(combineStreamers(...duck.streamers))
-    this.store = store
+    this.redux = store
     this.middleware = streamerMiddleware
   }
 
@@ -42,9 +39,8 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
     Component: React.FunctionComponent<OriginProps & ConnectedProps<TDuck>>
   ): React.FunctionComponent<OriginProps> {
     const runtime = this
-    const { duck, store } = this
-    type State = StateFromReducersMapObject<typeof duck.reducers>
-    const connectComponent: InferableComponentEnhancerWithProps<State & Dispatch, any> = connect(
+    const { duck, redux } = this
+    const connectComponent: InferableComponentEnhancerWithProps<DuckState<TDuck> & Dispatch, any> = connect(
       (state) => ({ store: state }),
       (dispatch) => ({ dispatch })
     )
@@ -54,7 +50,7 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
         return runtime[Symbol.dispose]
       }, [])
        return (
-        <Provider store={store}>
+        <Provider store={redux}>
           <ConnectedComponent {...props} duck={duck} />
         </Provider>
       )

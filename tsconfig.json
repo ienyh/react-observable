@@ -3,7 +3,7 @@
     "declaration": true,
     "declarationDir": "typings",
     "emitDeclarationOnly": true,
-    "module": "ES6",
+    "module": "ESNext",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "jsx": "react",
