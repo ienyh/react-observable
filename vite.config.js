@@ -1,5 +1,6 @@
 import path from 'path'
 import { defineConfig } from 'vite'
+import visualizer from 'rollup-plugin-visualizer'
 
 export default defineConfig({
   build: {
@@ -11,7 +12,21 @@ export default defineConfig({
       fileName: 'observable-duck',
     },
     rollupOptions: {
-      externals: ['react'],
-    }
-  }
+      external: ['react', 'react-dom', 'rxjs'],
+      output: {
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM',
+          'rxjs': 'rxjs',
+        },
+      },
+      plugins: [
+        visualizer({
+          open: true,
+          gzipSize: true,
+          brotliSize: true,
+        }),
+      ]
+    },
+  },
 })

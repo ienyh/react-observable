@@ -1,2 +1,5 @@
 node_modules
 build
+
+# rollup-plugin-visualizer
+stats.html

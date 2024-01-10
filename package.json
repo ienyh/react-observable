@@ -1,6 +1,6 @@
 {
   "name": "observable-duck",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "description": "pure logic DuckComponent by redux & rxjs",
   "keywords": [
     "redux",
@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "redux": "^5.0.0",
-    "redux-observable-action": "^0.0.5"
+    "redux-observable-action": "^0.0.7"
   },
   "peerDependencies": {
     "react": ">=16.9.0",
@@ -55,6 +55,7 @@
     "prettier": "^3.1.0",
     "react-redux": "^9.0.1",
     "reselect": "^5.0.1",
+    "rollup-plugin-visualizer": "^5.12.0",
     "typescript": "^5.3.3",
     "vite": "^5.0.8",
     "vitest": "^1.0.4"
