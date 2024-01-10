@@ -3,7 +3,7 @@
     "dev": "vite"
   },
   "dependencies": {
-    "observable-duck": "^0.1.17",
+    "observable-duck": "^0.1.19",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rxjs": "^7.8.1"
