@@ -14,17 +14,3 @@ export function filterAction<A extends Action = Action>(
       })
     )
 }
-
-export function effect<A extends any = any, F extends Function = Function>(effecter: F) {
-  return (source: Observable<A>) =>
-    new Observable<A>((subscriber) => {
-      source.subscribe({
-        next: (parameter) => {
-          effecter(parameter)
-          subscriber.next(parameter)
-        },
-        error: subscriber.error,
-        complete: subscriber.complete,
-      })
-    })
-}

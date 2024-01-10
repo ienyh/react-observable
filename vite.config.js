@@ -17,7 +17,7 @@ export default defineConfig({
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
-          'rxjs': 'rxjs',
+          rxjs: 'rxjs',
         },
       },
       plugins: [
