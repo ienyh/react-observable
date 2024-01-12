@@ -47,7 +47,7 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
     const ConnectedComponent = connectComponent(Component as any)
     return function (props) {
       React.useEffect(() => {
-        return runtime[Symbol.dispose]
+        return runtime[Symbol.dispose].bind(runtime)
       }, [])
       return (
         <Provider store={redux}>
