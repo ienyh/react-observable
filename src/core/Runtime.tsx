@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Dispatch, Store as ReduxStore, Middleware, createStore, applyMiddleware } from "redux"
+import { Dispatch, Store as ReduxStore, Middleware, createStore, applyMiddleware, Action } from "redux"
 import { InferableComponentEnhancerWithProps, Provider, connect } from "react-redux"
 import { createMiddleware, combineStreamers, StreamMiddleware } from 'redux-observable-action'
 import { ConnectedProps, DuckState, DuckType, PayloadAction } from ".."
@@ -15,7 +15,7 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
   }
 
   duck: TDuck
-  protected redux: ReduxStore
+  redux: ReduxStore<DuckState<TDuck>, Action>
   protected middleware: StreamMiddleware<PayloadAction, DuckState<TDuck>>
   protected constructor(Duck:  DuckType<TDuck>, options?: DuckRuntimeOptions) {
     this.duck = new Duck(options?.prefix ?? Duck.name)
@@ -47,7 +47,11 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
     const ConnectedComponent = connectComponent(Component as any)
     return function (props) {
       React.useEffect(() => {
-        return runtime[Symbol.dispose].bind(runtime)
+        redux.dispatch({ type: `${duck.actionTypePrefix}/INIT@@${duck.id}` })
+        return () => {
+          runtime[Symbol.dispose].bind(runtime)
+          redux.dispatch({ type: `${duck.actionTypePrefix}/END@@${duck.id}` })
+        } 
       }, [])
       return (
         <Provider store={redux}>

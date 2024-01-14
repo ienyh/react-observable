@@ -1,7 +1,8 @@
 import Base from './core/Base'
 import Runtime from './core/Runtime'
+import useDuck from './core/useDuck'
 
-export { Base, Runtime }
+export { Base, Runtime, useDuck }
 
 export type * from './core/type'
 

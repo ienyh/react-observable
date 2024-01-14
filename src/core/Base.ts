@@ -22,7 +22,6 @@ export default class Base implements Disposable {
     Object.values(this.ducks).forEach((duck) => {
       duck[Symbol.dispose]()
     })
-    this.dispatch({ type: `${this.actionTypePrefix}/END@@${this.id}` })
   }
   init(getState, dispatch: Dispatch<Action>) {
     this.getState = getState
@@ -34,7 +33,6 @@ export default class Base implements Disposable {
     Object.keys(ducks).forEach((duck) => {
       ducks[duck].init(selector(getState, duck), dispatch)
     })
-    this.dispatch({ type: `${this.actionTypePrefix}/INIT@@${this.id}` })
   }
   get quickTypes() {
     return {}
