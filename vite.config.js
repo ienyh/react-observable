@@ -12,7 +12,7 @@ export default defineConfig({
       fileName: 'observable-duck',
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'rxjs', 'redux', 'redux-observable-action'],
+      external: ['react', 'react-dom', 'react-redux','reflect-metadata', 'rxjs', 'redux', 'redux-observable-action'],
       output: {
         globals: {
           react: 'React',

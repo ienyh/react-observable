@@ -1,17 +1,16 @@
 import {
   Dispatch,
   Action,
-  StateFromReducersMapObject,
   combineReducers,
   ReducersMapObject,
   Reducer,
 } from 'redux'
 import { Streamer } from 'redux-observable-action'
 import { Cache, collectStreamers } from './decorator'
-import type { DuckType, Ducks, DucksState, Types } from './type'
+import type { DuckReducersState, DuckType, Ducks, DucksState, Types } from './type'
 
 export default class Base implements Disposable {
-  getState: () => Readonly<StateFromReducersMapObject<this['reducers']>> & DucksState<this['ducks']>
+  getState: () => Readonly<DuckReducersState<this['reducers']>> & DucksState<this['ducks']>
   dispatch: Dispatch<Action>
   id = generateID()
   actionTypePrefix: string

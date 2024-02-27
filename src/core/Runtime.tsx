@@ -38,7 +38,6 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
   connect<OriginProps>(
     Component: React.FunctionComponent<OriginProps & ConnectedProps<TDuck>>
   ): React.FunctionComponent<OriginProps> {
-    const runtime = this
     const { duck, redux } = this
     const connectComponent: InferableComponentEnhancerWithProps<DuckState<TDuck> & Dispatch, any> = connect(
       (state) => ({ store: state }),
@@ -46,13 +45,6 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
     )
     const ConnectedComponent = connectComponent(Component as any)
     return function (props) {
-      React.useEffect(() => {
-        redux.dispatch({ type: `${duck.actionTypePrefix}/INIT@@${duck.id}` })
-        return () => {
-          runtime[Symbol.dispose].bind(runtime)
-          redux.dispatch({ type: `${duck.actionTypePrefix}/END@@${duck.id}` })
-        } 
-      }, [])
       return (
         <Provider store={redux}>
           <ConnectedComponent {...props} duck={duck} />
