@@ -1,10 +1,11 @@
 import { Action } from 'redux'
-import { Base, StreamerMethod, filterAction } from 'observable-duck'
+import { Base, StreamerMethod, filterAction, reduceFromPayload } from '../src'
 import { Observable } from 'rxjs'
 
 enum Type {
   INCREMENT,
   DECREMENT,
+  SET_VALUE,
 }
 export default class AppDuck extends Base {
   get quickDucks() { 
@@ -33,6 +34,7 @@ export default class AppDuck extends Base {
             return state
         }
       },
+      value: reduceFromPayload<string>(types.SET_VALUE, '')
     }
   }
   get creators() {
@@ -50,6 +52,8 @@ export default class AppDuck extends Base {
     return action$.pipe(filterAction(duck.types.INCREMENT)).subscribe((action) => {
       const state = duck.getState()
       state.sub.subSub.fff
+      state.name.length
+      state.value
       console.log(state);
     })
   }

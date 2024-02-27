@@ -1,4 +1,4 @@
-import type { Dispatch } from 'redux'
+import type { Dispatch, Reducer } from 'redux'
 import Base from './Base'
 
 export type Types<T> = {
@@ -9,6 +9,9 @@ export declare type Ducks<T extends Record<string, DuckType<Base>>> = {
   [K in keyof T]: InstanceType<T[K]>
 }
 
+export declare type DuckReducersState<R> = {
+  [K in keyof R]: R[K] extends Reducer ? ReturnType<R[K]> : never
+}
 export declare type DucksState<T extends Record<string, DuckType<Base>>> = {
   [K in keyof T]: T[K] extends Base ? DuckState<T[K]> : never
 }
