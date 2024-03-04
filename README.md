@@ -1,6 +1,6 @@
 # observable-duck
 
-将 redux 和 rxjs 的 Observable 组合在一起，可以方便的聚合逻辑并且支持流出 state 到 react 组件，类型完备，优化开发体验
+将 redux 和 rxjs 的 Observable 组合在一起，可以方便的聚合逻辑并且支持流出 state 到 react 组件，类型完备，开发体验良好
 
 ## 基本使用
 
@@ -95,7 +95,7 @@ describe('AppDuck.test', () => {
 
 ### 连接 React 组件
 
-然后可以将 runtime 连接到 react 组件（由 react-redux 实现），使用 `ConnectedProps<AppDuck>` 注释后的 props 也将获得完备的类型，并且由于 redux reducer 的特性将不会出现 store.count 不存在的情况
+然后可以将 runtime 连接到 react 组件（由 react-redux 实现），使用 `ConnectedProps<AppDuck>` 注释后的 props 也将获得完整的类型
 
 ```js
 import * as React from 'react'
@@ -122,7 +122,7 @@ function App(props: ConnectedProps<AppDuck>) {
   </div>
 }
 
-// 导入连接过后的组件
+// 导出连接过后的组件
 export default Runtime.create(AppDuck).connect(App)
 ```
 
@@ -170,9 +170,34 @@ export default class AppDuck extends Base {
 }
 ```
 
-## 常用 duck
+还有另外一种方式扩展：在 duck 中订阅其他 `runtime.redux` 然后做任何事情
 
-已经提供了一些常用的 duck 例子，仅供参考
+```js
+// One.ts
+import { Runtime } from 'observable-duck'
+import Template from './Template'
+import Duck from './Duck'
 
-- FetcherDuck: 请求异步流程控制
-- SyncDuck: 用于双向同步 redux 和外部 store，可以选用不同的适配模式
+export const runtime = Runtime.create(Duck) // 单独将 runtime 也导出
+export default runtime.connect(Template) // 将 runtime 与 react 组件连接后默认导出
+```
+
+```js
+// Two.ts
+import { Base } from 'observable-duck'
+import { from } from 'rxjs'
+import { runtime } from './One.ts'
+
+class Search extends Base {
+  init(get, dispatch) {
+    super.init(get, dispatch)
+    const { creators, getState } = this
+    from(runtime.redux).pipe(/** ... */).subscribe((value) => {
+      dispatch({
+        type: "...",
+        payload: value,
+      })
+    })
+  }
+}
+```
