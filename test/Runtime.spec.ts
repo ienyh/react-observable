@@ -3,6 +3,7 @@ import { Observable, Subscription, noop } from 'rxjs'
 import { Base, Runtime } from '../src'
 
 describe('Runtime', () => {
+
   test.concurrent('Duck.dispose', async () => {
     const duckSub = new Subscription();
     class TestDuck extends Base {
@@ -22,6 +23,7 @@ describe('Runtime', () => {
     duck[Symbol.dispose]()
     expect(duckSub.closed).toStrictEqual(true)
   })
+
   test.concurrent('Runtime.dispose', async () => {
     const subDuckSub1 = new Subscription()
     class TestSubDuck1 extends Base {
@@ -71,4 +73,5 @@ describe('Runtime', () => {
     expect(subDuckSub2.closed).toBe(true)
     expect(parDuckSub.closed).toBe(true)
   })
+  
 })

@@ -16,6 +16,7 @@ npm i observable-duck --save
 import { Action } from "redux";
 import { Base, StreamerMethod, filterAction } from "observable-duck";
 import { Observable } from "rxjs";
+import { debounceTime } from 'rxjs/operators'
 
 export default class AppDuck extends Base {
   get quickTypes() {
@@ -59,7 +60,10 @@ export default class AppDuck extends Base {
   increment(action$: Observable<Action>) {
     const duck = this;
     return action$
-      .pipe(filterAction(duck.types.INCREMENT))
+      .pipe(
+        filterAction(duck.types.INCREMENT), // 过滤 action
+        debounceTime(20), // 加入防抖以实现 redux-saga 中 takeLatest 的效果
+      )
       .subscribe((action) => {
         const state = duck.getState();
         // preform your effect
@@ -184,15 +188,14 @@ export default runtime.connect(Template) // 将 runtime 与 react 组件连接�
 
 ```js
 // Two.ts
-import { Base } from 'observable-duck'
-import { from } from 'rxjs'
+import { Base, From } from 'observable-duck'
 import { runtime } from './One.ts'
 
 class Search extends Base {
-  init(get, dispatch) {
-    super.init(get, dispatch)
-    const { creators, getState } = this
-    from(runtime.redux).pipe(/** ... */).subscribe((value) => {
+  @From(runtime.redux)
+  accept(external$: Observable<DuckState<runtime.duck>>) {
+    const { dispatch } = this
+    return external$.pipe(/** ... */).subscribe((value) => {
       dispatch({
         type: "...",
         payload: value,
