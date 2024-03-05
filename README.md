@@ -193,7 +193,7 @@ import { runtime } from './One.ts'
 
 class Search extends Base {
   @From(runtime.redux)
-  accept(external$: Observable<DuckState<runtime.duck>>) {
+  accept(external$: Observable<DuckState<typeof runtime.duck>>) {
     const { dispatch } = this
     return external$.pipe(/** ... */).subscribe((value) => {
       dispatch({
