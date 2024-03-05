@@ -4,8 +4,9 @@ import type { DuckReducersState, Ducks, DucksState, Types } from './type';
 export default class Base implements Disposable {
     getState: () => Readonly<DuckReducersState<this['reducers']>> & DucksState<this['ducks']>;
     dispatch: Dispatch<Action>;
-    id: string;
-    actionTypePrefix: string;
+    readonly id: string;
+    readonly actionTypePrefix: string;
+    private subscription;
     constructor(prefix: string);
     [Symbol.dispose](): void;
     init(getState: any, dispatch: Dispatch<Action>): void;
