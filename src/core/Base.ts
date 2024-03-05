@@ -9,7 +9,7 @@ export default class Base implements Disposable {
   dispatch: Dispatch<Action>
   readonly id = generateID()
   readonly actionTypePrefix: string
-  private subscription = new Subscription()
+  protected subscription = new Subscription()
   constructor(prefix: string) {
     this.actionTypePrefix = prefix
   }

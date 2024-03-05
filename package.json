@@ -1,6 +1,6 @@
 {
   "name": "observable-duck",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "pure logic DuckComponent by redux & rxjs",
   "keywords": [
     "redux",
