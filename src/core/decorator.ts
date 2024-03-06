@@ -46,7 +46,7 @@ export function collectStreamers(target: Object) {
   return methodNames.map((method) => target[method]) as Array<Streamer>
 }
 
-export function Cache(duration: number = Infinity) {
+export function Cache(millisecond: number = Infinity) {
   return function (target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
     const isGetter = descriptor.get !== undefined
     const originalMethod = isGetter ? descriptor.get : descriptor.value
@@ -55,12 +55,12 @@ export function Cache(duration: number = Infinity) {
 
     function applyCache(target: any, value: any) {
       target[cacheKey] = value
-      target[cacheExpireKey] = Date.now() + duration
+      target[cacheExpireKey] = Date.now() + millisecond
     }
 
     function isCacheValid(target: any): boolean {
       return (
-        target[cacheExpireKey] && (target[cacheExpireKey] > Date.now() || duration === Infinity)
+        target[cacheExpireKey] && (target[cacheExpireKey] > Date.now() || millisecond === Infinity)
       )
     }
 
