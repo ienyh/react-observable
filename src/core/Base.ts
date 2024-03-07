@@ -1,6 +1,6 @@
 import { Dispatch, Action, combineReducers, ReducersMapObject, Reducer } from 'redux'
 import { Streamer } from 'redux-observable-action'
-import { Cache, collectStreamers, preformObservables } from './decorator'
+import { Cache, preformInits, collectStreamers, preformObservables } from './decorator'
 import type { DuckReducersState, DuckType, Ducks, DucksState, Types } from './type'
 import { Subscription } from 'rxjs'
 
@@ -29,6 +29,7 @@ export default class Base implements Disposable {
     Object.keys(ducks).forEach((duck) => {
       ducks[duck].init(selector(getState, duck), dispatch)
     })
+    preformInits(this)
     this.subscription.add(preformObservables(this))
   }
   get quickTypes() {

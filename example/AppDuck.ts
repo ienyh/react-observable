@@ -1,5 +1,5 @@
 import { Action } from 'redux'
-import { Base, StreamerMethod, filterAction, reduceFromPayload } from '../src'
+import { Base, Init, StreamerMethod, filterAction, reduceFromPayload } from '../src'
 import { Observable } from 'rxjs'
 
 enum Type {
@@ -8,7 +8,7 @@ enum Type {
   SET_VALUE,
 }
 export default class AppDuck extends Base {
-  get quickDucks() { 
+  get quickDucks() {
     return {
       sub: SubAppDuck,
     }
@@ -34,7 +34,7 @@ export default class AppDuck extends Base {
             return state
         }
       },
-      value: reduceFromPayload<string>(types.SET_VALUE, '')
+      value: reduceFromPayload<string>(types.SET_VALUE, ''),
     }
   }
   get creators() {
@@ -54,13 +54,26 @@ export default class AppDuck extends Base {
       state.sub.subSub.fff
       state.name.length
       state.value
-      console.log(state);
+      console.log(state)
     })
+  }
+
+  @Init(2)
+  accept1() {
+    console.log('1')
+  }
+  @Init(3)
+  accept2() {
+    console.log('2')
+  }
+  @Init(1)
+  accept3() {
+    console.log('3')
   }
 }
 
 class SubAppDuck extends Base {
-  get quickDucks() { 
+  get quickDucks() {
     return {
       subSub: SubSubAppDuck,
     }
@@ -103,7 +116,7 @@ class SubAppDuck extends Base {
     this.ducks.subSub.subId = 'asdasdasd'
     return action$.pipe(filterAction(duck.types.INCREMENT)).subscribe((action) => {
       const state = duck.getState()
-      console.log(state);
+      console.log(state)
     })
   }
 }
@@ -122,5 +135,4 @@ class SubSubAppDuck extends Base {
       },
     }
   }
-
 }

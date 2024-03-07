@@ -76,7 +76,7 @@ describe('Base', () => {
     expect(getState().inner).toStrictEqual({ name: 'test' })
   })
 
-  test.concurrent('External', async () => {
+  test.concurrent('@From() External', async () => {
     const { duck } = Runtime.create(TestDuck)
     const { getState } = duck
     expect(getState().external).toStrictEqual('')

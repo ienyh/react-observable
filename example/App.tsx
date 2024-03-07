@@ -7,6 +7,7 @@ export default function App(props: { appName: string } & ConnectedProps<AppDuck>
   const { creators } = duck
   store.sub.subSub.eee
   const [count, setCount] = React.useState(0)
+  React.useLayoutEffect(() => console.log(duck), [])
   return <div>
     App: {props.appName}
     <h4>React.useState</h4>

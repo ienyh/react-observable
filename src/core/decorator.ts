@@ -8,6 +8,29 @@ export function SetMethodMetadata(key: string | Symbol | number, value: any) {
   }
 }
 
+const INIT_PRIORITY_KEY = Symbol('init_with_priority')
+export const Init =
+  (priority = 0) =>
+  (target: Object, propertyKey: string, descriptor: PropertyDescriptor) => {
+    let map: Map<string, number> = Reflect.getMetadata(INIT_PRIORITY_KEY, target)
+    if (!map) {
+      map = new Map()
+    }
+    map.set(propertyKey, priority)
+    Reflect.defineMetadata(INIT_PRIORITY_KEY, map, target)
+  }
+export function preformInits(target) {
+  const map: Map<string, number> = Reflect.getMetadata(INIT_PRIORITY_KEY, target)
+  if (map) {
+    Array.from(map)
+      .sort((a, b) => b[1] - a[1])
+      .map((item) => item[0])
+      .forEach((propertyKey) => {
+        Function.prototype.call.call(target[propertyKey], target)
+      })
+  }
+}
+
 const FROM_$_METADATA_KEY = Symbol('from$_with_metadata')
 export const From =
   <T>($: Observable<T> | InteropObservable<T>) =>
@@ -35,12 +58,17 @@ export function preformObservables(target: Object) {
 }
 
 const STREAMER_METADATA_KEY = Symbol('streamer_methods_with_metadata')
+/**
+ * @deprecated
+ * Use `@Action` instead of `@StreamerMethod()`
+ */
 export const StreamerMethod =
   () => (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) => {
     const methods = Reflect.getMetadata(STREAMER_METADATA_KEY, target) || []
     methods.push(propertyKey)
     Reflect.defineMetadata(STREAMER_METADATA_KEY, methods, target)
   }
+export const Action = StreamerMethod()
 export function collectStreamers(target: Object) {
   const methodNames = Reflect.getMetadata(STREAMER_METADATA_KEY, target) || []
   return methodNames.map((method) => target[method]) as Array<Streamer>
