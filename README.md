@@ -14,7 +14,7 @@ npm i observable-duck --save
 
 ```js
 import { Action } from "redux";
-import { Base, StreamerMethod, filterAction } from "observable-duck";
+import { Base, Action, filterAction } from "observable-duck";
 import { Observable } from "rxjs";
 import { debounceTime } from 'rxjs/operators'
 
@@ -54,9 +54,9 @@ export default class AppDuck extends Base {
   }
 
   /**
-   * 添加 StreamerMethod 装饰器，然后注入 redux 的 action 流
+   * 添加 Action 装饰器，注入 redux 的 action 流
    */
-  @StreamerMethod()
+  @Action
   increment(action$: Observable<Action>) {
     const duck = this;
     return action$
@@ -137,44 +137,81 @@ export default Runtime.create(AppDuck).connect(App)
 为了更好的内聚与更低的耦合，duck 也支持将别的逻辑成块的 duck 作为子 duck 扩展进自身，duck 中的 redux store，Observable 都将注册，并且扩展后的 duck 同样类型完备
 
 ```js
-import { Action } from 'redux'
-import { Base, StreamerMethod, PayloadAction, BrowserAdaptor, filterAction } from 'observable-duck'
 import { Observable } from 'rxjs'
-import { Adaptor, Sync } from 'observable-duck/duck/sync/Sync.duck'
-import { BrowserAdaptor } from 'observable-duck/duck/sync/BrowserAdaptor'
+import { Base, Action } from 'observable-duck'
 
-export default class AppDuck extends Base {
+export default class ParentDuck extends Base {
   get quickDucks() {
     return {
-      ...super.quickDucks,
-      route: class extends Sync {
-        SyncParams: {
-          name?: string
-        }
-        get adaptor(): Adaptor {
-          return new BrowserAdaptor()
-        }
-      },
+      sub: SubDuck,
     }
   }
-  @StreamerMethod()
-  preform(action$: Observable<PayloadAction<string>>) {
+  get quickTypes() {
+    enum Type {
+      INCREMENT,
+      DECREMENT,
+      SET_VALUE,
+    }
+    return {
+      ...super.quickTypes,
+      ...Type,
+    }
+  }
+  get reducers() {
+    const types = this.types
+    return {
+      name: (state: string) => 'init name',
+      timestamp: (state: number) => Date.now(),
+      value: reduceFromPayload<string>(types.SET_VALUE, ''),
+    }
+  }
+  get creators() {
+    const types = this.types
+    return {
+      ...super.creators,
+      increment: () => ({ type: types.INCREMENT }),
+      decrement: () => ({ type: types.DECREMENT }),
+    }
+  }
+  @Action
+  incrementStreamer(action$: Observable<Action>) {
     const duck = this
-    const { types, ducks, dispatch } = duck
-    return action$.pipe(filterAction([types.INCREMENT])).subscribe((action) => {
+    return action$.pipe(filterAction(duck.types.INCREMENT)).subscribe((action) => {
+      const state = duck.getState()
+      console.log(state.sub.aaa)
       // 可以将派发 action 由子 duck 处理
       dispatch({
-        type: ducks.route.types.PUSH,
-        payload: {
-          name: Math.random().toString().substring(3, 8),
-        },
+        type: ducks.sub.types.SUB,
+        payload: 'from parent\'s value',
       })
     })
   }
 }
+
+class SubDuck extends Base {
+  get quickTypes() {
+    enum Type {
+      SUB,
+    }
+    return {
+      ...super.quickTypes,
+      ...Type,
+    }
+  }
+  get reducers() {
+    const types = this.types
+    return {
+      aaa: (state: string) => 'init name',
+      value: reduceFromPayload<string>(types.SUB, ''),
+    }
+  }
+  // ...
+}
 ```
 
-还有另外一种方式扩展：在 duck 中订阅其他 `runtime.redux` 然后做任何事情
+## 连接外部订阅源
+
+在 duck 中订阅其他 `runtime.redux` 然后做任何事情
 
 ```js
 // One.ts
@@ -201,6 +238,58 @@ class Search extends Base {
         payload: value,
       })
     })
+  }
+}
+```
+
+或者直接引用外部源可以做到双向同步
+
+```js
+import { Observable } from 'rxjs'
+import { webSocket } from 'rxjs/webSocket'
+import { Base, Action, Cache } from 'observable-duck'
+
+export default class Search extends Base {
+  get quickTypes() {
+    enum Type {
+      SET_VALUE,
+      SEARCH,
+    }
+    return {
+      ...Type,
+    }
+  }
+  get reducers() {
+    const types = this.types
+    return {
+      value: reduceFromPayload<string>(types.SET_VALUE, ''),
+    }
+  }
+  get creators() {
+    const { types } = this
+    return {
+      setValue: createToPayload<string>(types.SET_VALUE),
+      search: createToPayload<void>(types.SEARCH),
+    }
+  }
+  @Cache()
+  get websocket$() {
+    const { types, dispatch } = this
+    const $ = webSocket('wss://***')
+    this.subscription.add(
+      $.subscribe((data) => dispatch({
+        type: types.SET_VALUE,
+        payload: data,
+      }))
+    )
+    return $
+  }
+  @Action
+  watchSearch(action$: Observable<Action>) {
+    const duck = this
+    return action$
+      .pipe(filterAction(duck.types.SEARCH))
+      .subscribe((action) => duck.websocket$.next(action.payload))
   }
 }
 ```
