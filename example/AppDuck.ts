@@ -111,6 +111,15 @@ class SubAppDuck extends Base {
   }
 
   @StreamerMethod()
+  test_ns(action$: Observable<Action>) {
+    const duck = this
+    return action$.pipe().subscribe((action) => {
+      const state = duck.getState()
+      console.log(action)
+    })
+  }
+
+  @StreamerMethod()
   incrementStreamer(action$: Observable<Action>) {
     const duck = this
     this.ducks.subSub.subId = 'asdasdasd'
