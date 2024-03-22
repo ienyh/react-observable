@@ -1,5 +1,5 @@
 import { Action } from 'redux'
-import { Base, Init, StreamerMethod, filterAction, reduceFromPayload } from '../src'
+import { Base, Init, StreamerMethod, filterAction, reduceFromPayload, take } from '../src'
 import { Observable } from 'rxjs'
 
 enum Type {
@@ -49,7 +49,7 @@ export default class AppDuck extends Base {
   @StreamerMethod()
   incrementStreamer(action$: Observable<Action>) {
     const duck = this
-    return action$.pipe(filterAction(duck.types.INCREMENT)).subscribe((action) => {
+    return action$.pipe(take([duck.types.INCREMENT])).subscribe((action) => {
       const state = duck.getState()
       state.sub.subSub.fff
       state.name.length

@@ -1,5 +1,8 @@
-import type { Dispatch, Reducer } from 'redux';
+import type { Action, Dispatch, Reducer } from 'redux';
 import Base from './Base';
+export declare interface PayloadAction<T extends any = any> extends Action {
+    payload?: T;
+}
 export type Types<T> = {
     readonly [K in keyof T]: string;
 };
