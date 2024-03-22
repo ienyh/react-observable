@@ -136,6 +136,8 @@ export default Runtime.create(AppDuck).connect(App)
 
 为了更好的内聚与更低的耦合，duck 也支持将别的逻辑成块的 duck 作为子 duck 扩展进自身，duck 中的 redux store，Observable 都将注册，并且扩展后的 duck 同样类型完备
 
+外层 duck 关注扩展进来的逻辑，可以接受内层 duck 的 action 进行处理，内层 duck 不关注自身所处环境，因此不会处理外层环境 duck 的 action
+
 ```js
 import { Observable } from 'rxjs'
 import { Base, Action } from 'observable-duck'

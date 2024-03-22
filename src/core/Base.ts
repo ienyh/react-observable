@@ -2,7 +2,7 @@ import { Dispatch, Action, combineReducers, ReducersMapObject, Reducer } from 'r
 import { Streamer } from 'redux-observable-action'
 import { Cache, preformInits, collectStreamers, preformObservables } from './decorator'
 import type { DuckReducersState, DuckType, Ducks, DucksState, Types } from './type'
-import { Subscription } from 'rxjs'
+import { Observable, Subscription } from 'rxjs'
 
 export default class Base implements Disposable {
   getState: () => Readonly<DuckReducersState<this['reducers']>> & DucksState<this['ducks']>
@@ -73,15 +73,37 @@ export default class Base implements Disposable {
   @Cache()
   get streamers(): Streamer[] {
     const streamers = []
-    function collect(duck) {
-      streamers.push(...collectStreamers(duck).map((s) => s.bind(duck)))
+    const namespace = Symbol('namespace')
+    function collect(duck: Base) {
+      streamers.push(
+        ...collectStreamers(duck).map((s) => {
+          const result = s.bind(duck)
+          Object.defineProperty(result, namespace, { value: duck.actionTypePrefix })
+          return result
+        })
+      )
       Object.keys(duck.ducks).forEach((key) => {
         const subDuck = duck.ducks[key]
         collect(subDuck)
       })
     }
     collect(this)
-    return streamers.reverse()
+    function warp(fn): Streamer {
+      return function (action$: Observable<Action>) {
+        return fn(
+          action$.pipe(function ($) {
+            return new Observable((subscriber) => {
+              $.subscribe((action) => {
+                if (action.type.startsWith(Object.getOwnPropertyDescriptor(fn, namespace).value)) {
+                  subscriber.next(action)
+                }
+              })
+            })
+          })
+        )
+      }
+    }
+    return streamers.map(warp).reverse()
   }
 }
 
