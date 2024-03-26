@@ -35,7 +35,8 @@
     "dev": "vite",
     "test": "vitest",
     "tsc": "rm -rf typings && tsc",
-    "build": "vite build --mode production"
+    "build": "vite build --mode production",
+    "prebuild": "npm run tsc"
   },
   "dependencies": {
     "redux": "^5.0.0",
