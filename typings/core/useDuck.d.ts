@@ -1,6 +1,14 @@
 import Base from './Base';
 import { DuckRuntimeOptions } from './Runtime';
 import { DuckType } from './type';
+/**
+ * You can use hook `useDuck` to create redux store
+ * @param Duck
+ * @param options
+ * @returns {ConnectedProps<Duck>}
+ * @example
+ * const { store, dispatch, duck } = useDuck(Base)
+ */
 export default function useDuck<T extends Base>(Duck: DuckType<T>, options?: DuckRuntimeOptions): {
     duck: T;
     store: ReturnType<T["getState"]>;
