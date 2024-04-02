@@ -301,7 +301,7 @@ class Search extends Base {
 ```js
 import { Observable } from 'rxjs'
 import { webSocket } from 'rxjs/webSocket'
-import { Base, Action, Cache } from 'observable-duck'
+import { Base, Action, Cache, take } from 'observable-duck'
 
 export default class Search extends Base {
   get quickTypes() {
@@ -342,7 +342,7 @@ export default class Search extends Base {
   watchSearch(action$: Observable<Action>) {
     const duck = this
     return action$
-      .pipe(filterAction(duck.types.SEARCH))
+      .pipe(take(duck.types.SEARCH))
       .subscribe((action) => duck.websocket$.next(action.payload))
   }
 }
