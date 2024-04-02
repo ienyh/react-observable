@@ -14,7 +14,7 @@ npm i observable-duck --save
 
 ```js
 import { Action } from "redux";
-import { Base, Action, filterAction } from "observable-duck";
+import { Base, Action, take } from "observable-duck";
 import { Observable } from "rxjs";
 import { debounceTime } from 'rxjs/operators'
 
@@ -61,7 +61,7 @@ export default class AppDuck extends Base {
     const duck = this;
     return action$
       .pipe(
-        filterAction(duck.types.INCREMENT), // 过滤 action
+        take(duck.types.INCREMENT), // 过滤 action
         debounceTime(20), // 加入防抖以实现 redux-saga 中 takeLatest 的效果
       )
       .subscribe((action) => {
@@ -130,7 +130,7 @@ function App(props: ConnectedProps<AppDuck>) {
 export default Runtime.create(AppDuck).connect(App)
 ```
 
-或者并不一定非得连接到 react 组件上使用，由于是 redux 和 rxjs 组合使用，你可以将 Observable 任意发挥
+或者并不一定非得连接到 react 组件上使用，由于是 redux 和 rxjs 组合使用，你可以使用 Observable 任意发挥
 
 ### 另一种方式在 React 组件中使用
 
