@@ -1,6 +1,7 @@
 import { Action } from 'redux'
 import { Base, Init, StreamerMethod, filterAction, reduceFromPayload, take } from '../src'
 import { Observable } from 'rxjs'
+import { createSelector } from 'reselect'
 
 enum Type {
   INCREMENT,
@@ -15,7 +16,6 @@ export default class AppDuck extends Base {
   }
   get quickTypes() {
     return {
-      ...super.quickTypes,
       ...Type,
     }
   }
@@ -40,9 +40,16 @@ export default class AppDuck extends Base {
   get creators() {
     const types = this.types
     return {
-      ...super.creators,
       increment: () => ({ type: types.INCREMENT }),
       decrement: () => ({ type: types.DECREMENT }),
+    }
+  }
+  get quickSelectors() {
+    type State = ReturnType<this['getState']>
+    const subSelector = (state: State) => state.sub.subSub
+    return {
+      sub: subSelector,
+      calculatedSubD: createSelector([subSelector], (selector) => selector.ddd),
     }
   }
 

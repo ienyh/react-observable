@@ -132,6 +132,58 @@ export default Runtime.create(AppDuck).connect(App)
 
 或者并不一定非得连接到 react 组件上使用，由于是 redux 和 rxjs 组合使用，你可以将 Observable 任意发挥
 
+### 另一种方式在 React 组件中使用
+
+还可以用提供的 `useDuck` hook 在组件内部创建 redux 仓库与 duck 的实例化
+
+```js
+// index.tsx
+import * as React from 'react'
+import { useDuck } from 'observable-duck'
+import Duck from './Duck'
+
+export default function () {
+  const { duck, store, dispatch } = useDuck(Duck)
+  const { types } = duck
+  return (
+    <div>
+      useDuck:
+      <div>
+        <input
+          value={store.value}
+          onChange={(v) =>
+            dispatch({
+              type: types.SET_VALUE,
+              payload: v.target.value,
+            })
+          }
+        />
+      </div>
+      <br />
+    </div>
+  )
+}
+
+// Duck.ts
+import { Base, reduceFromPayload } from 'observable-duck'
+export default class Duck extends Base {
+  get quickTypes() {
+    enum Type {
+      SET_VALUE,
+    }
+    return {
+      ...Type,
+    }
+  }
+  get reducers() {
+    const { types } = this
+    return {
+      value: reduceFromPayload<string>(types.SET_VALUE, ''),
+    }
+  }
+}
+```
+
 ## 扩展 duck
 
 为了更好的内聚与更低的耦合，duck 也支持将别的逻辑成块的 duck 作为子 duck 扩展进自身，duck 中的 redux store，Observable 都将注册，并且扩展后的 duck 同样类型完备
