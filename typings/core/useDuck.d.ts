@@ -10,7 +10,7 @@ import { DuckType } from './type';
  * const { store, dispatch, duck } = useDuck(Base)
  */
 export default function useDuck<T extends Base>(Duck: DuckType<T>, options?: DuckRuntimeOptions): {
-    duck: T;
     store: ReturnType<T["getState"]>;
     dispatch: import("redux").Dispatch<import("redux").Action>;
+    duck: T;
 };
