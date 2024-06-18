@@ -1,4 +1,4 @@
-import { useMemo, useSyncExternalStore } from 'react'
+import { useRef, useSyncExternalStore } from 'react'
 import Base from './Base'
 import Runtime, { DuckRuntimeOptions } from './Runtime'
 import { DuckType } from './type'
@@ -12,14 +12,13 @@ import { DuckType } from './type'
  * const { store, dispatch, duck } = useDuck(Base)
  */
 export default function useDuck<T extends Base>(Duck: DuckType<T>, options?: DuckRuntimeOptions) {
-  const runtime = useMemo(() => {
-    return Runtime.create(Duck, options)
-  }, [Duck, options])
-  const { redux } = runtime
-  const store = useSyncExternalStore(redux.subscribe, redux.getState)
+  const ref = useRef(Runtime.create(Duck, options))
+  const { redux, duck } = ref.current
+  const { subscribe, getState, dispatch } = redux
+  const store = useSyncExternalStore(subscribe, getState)
   return {
-    duck: runtime.duck,
-    store: store,
-    dispatch: redux.dispatch,
+    store,
+    dispatch,
+    duck,
   }
 }
