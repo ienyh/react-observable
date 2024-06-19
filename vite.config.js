@@ -1,10 +1,11 @@
+/// <reference types="vitest" />
 import path from 'path'
 import { defineConfig } from 'vite'
 import visualizer from 'rollup-plugin-visualizer'
 
 export default defineConfig({
   build: {
-    outDir: "build",
+    outDir: 'build',
     sourcemap: true,
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
@@ -12,7 +13,15 @@ export default defineConfig({
       fileName: 'observable-duck',
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'react-redux','reflect-metadata', 'rxjs', 'redux', 'redux-observable-action'],
+      external: [
+        'react',
+        'react-dom',
+        'react-redux',
+        'reflect-metadata',
+        'rxjs',
+        'redux',
+        'redux-observable-action',
+      ],
       output: {
         globals: {
           react: 'React',
@@ -26,7 +35,10 @@ export default defineConfig({
           gzipSize: true,
           brotliSize: true,
         }),
-      ]
+      ],
     },
+  },
+  test: {
+    environment: 'jsdom',
   },
 })
