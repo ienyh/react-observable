@@ -14,3 +14,4 @@ export declare const StreamerMethod: () => (target: Object, propertyKey: string 
 export declare const Action: (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) => void;
 export declare function collectStreamers(target: Object): Streamer<import("redux").Action>[];
 export declare function Cache(millisecond?: number): (target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor) => void;
+export declare function Final(target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor): void;

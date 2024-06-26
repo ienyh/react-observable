@@ -1,9 +1,16 @@
-import * as React from "react"
-import { Dispatch, Store as ReduxStore, Middleware, createStore, applyMiddleware, Action } from "redux"
-import { InferableComponentEnhancerWithProps, Provider, connect } from "react-redux"
+import * as React from 'react'
+import {
+  Dispatch,
+  Store as ReduxStore,
+  Middleware,
+  createStore,
+  applyMiddleware,
+  Action,
+} from 'redux'
+import { InferableComponentEnhancerWithProps, Provider, connect } from 'react-redux'
 import { createMiddleware, combineStreamers, StreamMiddleware } from 'redux-observable-action'
-import { ConnectedProps, DuckState, DuckType, PayloadAction } from ".."
-import Base from "./Base"
+import { ConnectedProps, DuckState, DuckType, PayloadAction } from '..'
+import Base, { initialize } from './Base'
 
 export interface DuckRuntimeOptions {
   prefix?: string
@@ -17,7 +24,7 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
   duck: TDuck
   redux: ReduxStore<DuckState<TDuck>, Action>
   protected middleware: StreamMiddleware<PayloadAction, DuckState<TDuck>>
-  protected constructor(Duck:  DuckType<TDuck>, options?: DuckRuntimeOptions) {
+  protected constructor(Duck: DuckType<TDuck>, options?: DuckRuntimeOptions) {
     this.duck = new Duck(options?.prefix ?? Duck.name)
     this.initReduxStore(options?.middlewares)
   }
@@ -29,7 +36,7 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
       duck.combinedReducer,
       applyMiddleware(streamerMiddleware, ...extraMiddlewares)
     )
-    duck.init(store.getState, store.dispatch)
+    duck[initialize](store.getState, store.dispatch)
     streamerMiddleware.run(combineStreamers(...duck.streamers))
     this.redux = store
     this.middleware = streamerMiddleware
@@ -39,10 +46,11 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
     Component: React.FunctionComponent<OriginProps & ConnectedProps<TDuck>>
   ): React.FunctionComponent<OriginProps> {
     const { duck, redux } = this
-    const connectComponent: InferableComponentEnhancerWithProps<DuckState<TDuck> & Dispatch, any> = connect(
-      (state) => ({ store: state }),
-      (dispatch) => ({ dispatch })
-    )
+    const connectComponent: InferableComponentEnhancerWithProps<DuckState<TDuck> & Dispatch, any> =
+      connect(
+        (state) => ({ store: state }),
+        (dispatch) => ({ dispatch })
+      )
     const ConnectedComponent = connectComponent(Component as any)
     return function (props) {
       return (

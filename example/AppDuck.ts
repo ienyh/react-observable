@@ -61,6 +61,7 @@ export default class AppDuck extends Base {
       state.sub.subSub.fff
       state.name.length
       state.value
+      state.timestamp.toString()
       console.log(state)
     })
   }

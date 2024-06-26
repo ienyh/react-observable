@@ -1,14 +1,14 @@
 import { expect, test, describe } from 'vitest'
 import { Observable, Subscription, noop } from 'rxjs'
-import { Base, Runtime } from '../src'
+import { Base, Init, Runtime } from '../src'
+import { initialize } from '../src/core/Base'
 
 describe('Runtime', () => {
-
   test.concurrent('Duck.dispose', async () => {
-    const duckSub = new Subscription();
+    const duckSub = new Subscription()
     class TestDuck extends Base {
-      init(getState, dispatch) {
-        super.init(getState, dispatch)
+      @Init()
+      accept() {
         duckSub.add(new Observable().subscribe())
       }
       [Symbol.dispose]() {
@@ -18,7 +18,7 @@ describe('Runtime', () => {
     }
     const duck = new TestDuck('')
     // @ts-ignore
-    duck.init(noop, noop)
+    duck[initialize](noop, noop)
     expect(duckSub.closed).toStrictEqual(false)
     duck[Symbol.dispose]()
     expect(duckSub.closed).toStrictEqual(true)
@@ -27,8 +27,8 @@ describe('Runtime', () => {
   test.concurrent('Runtime.dispose', async () => {
     const subDuckSub1 = new Subscription()
     class TestSubDuck1 extends Base {
-      init(getState, dispatch) {
-        super.init(getState, dispatch)
+      @Init()
+      accept() {
         subDuckSub1.add(new Observable().subscribe())
       }
       [Symbol.dispose]() {
@@ -38,8 +38,8 @@ describe('Runtime', () => {
     }
     const subDuckSub2 = new Subscription()
     class TestSubDuck2 extends Base {
-      init(getState, dispatch) {
-        super.init(getState, dispatch)
+      @Init()
+      accept() {
         subDuckSub2.add(new Observable().subscribe())
       }
       [Symbol.dispose]() {
@@ -49,8 +49,8 @@ describe('Runtime', () => {
     }
     const parDuckSub = new Subscription()
     class ParentDuck extends Base {
-      init(getState, dispatch) {
-        super.init(getState, dispatch)
+      @Init()
+      accept() {
         parDuckSub.add(new Observable().subscribe())
       }
       [Symbol.dispose]() {
@@ -73,5 +73,4 @@ describe('Runtime', () => {
     expect(subDuckSub2.closed).toBe(true)
     expect(parDuckSub.closed).toBe(true)
   })
-  
 })

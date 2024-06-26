@@ -4,6 +4,8 @@ import { Cache, preformInits, collectStreamers, preformObservables } from './dec
 import type { DuckReducersState, DuckType, Ducks, DucksState, Types } from './type'
 import { Observable, Subscription } from 'rxjs'
 
+export const initialize = Symbol('@initialize')
+
 export default class Base implements Disposable {
   getState: () => Readonly<DuckReducersState<this['reducers']>> & DucksState<this['ducks']>
   dispatch: Dispatch<Action>
@@ -19,7 +21,7 @@ export default class Base implements Disposable {
     })
     this.subscription.unsubscribe()
   }
-  init(getState, dispatch: Dispatch<Action>) {
+  [initialize](getState, dispatch: Dispatch<Action>) {
     this.getState = getState
     this.dispatch = dispatch
     const ducks = this.ducks
@@ -27,7 +29,7 @@ export default class Base implements Disposable {
       return () => getState()[duck]
     }
     Object.keys(ducks).forEach((duck) => {
-      ducks[duck].init(selector(getState, duck), dispatch)
+      ducks[duck][initialize](selector(getState, duck), dispatch)
     })
     preformInits(this)
     this.subscription.add(preformObservables(this))
