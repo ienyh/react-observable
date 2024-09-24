@@ -11,19 +11,34 @@
   ],
   "files": [
     "build",
-    "src",
+    "packages",
     "typings",
     "tsconfig.json"
   ],
   "types": "./typings/index.d.ts",
   "typings": "./typings/index.d.ts",
-  "main": "build/observable-duck.umd.js",
-  "module": "build/observable-duck.mjs",
+  "main": "./build/core.js",
+  "module": "./build/core.mjs",
   "exports": {
     ".": {
-      "import": "./build/observable-duck.mjs",
-      "require": "./build/observable-duck.umd.js",
-      "default": "./build/observable-duck.mjs"
+      "import": "./build/core/index.mjs",
+      "require": "./build/core/index.js",
+      "default": "./build/core/index.mjs"
+    },
+    "./operator": {
+      "import": "./build/operator/index.mjs",
+      "require": "./build/operator/index.js",
+      "default": "./build/operator/index.mjs"
+    },
+    "./decorator": {
+      "import": "./build/decorator/index.mjs",
+      "require": "./build/decorator/index.js",
+      "default": "./build/decorator/index.mjs"
+    },
+    "./helper": {
+      "import": "./build/helper/index.mjs",
+      "require": "./build/helper/index.js",
+      "default": "./build/helper/index.mjs"
     }
   },
   "sideEffects": false,
@@ -34,12 +49,12 @@
   "scripts": {
     "dev": "vite",
     "test": "vitest",
-    "tsc": "rm -rf typings && tsc",
+    "tsc": "rm -rf typings && tsc --declaration --emitDeclarationOnly",
     "build": "vite build --mode production",
     "prebuild": "npm run tsc"
   },
   "dependencies": {
-    "redux": "^5.0.0",
+    "redux": "^5.0.1",
     "redux-observable-action": "^0.0.7"
   },
   "peerDependencies": {
@@ -49,18 +64,19 @@
     "rxjs": ">=7.8.1"
   },
   "devDependencies": {
-    "@testing-library/react": "^16.0.0",
-    "@types/node": "^20.10.3",
-    "@types/react": "^18.2.45",
-    "eslint": "^8.55.0",
+    "@testing-library/react": "^16.0.1",
+    "@types/node": "^22.6.1",
+    "@types/react": "^18.3.8",
+    "eslint": "^9.11.1",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.0.1",
-    "jsdom": "^24.1.0",
-    "prettier": "^3.1.0",
-    "reselect": "^5.0.1",
+    "eslint-plugin-prettier": "^5.2.1",
+    "jsdom": "^25.0.1",
+    "prettier": "^3.3.3",
+    "reselect": "^5.1.1",
     "rollup-plugin-visualizer": "^5.12.0",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.8",
-    "vitest": "^1.0.4"
-  }
+    "typescript": "^5.6.2",
+    "vite": "^5.4.7",
+    "vitest": "^2.1.1"
+  },
+  "packageManager": "pnpm@9.10.0"
 }

@@ -1,7 +1,7 @@
 import { Dispatch, Action, ReducersMapObject, Reducer } from 'redux';
+import { Subscription } from 'rxjs';
 import { Streamer } from 'redux-observable-action';
 import type { DuckReducersState, Ducks, DucksState, Types } from './type';
-import { Subscription } from 'rxjs';
 export declare const initialize: unique symbol;
 export default class Base implements Disposable {
     getState: () => Readonly<DuckReducersState<this['reducers']>> & DucksState<this['ducks']>;

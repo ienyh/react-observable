@@ -1,8 +1,8 @@
 import { Dispatch, Action, combineReducers, ReducersMapObject, Reducer } from 'redux'
-import { Streamer } from 'redux-observable-action'
-import { Cache, preformInits, collectStreamers, preformObservables } from './decorator'
-import type { DuckReducersState, DuckType, Ducks, DucksState, Types } from './type'
 import { Observable, Subscription } from 'rxjs'
+import { Streamer } from 'redux-observable-action'
+import { Cache, preformInits, collectStreamers, preformObservables } from '@/decorator'
+import type { DuckReducersState, DuckType, Ducks, DucksState, Types } from './type'
 
 export const initialize = Symbol('@initialize')
 

@@ -19,6 +19,10 @@ export const Init =
     map.set(propertyKey, priority)
     Reflect.defineMetadata(INIT_PRIORITY_KEY, map, target)
   }
+
+/**
+ * @internal
+ */
 export function preformInits(target) {
   const map: Map<string, number> = Reflect.getMetadata(INIT_PRIORITY_KEY, target)
   if (map) {
@@ -45,6 +49,10 @@ export const From =
     fromMap.set(propertyKey, $ instanceof Observable ? $ : from($))
     Reflect.defineMetadata(FROM_$_METADATA_KEY, fromMap, target)
   }
+
+/**
+ * @internal
+ */
 export function preformObservables(target: Object) {
   const subscription = new Subscription()
   const fromMap: Map<string, Observable<any>> = Reflect.getMetadata(FROM_$_METADATA_KEY, target)
@@ -69,6 +77,10 @@ export const StreamerMethod =
     Reflect.defineMetadata(STREAMER_METADATA_KEY, methods, target)
   }
 export const Action = StreamerMethod()
+
+/**
+ * @internal
+ */
 export function collectStreamers(target: Object) {
   const methodNames = Reflect.getMetadata(STREAMER_METADATA_KEY, target) || []
   return methodNames.map((method) => target[method]) as Array<Streamer>
