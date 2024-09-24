@@ -1,6 +1,9 @@
 import { expect, test, describe } from 'vitest'
 import { Observable } from 'rxjs'
-import { Base, PayloadAction, Runtime, Action, filterAction, reduceFromPayload } from '../src'
+import { Base, PayloadAction, Runtime } from '@/core'
+import { Action } from '@/decorator'
+import { reduceFromPayload } from '@/helper'
+import { take } from '@/operator'
 
 describe('SubDuck', () => {
   class Container extends Base {
@@ -13,7 +16,7 @@ describe('SubDuck', () => {
     @Action
     accept(action$: Observable<PayloadAction>) {
       const { ducks } = this
-      return action$.pipe(filterAction(ducks.sub.types.SET_VALUE)).subscribe((action) => {
+      return action$.pipe(take(ducks.sub.types.SET_VALUE)).subscribe((action) => {
         // 父 duck 可以处子 duck 的 action
         expect(action.type).toBe(ducks.sub.types.SET_VALUE)
       })

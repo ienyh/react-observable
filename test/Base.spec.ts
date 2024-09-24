@@ -1,14 +1,10 @@
 import { expect, test, describe } from 'vitest'
 import { Observable, Subject } from 'rxjs'
-import {
-  Base,
-  From,
-  PayloadAction,
-  Runtime,
-  StreamerMethod,
-  filterAction,
-  reduceFromPayload,
-} from '../src'
+import { Base, Runtime } from '@/core'
+import type { PayloadAction } from '@/core'
+import { From, Action } from '@/decorator'
+import { reduceFromPayload } from '@/helper'
+import { take } from '@/operator'
 
 const external$ = new Subject<string>()
 
@@ -30,10 +26,10 @@ class TestDuck extends Base {
       external: reduceFromPayload<string>(types.EXTERNAL, ''),
     }
   }
-  @StreamerMethod()
+  @Action
   method(action$: Observable<PayloadAction>) {
     const { types, dispatch } = this
-    return action$.pipe(filterAction([types.OUTER_SET])).subscribe((action) => {
+    return action$.pipe(take([types.OUTER_SET])).subscribe((action) => {
       dispatch({
         type: types.INNER_SET,
         payload: action.payload,

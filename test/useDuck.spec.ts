@@ -1,7 +1,10 @@
 import { expect, test, describe } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
 import { Observable } from 'rxjs'
-import { Base, PayloadAction, Action, take, reduceFromPayload, useDuck } from '../src'
+import { Base, PayloadAction, useDuck } from '@/core'
+import { Action } from '@/decorator'
+import { reduceFromPayload } from '@/helper'
+import { take } from '@/operator'
 
 class TestDuck extends Base {
   get quickTypes() {
