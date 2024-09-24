@@ -16,30 +16,34 @@
     "tsconfig.json",
     "tsconfig.build.json"
   ],
-  "types": "./typings/index.d.ts",
-  "typings": "./typings/index.d.ts",
+  "types": "./typings/core/index.d.ts",
+  "typings": "./typings/core/index.d.ts",
   "main": "./build/core.js",
   "module": "./build/core.mjs",
   "exports": {
     ".": {
       "import": "./build/core/index.mjs",
       "require": "./build/core/index.js",
-      "default": "./build/core/index.mjs"
+      "default": "./build/core/index.mjs",
+      "types": "./typings/core/index.d.ts"
     },
     "./operator": {
       "import": "./build/operator/index.mjs",
       "require": "./build/operator/index.js",
-      "default": "./build/operator/index.mjs"
+      "default": "./build/operator/index.mjs",
+      "types": "./typings/operator/index.d.ts"
     },
     "./decorator": {
       "import": "./build/decorator/index.mjs",
       "require": "./build/decorator/index.js",
-      "default": "./build/decorator/index.mjs"
+      "default": "./build/decorator/index.mjs",
+      "types": "./typings/decorator/index.d.ts"
     },
     "./helper": {
       "import": "./build/helper/index.mjs",
       "require": "./build/helper/index.js",
-      "default": "./build/helper/index.mjs"
+      "default": "./build/helper/index.mjs",
+      "types": "./typings/helper/index.d.ts"
     }
   },
   "sideEffects": false,
