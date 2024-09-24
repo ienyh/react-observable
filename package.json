@@ -13,7 +13,8 @@
     "build",
     "packages",
     "typings",
-    "tsconfig.json"
+    "tsconfig.json",
+    "tsconfig.build.json"
   ],
   "types": "./typings/index.d.ts",
   "typings": "./typings/index.d.ts",
@@ -49,7 +50,7 @@
   "scripts": {
     "dev": "vite",
     "test": "vitest",
-    "tsc": "rm -rf typings && tsc --declaration --emitDeclarationOnly",
+    "tsc": "rm -rf typings && tsc --declaration --emitDeclarationOnly --project tsconfig.build.json",
     "build": "vite build --mode production",
     "prebuild": "npm run tsc"
   },

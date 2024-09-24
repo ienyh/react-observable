@@ -4,6 +4,9 @@ import { Streamer } from 'redux-observable-action'
 import { Cache, preformInits, collectStreamers, preformObservables } from '@/decorator'
 import type { DuckReducersState, DuckType, Ducks, DucksState, Types } from './type'
 
+/**
+ * @internal
+ */
 export const initialize = Symbol('@initialize')
 
 export default class Base implements Disposable {
@@ -21,6 +24,9 @@ export default class Base implements Disposable {
     })
     this.subscription.unsubscribe()
   }
+  /**
+   * @internal
+   */
   [initialize](getState, dispatch: Dispatch<Action>) {
     this.getState = getState
     this.dispatch = dispatch
@@ -37,6 +43,9 @@ export default class Base implements Disposable {
   get quickTypes() {
     return {}
   }
+  /**
+   * @internal
+   */
   @Cache()
   get types() {
     return makeTypes(this.actionTypePrefix, this.quickTypes) as Types<this['quickTypes']>
@@ -47,6 +56,9 @@ export default class Base implements Disposable {
   get quickSelectors() {
     return {}
   }
+  /**
+   * @internal
+   */
   @Cache()
   get selectors(): this['quickSelectors'] {
     return this.quickSelectors
@@ -61,6 +73,9 @@ export default class Base implements Disposable {
   get ducks() {
     return makeDucks<this['quickDucks']>(this.quickDucks, this.actionTypePrefix)
   }
+  /**
+   * @internal
+   */
   @Cache()
   get combinedReducer(): Reducer {
     const reducer = {
@@ -72,6 +87,9 @@ export default class Base implements Disposable {
     })
     return combineReducers(reducer)
   }
+  /**
+   * @internal
+   */
   @Cache()
   get streamers(): Streamer[] {
     const streamers = []
