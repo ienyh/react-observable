@@ -12,10 +12,11 @@
     "target": "ES2015",
     "moduleResolution": "node",
     "paths": {
-      "@src/*": ["./src/*"],
+      "@/*": ["./src/*"],
     },
   },
   "include": [
     "./src/**/*",
+    "test/**/*"
   ]
 }

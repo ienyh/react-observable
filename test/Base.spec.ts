@@ -2,13 +2,12 @@ import { expect, test, describe } from 'vitest'
 import { Observable, Subject } from 'rxjs'
 import {
   Base,
-  From,
   PayloadAction,
   Runtime,
-  StreamerMethod,
-  filterAction,
-  reduceFromPayload,
-} from '../src'
+} from '@/core'
+import { From, StreamerMethod } from '@/decorator'
+import { filterAction } from '@/operator'
+import { reduceFromPayload } from '@/helper'
 
 const external$ = new Subject<string>()
 

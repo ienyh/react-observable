@@ -4,13 +4,21 @@ import { defineConfig } from 'vite'
 import visualizer from 'rollup-plugin-visualizer'
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
+  },
   build: {
     outDir: 'build',
     sourcemap: true,
     lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'observable-duck',
-      fileName: 'observable-duck',
+      entry: {
+        index: path.resolve(__dirname, 'src/core/index.ts'),
+        helper: path.resolve(__dirname, 'src/helper/index.ts'),
+        decorator: path.resolve(__dirname, 'src/decorator/index.ts'),
+        operator: path.resolve(__dirname, 'src/operator/index.ts'),
+      },
     },
     rollupOptions: {
       external: [
@@ -31,7 +39,7 @@ export default defineConfig({
       },
       plugins: [
         visualizer({
-          open: true,
+          open: false,
           gzipSize: true,
           brotliSize: true,
         }),

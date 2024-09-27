@@ -34,9 +34,10 @@
   "scripts": {
     "dev": "vite",
     "test": "vitest",
-    "tsc": "rm -rf typings && tsc",
+    "tsc": "rm -rf typings && tsc --declaration --emitDeclarationOnly --project tsconfig.build.json",
     "build": "vite build --mode production",
-    "prebuild": "npm run tsc"
+    "prebuild": "npm run tsc",
+    "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
     "redux": "^5.0.0",
@@ -62,5 +63,6 @@
     "typescript": "^5.3.3",
     "vite": "^5.0.8",
     "vitest": "^1.0.4"
-  }
+  },
+  "packageManager": "pnpm@9.10.0"
 }

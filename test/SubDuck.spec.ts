@@ -1,6 +1,13 @@
 import { expect, test, describe } from 'vitest'
 import { Observable } from 'rxjs'
-import { Base, PayloadAction, Runtime, Action, filterAction, reduceFromPayload } from '../src'
+import {
+  Base,
+  PayloadAction,
+  Runtime,
+} from '@/core'
+import { Action } from '@/decorator'
+import { filterAction } from '@/operator'
+import { reduceFromPayload } from '@/helper'
 
 describe('SubDuck', () => {
   class Container extends Base {
