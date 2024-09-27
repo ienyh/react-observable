@@ -17,6 +17,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
+      reselect:
+        specifier: ^5.1.1
+        version: 5.1.1
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
@@ -515,6 +518,9 @@ packages:
   reflect-metadata@0.2.2:
     resolution: {integrity: sha512-urBwgfrvVP/eAyXx4hluJivBKzuEbSQs9rKWCrCkbSxNv8mxPcUZKeuoF3Uy4mJl3Lwprp6yy5/39VWigZ4K6Q==}
 
+  reselect@5.1.1:
+    resolution: {integrity: sha512-K/BG6eIky/SBpzfHZv/dd+9JBFiS4SWV7FIujVyJRux6e45+73RaUHXLmIR1f7WOMaQ0U1km6qwklRQxpJJY0w==}
+
   rollup@4.22.4:
     resolution: {integrity: sha512-vD8HJ5raRcWOyymsR6Z3o6+RzfEPCnVLMFJ6vRslO1jt4LO6dUo5Qnpg7y4RkZFM2DMe3WUirkI5c16onjrc6A==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
@@ -1012,6 +1018,8 @@ snapshots:
   redux@5.0.1: {}
 
   reflect-metadata@0.2.2: {}
+
+  reselect@5.1.1: {}
 
   rollup@4.22.4:
     dependencies:
