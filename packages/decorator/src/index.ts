@@ -1,6 +1,6 @@
 import 'reflect-metadata'
-import { InteropObservable, Observable, Subscription, from } from 'rxjs'
-import { Streamer } from 'redux-observable-action'
+import { Observable, from } from 'rxjs'
+import type { InteropObservable } from 'rxjs'
 
 export function SetMethodMetadata(key: string | Symbol | number, value: any) {
   return function (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
@@ -8,7 +8,10 @@ export function SetMethodMetadata(key: string | Symbol | number, value: any) {
   }
 }
 
-const INIT_PRIORITY_KEY = Symbol('init_with_priority')
+/**
+ * @internal
+ */
+export const INIT_PRIORITY_KEY = Symbol('init_with_priority')
 export const Init =
   (priority = 0) =>
   (target: Object, propertyKey: string, descriptor: PropertyDescriptor) => {
@@ -23,19 +26,7 @@ export const Init =
 /**
  * @internal
  */
-export function preformInits(target) {
-  const map: Map<string, number> = Reflect.getMetadata(INIT_PRIORITY_KEY, target)
-  if (map) {
-    Array.from(map)
-      .sort((a, b) => b[1] - a[1])
-      .map((item) => item[0])
-      .forEach((propertyKey) => {
-        Function.prototype.call.call(target[propertyKey], target)
-      })
-  }
-}
-
-const FROM_$_METADATA_KEY = Symbol('from$_with_metadata')
+export const FROM_$_METADATA_KEY = Symbol('from$_with_metadata')
 export const From =
   <T>($: Observable<T> | InteropObservable<T>) =>
   (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) => {
@@ -53,19 +44,7 @@ export const From =
 /**
  * @internal
  */
-export function preformObservables(target: Object) {
-  const subscription = new Subscription()
-  const fromMap: Map<string, Observable<any>> = Reflect.getMetadata(FROM_$_METADATA_KEY, target)
-  if (fromMap) {
-    fromMap.forEach(($, propertyKey) => {
-      const method: Function = target[propertyKey]
-      subscription.add(method.call(target, $))
-    })
-  }
-  return subscription
-}
-
-const STREAMER_METADATA_KEY = Symbol('streamer_methods_with_metadata')
+export const STREAMER_METADATA_KEY = Symbol('streamer_methods_with_metadata')
 /**
  * @deprecated
  * Use `@Action` instead of `@StreamerMethod()`
@@ -77,14 +56,6 @@ export const StreamerMethod =
     Reflect.defineMetadata(STREAMER_METADATA_KEY, methods, target)
   }
 export const Action = StreamerMethod()
-
-/**
- * @internal
- */
-export function collectStreamers(target: Object) {
-  const methodNames = Reflect.getMetadata(STREAMER_METADATA_KEY, target) || []
-  return methodNames.map((method) => target[method]) as Array<Streamer>
-}
 
 export function Cache(millisecond: number = Infinity) {
   return function (target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor) {

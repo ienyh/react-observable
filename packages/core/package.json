@@ -1,0 +1,33 @@
+{
+  "name": "observable-duck/core",
+  "version": "1.0.0",
+  "main": "./build/index.umd.js",
+  "module": "./build/index.mjs",
+  "types": "./typings/index.d.ts",
+  "typings": "./typings/index.d.ts",
+  "exports": {
+    "default": "./build/index.mjs",
+    "import": "./build/index.mjs",
+    "require": "./build/index.umd.js"
+  },
+  "scripts": {
+    "prebuild": "rm -rf typings && npx tsc",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "observable-duck/decorator": "workspace:*",
+    "redux": "^5.0.1",
+    "redux-observable-action": "^0.0.7"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-redux": "^9.1.2",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.8",
+    "react": "^18.3.1",
+    "react-redux": "^9.1.2",
+    "rxjs": "^7.8.1"
+  }
+}

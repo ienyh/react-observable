@@ -1,0 +1,17 @@
+{
+  "name": "observable-duck/helper",
+  "version": "1.0.0",
+  "main": "./build/index.umd.js",
+  "module": "./build/index.mjs",
+  "types": "./typings/index.d.ts",
+  "typings": "./typings/index.d.ts",
+  "exports": {
+    "default": "./build/index.mjs",
+    "import": "./build/index.mjs",
+    "require": "./build/index.umd.js"
+  },
+  "scripts": {
+    "prebuild": "rm -rf typings && npx tsc",
+    "build": "vite build"
+  }
+}

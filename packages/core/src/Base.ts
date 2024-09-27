@@ -1,7 +1,12 @@
 import { Dispatch, Action, combineReducers, ReducersMapObject, Reducer } from 'redux'
 import { Observable, Subscription } from 'rxjs'
 import { Streamer } from 'redux-observable-action'
-import { Cache, preformInits, collectStreamers, preformObservables } from '@/decorator'
+import { Cache } from 'observable-duck/decorator'
+import {
+  preformInits,
+  collectStreamers,
+  preformObservables,
+} from 'observable-duck/decorator/src/internal'
 import type { DuckReducersState, DuckType, Ducks, DucksState, Types } from './type'
 
 /**
