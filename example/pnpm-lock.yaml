@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       observable-duck:
-        specifier: ^0.1.19
-        version: 0.1.20(react@18.3.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+        specifier: 1.0.0-alpha.2
+        version: 1.0.0-alpha.2(react-redux@9.1.2(react@18.3.1)(redux@5.0.1))(react@18.3.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -375,6 +375,9 @@ packages:
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
 
+  '@types/use-sync-external-store@0.0.3':
+    resolution: {integrity: sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==}
+
   '@vitejs/plugin-react@4.3.1':
     resolution: {integrity: sha512-m/V2syj5CuVnaxcUJOQRel/Wr31FFXRFlnOoq1TVtkCxsY5veGMTEmpWHndrhB2U8ScHtCQB1e+4hWYExQc6Lg==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -479,10 +482,11 @@ packages:
   node-releases@2.0.18:
     resolution: {integrity: sha512-d9VeXT4SJ7ZeOqGX6R5EM022wpL+eWPooLI+5UpWn2jCT1aosUQEhQP214x33Wkwx3JQMvIm+tIoVOdodFS40g==}
 
-  observable-duck@0.1.20:
-    resolution: {integrity: sha512-4+LBfeCoDxcvQsQ2Bmv+072SPfPCUSZ2+lmuAAHuwLCeIsJ/25jFExZws1utdphlCZz+mwMJlYCg6MnMVsHWEg==}
+  observable-duck@1.0.0-alpha.2:
+    resolution: {integrity: sha512-Ht7KLpTHMRZCp3F5iY+pfIzlCQmCzy3RtsCvpfMnL1T73jnHjx3z7sZs8iNODzgRHnU9iMmUzRrjFzm6ADvQpg==}
     peerDependencies:
       react: '>=16.9.0'
+      react-redux: ^9.0.1
       reflect-metadata: '>=0.2.1'
       rxjs: '>=7.8.1'
 
@@ -497,6 +501,18 @@ packages:
     resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
     peerDependencies:
       react: ^18.3.1
+
+  react-redux@9.1.2:
+    resolution: {integrity: sha512-0OA4dhM1W48l3uzmv6B7TXPCGmokUU4p1M44DGN2/D9a1FjVPukVjER1PcPX97jIg6aUeLq1XJo1IpfbgULn0w==}
+    peerDependencies:
+      '@types/react': ^18.2.25
+      react: ^18.0
+      redux: ^5.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      redux:
+        optional: true
 
   react-refresh@0.14.2:
     resolution: {integrity: sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==}
@@ -556,6 +572,11 @@ packages:
     hasBin: true
     peerDependencies:
       browserslist: '>= 4.21.0'
+
+  use-sync-external-store@1.2.2:
+    resolution: {integrity: sha512-PElTlVMwpblvbNqQ82d2n6RjStvdSoNe9FG28kNfz3WiXilJm4DdNkEzRhCZuIDwY8U08WVihhGR5iRqAwfDiw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
   vite@5.4.8:
     resolution: {integrity: sha512-FqrItQ4DT1NC4zCUqMB4c4AZORMKIa0m8/URVCZ77OZ/QSNeJ54bU1vrFADbDsuwfIPcgknRkmqakQcgnL4GiQ==}
@@ -879,6 +900,8 @@ snapshots:
 
   '@types/estree@1.0.5': {}
 
+  '@types/use-sync-external-store@0.0.3': {}
+
   '@vitejs/plugin-react@4.3.1(vite@5.4.8)':
     dependencies:
       '@babel/core': 7.25.2
@@ -982,9 +1005,10 @@ snapshots:
 
   node-releases@2.0.18: {}
 
-  observable-duck@0.1.20(react@18.3.1)(reflect-metadata@0.2.2)(rxjs@7.8.1):
+  observable-duck@1.0.0-alpha.2(react-redux@9.1.2(react@18.3.1)(redux@5.0.1))(react@18.3.1)(reflect-metadata@0.2.2)(rxjs@7.8.1):
     dependencies:
       react: 18.3.1
+      react-redux: 9.1.2(react@18.3.1)(redux@5.0.1)
       redux: 5.0.1
       redux-observable-action: 0.0.7(redux@5.0.1)(rxjs@7.8.1)
       reflect-metadata: 0.2.2
@@ -1003,6 +1027,14 @@ snapshots:
       loose-envify: 1.4.0
       react: 18.3.1
       scheduler: 0.23.2
+
+  react-redux@9.1.2(react@18.3.1)(redux@5.0.1):
+    dependencies:
+      '@types/use-sync-external-store': 0.0.3
+      react: 18.3.1
+      use-sync-external-store: 1.2.2(react@18.3.1)
+    optionalDependencies:
+      redux: 5.0.1
 
   react-refresh@0.14.2: {}
 
@@ -1068,6 +1100,10 @@ snapshots:
       browserslist: 4.24.0
       escalade: 3.2.0
       picocolors: 1.1.0
+
+  use-sync-external-store@1.2.2(react@18.3.1):
+    dependencies:
+      react: 18.3.1
 
   vite@5.4.8:
     dependencies:
