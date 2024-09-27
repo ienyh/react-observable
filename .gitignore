@@ -3,3 +3,8 @@ build
 
 # rollup-plugin-visualizer
 stats.html
+
+# generated packages by script
+decorator
+helper
+operator

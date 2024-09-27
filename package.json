@@ -1,6 +1,6 @@
 {
   "name": "observable-duck",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "description": "pure logic DuckComponent by redux & rxjs",
   "keywords": [
     "redux",
@@ -12,6 +12,9 @@
   "files": [
     "build",
     "src",
+    "decorator",
+    "helper",
+    "operator",
     "typings",
     "tsconfig.json"
   ],
@@ -54,7 +57,7 @@
     "dev": "vite",
     "test": "vitest",
     "tsc": "rm -rf typings && tsc --declaration --emitDeclarationOnly --project tsconfig.build.json",
-    "build": "vite build --mode production",
+    "build": "vite build --mode production && node ./scripts/generatePackages.js",
     "prebuild": "npm run tsc",
     "preinstall": "npx only-allow pnpm"
   },
