@@ -1,8 +1,8 @@
 import { Dispatch, Action, ReducersMapObject } from 'redux';
 import { Subscription } from 'rxjs';
-import type { DuckReducersState, DucksState } from './type';
+import type { DuckReducersState, Ducks, DucksState, Types } from './type';
 export default class Base implements Disposable {
-    getState: () => Readonly<DuckReducersState<this['reducers']>> & DucksState<this['quickDucks']>;
+    getState: () => Readonly<DuckReducersState<this['reducers']>> & DucksState<this['ducks']>;
     dispatch: Dispatch<Action>;
     readonly id: string;
     readonly actionTypePrefix: string;
@@ -10,8 +10,10 @@ export default class Base implements Disposable {
     constructor(prefix: string);
     [Symbol.dispose](): void;
     get quickTypes(): {};
+    get types(): Types<this["quickTypes"]>;
     get reducers(): ReducersMapObject;
     get quickSelectors(): {};
     get creators(): {};
     get quickDucks(): {};
+    get ducks(): Ducks<this["quickDucks"]>;
 }

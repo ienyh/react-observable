@@ -10,7 +10,7 @@ import type { DuckReducersState, DuckType, Ducks, DucksState, Types } from './ty
 export const initialize = Symbol('@initialize')
 
 export default class Base implements Disposable {
-  getState: () => Readonly<DuckReducersState<this['reducers']>> & DucksState<this['quickDucks']>
+  getState: () => Readonly<DuckReducersState<this['reducers']>> & DucksState<this['ducks']>
   dispatch: Dispatch<Action>
   readonly id = generateID()
   readonly actionTypePrefix: string
@@ -43,9 +43,6 @@ export default class Base implements Disposable {
   get quickTypes() {
     return {}
   }
-  /**
-   * @internal
-   */
   @Cache()
   get types() {
     return makeTypes(this.actionTypePrefix, this.quickTypes) as Types<this['quickTypes']>
@@ -69,9 +66,6 @@ export default class Base implements Disposable {
   get quickDucks() {
     return {}
   }
-  /**
-   * @internal
-   */
   @Cache()
   get ducks() {
     return makeDucks<this['quickDucks']>(this.quickDucks, this.actionTypePrefix)

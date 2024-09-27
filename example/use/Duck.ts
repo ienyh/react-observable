@@ -1,4 +1,5 @@
-import { Base, reduceFromPayload } from '../../src'
+import { Base } from 'observable-duck'
+import { reduceFromPayload } from 'observable-duck/helper'
 
 export default class Duck extends Base {
   get quickTypes() {
