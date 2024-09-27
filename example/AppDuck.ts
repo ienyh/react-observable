@@ -1,5 +1,8 @@
 import { Action } from 'redux'
-import { Base, Init, StreamerMethod, filterAction, reduceFromPayload, take } from '../src'
+import { Base } from 'observable-duck'
+import { reduceFromPayload } from 'observable-duck/helper'
+import { take, filterAction } from 'observable-duck/operator'
+import { Init, StreamerMethod } from 'observable-duck/decorator'
 import { Observable } from 'rxjs'
 import { createSelector } from 'reselect'
 

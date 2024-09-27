@@ -3,6 +3,7 @@
     "declaration": true,
     "declarationDir": "typings",
     "emitDeclarationOnly": true,
+    "stripInternal": true,
     "module": "ESNext",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -12,10 +13,11 @@
     "target": "ES2015",
     "moduleResolution": "node",
     "paths": {
-      "@src/*": ["./src/*"],
+      "@/*": ["./src/*"],
     },
   },
   "include": [
     "./src/**/*",
+    "test/**/*"
   ]
 }

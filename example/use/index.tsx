@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Duck from './Duck'
-import { useDuck } from '../../src'
+import { useDuck } from 'observable-duck'
 
 export default React.memo(function Use() {
   const { duck, store, dispatch } = useDuck(Duck)

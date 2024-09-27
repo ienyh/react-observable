@@ -1,7 +1,8 @@
 import { expect, test, describe } from 'vitest'
 import { Observable, Subscription, noop } from 'rxjs'
-import { Base, Init, Runtime } from '../src'
-import { initialize } from '../src/core/Base'
+import { Base, Runtime } from '@/core'
+import { initialize } from '@/core/Base'
+import { Init } from '@/decorator'
 
 describe('Runtime', () => {
   test.concurrent('Duck.dispose', async () => {

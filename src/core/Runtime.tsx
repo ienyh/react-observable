@@ -9,7 +9,7 @@ import {
 } from 'redux'
 import { InferableComponentEnhancerWithProps, Provider, connect } from 'react-redux'
 import { createMiddleware, combineStreamers, StreamMiddleware } from 'redux-observable-action'
-import { ConnectedProps, DuckState, DuckType, PayloadAction } from '..'
+import { ConnectedProps, DuckState, DuckType, PayloadAction } from './type'
 import Base, { initialize } from './Base'
 
 export interface DuckRuntimeOptions {

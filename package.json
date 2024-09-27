@@ -1,6 +1,6 @@
 {
   "name": "observable-duck",
-  "version": "0.3.5",
+  "version": "1.0.0-alpha.1",
   "description": "pure logic DuckComponent by redux & rxjs",
   "keywords": [
     "redux",
@@ -15,15 +15,34 @@
     "typings",
     "tsconfig.json"
   ],
-  "types": "./typings/index.d.ts",
-  "typings": "./typings/index.d.ts",
+  "types": "./typings/core/index.d.ts",
+  "typings": "./typings/core/index.d.ts",
   "main": "build/observable-duck.umd.js",
   "module": "build/observable-duck.mjs",
   "exports": {
     ".": {
-      "import": "./build/observable-duck.mjs",
-      "require": "./build/observable-duck.umd.js",
-      "default": "./build/observable-duck.mjs"
+      "import": "./build/index.mjs",
+      "require": "./build/index.js",
+      "default": "./build/index.mjs",
+      "types": "./typings/core/index.d.ts"
+    },
+    "./helper": {
+      "import": "./build/helper.mjs",
+      "require": "./build/helper.js",
+      "default": "./build/helper.mjs",
+      "types": "./typings/helper/index.d.ts"
+    },
+    "./operator": {
+      "import": "./build/operator.mjs",
+      "require": "./build/operator.js",
+      "default": "./build/operator.mjs",
+      "types": "./typings/operator/index.d.ts"
+    },
+    "./decorator": {
+      "import": "./build/decorator.mjs",
+      "require": "./build/decorator.js",
+      "default": "./build/decorator.mjs",
+      "types": "./typings/decorator/index.d.ts"
     }
   },
   "sideEffects": false,
@@ -34,9 +53,10 @@
   "scripts": {
     "dev": "vite",
     "test": "vitest",
-    "tsc": "rm -rf typings && tsc",
+    "tsc": "rm -rf typings && tsc --declaration --emitDeclarationOnly --project tsconfig.build.json",
     "build": "vite build --mode production",
-    "prebuild": "npm run tsc"
+    "prebuild": "npm run tsc",
+    "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
     "redux": "^5.0.0",
@@ -62,5 +82,6 @@
     "typescript": "^5.3.3",
     "vite": "^5.0.8",
     "vitest": "^1.0.4"
-  }
+  },
+  "packageManager": "pnpm@9.10.0"
 }

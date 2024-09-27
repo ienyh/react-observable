@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Store as ReduxStore, Middleware, Action } from 'redux';
 import { StreamMiddleware } from 'redux-observable-action';
-import { ConnectedProps, DuckState, DuckType, PayloadAction } from '..';
+import { ConnectedProps, DuckState, DuckType, PayloadAction } from './type';
 import Base from './Base';
 export interface DuckRuntimeOptions {
     prefix?: string;
