@@ -67,8 +67,8 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
    * ```
    */
   connect<OriginProps>(
-    Component: React.FunctionComponent<OriginProps & ConnectedProps<TDuck>>
-  ): React.FunctionComponent<OriginProps> {
+    Component: React.FunctionComponent<OriginProps>
+  ): React.FunctionComponent<Omit<OriginProps, keyof ConnectedProps<TDuck>>> {
     const { duck, redux } = this
     const connectComponent: InferableComponentEnhancerWithProps<DuckState<TDuck> & Dispatch, any> =
       connect(

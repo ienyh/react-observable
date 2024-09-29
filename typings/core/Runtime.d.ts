@@ -33,6 +33,6 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
      * const ConnectedComponent = connect(store, ReactComponent)
      * ```
      */
-    connect<OriginProps>(Component: React.FunctionComponent<OriginProps & ConnectedProps<TDuck>>): React.FunctionComponent<OriginProps>;
+    connect<OriginProps>(Component: React.FunctionComponent<OriginProps>): React.FunctionComponent<Omit<OriginProps, keyof ConnectedProps<TDuck>>>;
     [Symbol.dispose](): void;
 }
