@@ -13,9 +13,11 @@ npm i observable-duck --save
 ### 组织代码
 
 ```js
-import { Action } from "redux";
-import { Base, Action, take } from "observable-duck";
-import { Observable } from "rxjs";
+import { Action } from "redux"
+import { Base } from "observable-duck"
+import { Action } from "observable-duck/decorator"
+import { take } from "observable-duck/operator"
+import { Observable } from "rxjs"
 import { debounceTime } from 'rxjs/operators'
 
 export default class AppDuck extends Base {
@@ -165,7 +167,9 @@ export default function () {
 }
 
 // Duck.ts
-import { Base, reduceFromPayload } from 'observable-duck'
+import { Base } from 'observable-duck'
+import { reduceFromPayload } from 'observable-duck/helper'
+
 export default class Duck extends Base {
   get quickTypes() {
     enum Type {
@@ -192,7 +196,8 @@ export default class Duck extends Base {
 
 ```js
 import { Observable } from 'rxjs'
-import { Base, Action } from 'observable-duck'
+import { Base } from 'observable-duck'
+import { Action } from 'observable-duck/decorator'
 
 export default class ParentDuck extends Base {
   get quickDucks() {
@@ -279,7 +284,8 @@ export default runtime.connect(Template) // 将 runtime 与 react 组件连接�
 
 ```js
 // Two.ts
-import { Base, From } from 'observable-duck'
+import { Base } from 'observable-duck'
+import { From } from 'observable-duck/decorator'
 import { runtime } from './One.ts'
 
 class Search extends Base {
@@ -301,7 +307,9 @@ class Search extends Base {
 ```js
 import { Observable } from 'rxjs'
 import { webSocket } from 'rxjs/webSocket'
-import { Base, Action, Cache, take } from 'observable-duck'
+import { Base } from 'observable-duck'
+import { Action, Cache } from 'observable-duck/decorator'
+import { take } from 'observable-duck/operator'
 
 export default class Search extends Base {
   get quickTypes() {
