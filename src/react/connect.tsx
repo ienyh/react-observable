@@ -1,19 +1,21 @@
 import * as React from 'react'
 import { InferableComponentEnhancerWithProps, Provider, connect as connectRedux } from 'react-redux'
 import { Dispatch } from 'redux'
-import { Base, Store } from '@/core'
-import { ConnectedProps, DuckState } from '@/core/type'
+import { Store } from '../core'
+import type { ConnectedProps, DuckState } from '../core/type'
 
-export default function connect<TDuck extends Base, Props>(
-  store: Store<TDuck>,
+export default function connect<TStore extends Store, Props>(
+  store: TStore,
   Component: React.FunctionComponent<Props>
-): React.FunctionComponent<Omit<Props, keyof ConnectedProps<TDuck>>> {
+): React.FunctionComponent<Omit<Props, keyof ConnectedProps<TStore['duck']>>> {
   const { duck, redux } = store
-  const connectComponent: InferableComponentEnhancerWithProps<DuckState<TDuck> & Dispatch, any> =
-    connectRedux(
-      (state) => ({ store: state }),
-      (dispatch) => ({ dispatch })
-    )
+  const connectComponent: InferableComponentEnhancerWithProps<
+    DuckState<TStore['duck']> & Dispatch,
+    any
+  > = connectRedux(
+    (state) => ({ store: state }),
+    (dispatch) => ({ dispatch })
+  )
   const ConnectedComponent = connectComponent(Component as any)
   return function (props) {
     return (

@@ -1,7 +1,7 @@
 import { useRef, useSyncExternalStore } from 'react'
-import { Base, Store } from '@/core'
-import { DuckStoreOptions } from '@/core/Store'
-import type { DuckType } from '@/core'
+import { Base, Store } from '../core'
+import type { DuckType } from '../core'
+import { DuckStoreOptions } from '../core/Store'
 
 /**
  * You can use hook `useDuck` to create redux store
