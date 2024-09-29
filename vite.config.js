@@ -18,6 +18,7 @@ export default defineConfig({
         helper: path.resolve(__dirname, 'src/helper/index.ts'),
         decorator: path.resolve(__dirname, 'src/decorator/index.ts'),
         operator: path.resolve(__dirname, 'src/operator/index.ts'),
+        react: path.resolve(__dirname, 'src/react/index.ts'),
       },
     },
     rollupOptions: {

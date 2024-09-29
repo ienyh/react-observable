@@ -1,6 +1,6 @@
 {
   "name": "observable-duck",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "description": "pure logic DuckComponent by redux & rxjs",
   "keywords": [
     "redux",
@@ -20,7 +20,7 @@
   ],
   "types": "./typings/core/index.d.ts",
   "typings": "./typings/core/index.d.ts",
-  "main": "build/observable-duck.umd.js",
+  "main": "build/observable-duck.js",
   "module": "build/observable-duck.mjs",
   "exports": {
     ".": {
@@ -46,6 +46,12 @@
       "require": "./build/decorator.js",
       "default": "./build/decorator.mjs",
       "types": "./typings/decorator/index.d.ts"
+    },
+    "./react": {
+      "import": "./build/react.mjs",
+      "require": "./build/react.js",
+      "default": "./build/react.mjs",
+      "types": "./typings/react/index.d.ts"
     }
   },
   "sideEffects": false,

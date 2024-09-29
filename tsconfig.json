@@ -1,9 +1,5 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "declarationDir": "typings",
-    "emitDeclarationOnly": true,
-    "stripInternal": true,
     "module": "ESNext",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -18,6 +14,7 @@
   },
   "include": [
     "./src/**/*",
-    "test/**/*"
+    "./typings/**/*",
+    "./test/**/*",
   ]
 }

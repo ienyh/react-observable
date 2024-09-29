@@ -1,0 +1,15 @@
+{
+  "name": "observable-duck/react",
+  "types": "../typings/react/index.d.ts",
+  "typings": "../typings/react/index.d.ts",
+  "main": "../build/react.js",
+  "module": "../build/react.mjs",
+  "export": {
+    ".": {
+      "import": "../build/react.mjs",
+      "require": "../build/react.js",
+      "default": "../build/react.mjs",
+      "types": "../typings/react/index.d.ts"
+    }
+  }
+}
