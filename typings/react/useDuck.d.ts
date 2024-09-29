@@ -1,6 +1,6 @@
-import { Base } from '@/core';
-import { DuckStoreOptions } from '@/core/Store';
-import type { DuckType } from '@/core';
+import { Base } from '../core';
+import type { DuckType } from '../core';
+import { DuckStoreOptions } from '../core/Store';
 /**
  * You can use hook `useDuck` to create redux store
  * @param Duck
