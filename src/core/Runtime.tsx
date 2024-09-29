@@ -66,7 +66,9 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
    * const ConnectedComponent = connect(store, ReactComponent)
    * ```
    */
-  connect<OriginProps>(Component: React.FunctionComponent<OriginProps & ConnectedProps<TDuck>>) {
+  connect<OriginProps>(
+    Component: React.FunctionComponent<OriginProps & ConnectedProps<TDuck>>
+  ): React.FunctionComponent<OriginProps> {
     const { duck, redux } = this
     const connectComponent: InferableComponentEnhancerWithProps<DuckState<TDuck> & Dispatch, any> =
       connect(
@@ -74,7 +76,7 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
         (dispatch) => ({ dispatch })
       )
     const ConnectedComponent = connectComponent(Component as any)
-    return function (props: OriginProps) {
+    return function (props) {
       return (
         <Provider store={redux}>
           <ConnectedComponent {...props} duck={duck} />

@@ -4,9 +4,11 @@ import { Dispatch } from 'redux'
 import { Base, Store } from '@/core'
 import { ConnectedProps, DuckState } from '@/core/type'
 
-export default function connect<TDuck extends Base, OriginProps>(
+export default function connect<TDuck extends Base, Props>(
   store: Store<TDuck>,
-  Component: React.FunctionComponent<ConnectedProps<TDuck> & OriginProps>
+  Component: React.FunctionComponent<
+    Props extends ConnectedProps<TDuck> ? Omit<Props, keyof ConnectedProps<TDuck>> : never
+  >
 ) {
   const { duck, redux } = store
   const connectComponent: InferableComponentEnhancerWithProps<DuckState<TDuck> & Dispatch, any> =
@@ -15,7 +17,7 @@ export default function connect<TDuck extends Base, OriginProps>(
       (dispatch) => ({ dispatch })
     )
   const ConnectedComponent = connectComponent(Component as any)
-  return function (props: OriginProps) {
+  return function (props: Omit<Props, keyof ConnectedProps<TDuck>>) {
     return (
       <Provider store={redux}>
         <ConnectedComponent {...props} duck={duck} />
