@@ -39,6 +39,9 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
     this.initReduxStore(options?.middlewares)
   }
 
+  /**
+   * @internal
+   */
   protected initReduxStore(extraMiddlewares: Middleware[] = []) {
     const duck = this.duck
     const streamerMiddleware = createMiddleware()

@@ -22,7 +22,6 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
     redux: ReduxStore<DuckState<TDuck>, Action>;
     protected middleware: StreamMiddleware<PayloadAction, DuckState<TDuck>>;
     protected constructor(Duck: DuckType<TDuck>, options?: DuckRuntimeOptions);
-    protected initReduxStore(extraMiddlewares?: Middleware[]): void;
     /**
      * @deprecated
      * Please use `connect` instead of `Runtime.connect`

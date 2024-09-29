@@ -7,7 +7,7 @@ import { ConnectedProps, DuckState } from '@/core/type'
 export default function connect<TDuck extends Base, OriginProps>(
   store: Store<TDuck>,
   Component: React.FunctionComponent<ConnectedProps<TDuck> & OriginProps>
-) {
+): React.FunctionComponent<OriginProps> {
   const { duck, redux } = store
   const connectComponent: InferableComponentEnhancerWithProps<DuckState<TDuck> & Dispatch, any> =
     connectRedux(
