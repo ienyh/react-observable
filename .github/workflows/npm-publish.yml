@@ -16,8 +16,11 @@ jobs:
       version-changed: ${{ steps.check-version.outputs.version-changed }} # 输出版本是否变化
     steps:
       - uses: actions/checkout@v3
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
       - name: Install dependencies
-        run: npm install @actions/request
+        run: npm i @actions/request
       - name: Get previous version
         id: get-previous-version
         uses: actions/github-script@v6
