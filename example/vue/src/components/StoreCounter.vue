@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import useDuck from './useDuck'
+import {useDuck} from 'observable-duck/vue'
 import Duck from './Duck'
 
 const { store, duck, dispatch } = useDuck(Duck)

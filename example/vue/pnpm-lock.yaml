@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       observable-duck:
-        specifier: 1.0.0-alpha.12
-        version: 1.0.0-alpha.12(react-redux@9.1.2(react@18.3.1)(redux@5.0.1))(react@18.3.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+        specifier: 1.0.0-alpha.13
+        version: 1.0.0-alpha.13(@vue/shared@3.5.13)(react-redux@9.1.2(react@18.3.1)(redux@5.0.1))(react@18.3.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)(vue@3.5.13(typescript@5.6.3))
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.6.3)
@@ -404,13 +404,15 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  observable-duck@1.0.0-alpha.12:
-    resolution: {integrity: sha512-eJbwvrHrTozqzKCVlVBdmhrsQzWOy5R/9JdJo/OivDOcZ5Bd2XOnhJXl4lM6IXYkUrklFD2nc6f/u59HlsULNA==}
+  observable-duck@1.0.0-alpha.13:
+    resolution: {integrity: sha512-qDCPuiPkJ78tM8hdM/RMzPaHMtLb6g0qalj15j9lUjRLiemrPmhEzWkSJIO0ANaSCtN8o09EDuQhTSZDW5VsbQ==}
     peerDependencies:
+      '@vue/shared': ^3.5.13
       react: '>=16.9.0'
       react-redux: ^9.0.1
       reflect-metadata: '>=0.2.1'
       rxjs: '>=7.8.1'
+      vue: ^3.5.13
 
   path-browserify@1.0.1:
     resolution: {integrity: sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==}
@@ -839,14 +841,16 @@ snapshots:
 
   nanoid@3.3.8: {}
 
-  observable-duck@1.0.0-alpha.12(react-redux@9.1.2(react@18.3.1)(redux@5.0.1))(react@18.3.1)(reflect-metadata@0.2.2)(rxjs@7.8.1):
+  observable-duck@1.0.0-alpha.13(@vue/shared@3.5.13)(react-redux@9.1.2(react@18.3.1)(redux@5.0.1))(react@18.3.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)(vue@3.5.13(typescript@5.6.3)):
     dependencies:
+      '@vue/shared': 3.5.13
       react: 18.3.1
       react-redux: 9.1.2(react@18.3.1)(redux@5.0.1)
       redux: 5.0.1
       redux-observable-action: 0.0.7(redux@5.0.1)(rxjs@7.8.1)
       reflect-metadata: 0.2.2
       rxjs: 7.8.1
+      vue: 3.5.13(typescript@5.6.3)
 
   path-browserify@1.0.1: {}
 
