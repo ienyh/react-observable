@@ -1,6 +1,6 @@
 {
   "name": "observable-duck",
-  "version": "1.0.0-alpha.12",
+  "version": "1.0.0-alpha.13",
   "description": "pure logic DuckComponent by redux & rxjs",
   "keywords": [
     "redux",
@@ -53,6 +53,12 @@
       "require": "./build/react.js",
       "default": "./build/react.mjs",
       "types": "./typings/react/index.d.ts"
+    },
+    "./vue": {
+      "import": "./build/vue.mjs",
+      "require": "./build/vue.js",
+      "default": "./build/vue.mjs",
+      "types": "./typings/vue/index.d.ts"
     }
   },
   "sideEffects": false,
@@ -69,11 +75,11 @@
     "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
-    "@vue/shared": "^3.5.13",
     "redux": "^5.0.1",
     "redux-observable-action": "^0.0.7"
   },
   "peerDependencies": {
+    "@vue/shared": "^3.5.13",
     "react": ">=16.9.0",
     "react-redux": "^9.0.1",
     "reflect-metadata": ">=0.2.1",
