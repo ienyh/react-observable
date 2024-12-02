@@ -9,6 +9,10 @@ export function SetMethodMetadata(key: string | Symbol | number, value: any) {
 }
 
 const INIT_PRIORITY_KEY = Symbol('init_with_priority')
+
+/**
+ * The higher the priority, the earlier the init.
+ */
 export const Init =
   (priority = 0) =>
   (target: Object, propertyKey: string, descriptor: PropertyDescriptor) => {
@@ -66,7 +70,7 @@ export function preformObservables(target: Object) {
 const STREAMER_METADATA_KEY = Symbol('streamer_methods_with_metadata')
 /**
  * @deprecated
- * Use `@Action` instead of `@StreamerMethod()`
+ * Please use `@Action` instead of `@StreamerMethod()`
  */
 export const StreamerMethod =
   () => (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) => {
