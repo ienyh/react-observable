@@ -19,6 +19,7 @@ export default defineConfig({
         decorator: path.resolve(__dirname, 'src/decorator/index.ts'),
         operator: path.resolve(__dirname, 'src/operator/index.ts'),
         react: path.resolve(__dirname, 'src/react/index.ts'),
+        vue: path.resolve(__dirname, 'src/vue/index.ts'),
       },
     },
     rollupOptions: {
@@ -30,6 +31,7 @@ export default defineConfig({
         'rxjs',
         'redux',
         'redux-observable-action',
+        'vue',
       ],
       output: {
         globals: {

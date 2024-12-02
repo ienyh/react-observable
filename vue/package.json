@@ -1,0 +1,15 @@
+{
+  "name": "observable-duck/vue",
+  "types": "../typings/vue/index.d.ts",
+  "typings": "../typings/vue/index.d.ts",
+  "main": "../build/vue.js",
+  "module": "../build/vue.mjs",
+  "export": {
+    ".": {
+      "import": "../build/vue.mjs",
+      "require": "../build/vue.js",
+      "default": "../build/vue.mjs",
+      "types": "../typings/vue/index.d.ts"
+    }
+  }
+}
