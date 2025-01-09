@@ -15,7 +15,7 @@ export default class Store<TDuck extends Base = Base> implements Disposable {
   duck: TDuck
   redux: ReduxStore<DuckState<TDuck>, Action>
   protected middleware: StreamMiddleware<PayloadAction, DuckState<TDuck>>
-  protected constructor(Duck: DuckType<TDuck>, options?: DuckStoreOptions) {
+  constructor(Duck: DuckType<TDuck>, options?: DuckStoreOptions) {
     this.duck = new Duck(options?.prefix ?? Duck.name)
     this.initReduxStore(options?.middlewares)
   }

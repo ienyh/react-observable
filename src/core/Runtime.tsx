@@ -23,7 +23,7 @@ export interface DuckRuntimeOptions {
  *
  * ```js
  * import { Store } from 'observable-duck'
- * Store.create(Base)
+ * new Store(Base)
  * ```
  */
 export default class Runtime<TDuck extends Base = Base> implements Disposable {
@@ -34,7 +34,7 @@ export default class Runtime<TDuck extends Base = Base> implements Disposable {
   duck: TDuck
   redux: ReduxStore<DuckState<TDuck>, Action>
   protected middleware: StreamMiddleware<PayloadAction, DuckState<TDuck>>
-  protected constructor(Duck: DuckType<TDuck>, options?: DuckRuntimeOptions) {
+  constructor(Duck: DuckType<TDuck>, options?: DuckRuntimeOptions) {
     this.duck = new Duck(options?.prefix ?? Duck.name)
     this.initReduxStore(options?.middlewares)
   }

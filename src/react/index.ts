@@ -1,4 +1,5 @@
-import connect from "./connect"
-import useDuck from "./useDuck"
+import connect from './connect'
+import useDuck from './useDuck'
+import useStore from './useStore'
 
-export { connect, useDuck }
+export { connect, useDuck, useStore }
