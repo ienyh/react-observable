@@ -3,9 +3,6 @@ import { Base, Store } from '../core'
 
 /**
  * You can use hook `useStore` to use the duck store context
- * @param Duck
- * @param options
- * @returns {ConnectedProps<Duck>}
  * @example
  * const { store, dispatch, duck } = useStore(Store)
  */
